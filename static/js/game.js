@@ -1,4 +1,4 @@
-var hostname = window.location.hostname;
+рvar hostname = window.location.hostname;
 var strokeWS = new WebSocket('ws://' + hostname + ':8050/ws/');
 var chatWS = new WebSocket('ws://' + hostname + ':8010/ws/');
 var mouse_down_handler;
