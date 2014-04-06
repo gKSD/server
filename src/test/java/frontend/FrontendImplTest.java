@@ -256,10 +256,12 @@ public class FrontendImplTest {
     }
 
     @Test
-    public void testSendPage()
+    public void testSendPage_UserSessionExists()
     {
+        TemplateHelper.init();
+
         String name = frontend.PROFILE_HTML;
-        String nick = "Nick";
+        String nick = "Bob";
         int id = 123;
         int rating = 55;
         StringWriter stringWriter = new StringWriter();
@@ -268,7 +270,6 @@ public class FrontendImplTest {
         when(userDataSet.getId()).thenReturn(id);
         when(userDataSet.getNick()).thenReturn(nick);
         when(userDataSet.getRating()).thenReturn(rating);
-
 
         try
         {
@@ -281,30 +282,36 @@ public class FrontendImplTest {
         frontend.sendPageTest(name, userDataSet, httpServletResponse);
 
         System.out.println(stringWriter.toString());
-        Assert.assertEquals(stringWriter.toString(), "apple");
-        //Assert.assertEquals( FrontendImpl.status.ready,  resStatus, "Status is wrong, expected ready");
-
-        /*private void sendPage(String name, UserDataSet userSession, HttpServletResponse response){
-        try {
-            Map<String, String> data = new HashMap<String, String>();
-            data.put(PAGE_PARAMETR, name);
-            if(userSession!=null){
-                data.put(ID_FIELD_HTML, String.valueOf(userSession.getId()));
-                data.put(NICKNAME_FIELD_HTML, String.valueOf(userSession.getNick()));
-                data.put(RATING_FIELD_HTML, String.valueOf(userSession.getRating()));
-            }
-            else{
-                data.put(ID_FIELD_HTML, SESSION_NULL__ID_FIELD_DATA);
-                data.put(NICKNAME_FIELD_HTML, SESSION_NULL__NICKNAME_FIELD_DATA);
-                data.put(RATING_FIELD_HTML, SESSION_NULL__RATING_FIELD_DATA);
-            }
-            TemplateHelper.renderTemplate(TEMPLATE_HTML, data, response.getWriter());
-        }
-        catch (IOException ignor) {
-        }*/
+        Assert.assertTrue(stringWriter.toString().contains("<title>Шашечки</title>"));
+        Assert.assertTrue(stringWriter.toString().contains("Bob"));
+        Assert.assertTrue(stringWriter.toString().contains("Rating: 55"));
     }
 
     @Test
+    public void testSendPage_UserSessionIsNull()
+    {
+        TemplateHelper.init();
+
+        String name = frontend.PROFILE_HTML;
+        StringWriter stringWriter = new StringWriter();
+
+        try
+        {
+            when(httpServletResponse.getWriter()).thenReturn(new PrintWriter(stringWriter));
+        }
+        catch (Exception e)
+        {
+
+        }
+        frontend.sendPageTest(name, null, httpServletResponse);
+
+        System.out.println(stringWriter.toString());
+        Assert.assertTrue(stringWriter.toString().contains("<title>Шашечки</title>"));
+        Assert.assertTrue(stringWriter.toString().contains(frontend.SESSION_NULL__NICKNAME_FIELD_DATA));
+        Assert.assertTrue(stringWriter.toString().contains(frontend.SESSION_NULL__RATING_FIELD_DATA));
+    }
+
+        @Test
     public void testGetAddress() throws Exception {
 
     }
