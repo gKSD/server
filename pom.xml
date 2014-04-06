@@ -136,6 +136,11 @@
             <artifactId>mockito-all</artifactId>
             <version>1.9.5</version>
         </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.6</version>
+        </dependency>
     </dependencies>
 
 
@@ -152,10 +157,16 @@
                 <artifactId>surefire-report-maven-plugin</artifactId>
                 <inherited>true</inherited>
             </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.6</version>
+                <configuration>
+                    <formats>
+                        <format>html</format>
+                        <format>xml</format>
+                    </formats>
+                </configuration>
             </plugin>
         </plugins>
     </reporting>

@@ -11,7 +11,7 @@ import base.Frontend;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
-public class TemplateHelper {
+    public class TemplateHelper {
 	private static Configuration cfg = new Configuration();
 	public static void init() {
 		try {

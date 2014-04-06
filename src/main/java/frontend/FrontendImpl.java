@@ -131,9 +131,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 	private boolean isStatic(String target){
 		if(target.length()<4)
 			return false;
-		else if(target.length()==4)
-			return target.substring(0, 4).equals("/js/");
-		else return (((target.substring(0, 5)).equals("/img/"))||((target.substring(0, 5)).equals("/css/")));
+		else return ((target.substring(0, 4).equals("/js/")) || ((target.substring(0, 5)).equals("/img/"))||((target.substring(0, 5)).equals("/css/")));
 	}
 
 	private boolean newUser(String strSessionId, String strStartServerTime){
