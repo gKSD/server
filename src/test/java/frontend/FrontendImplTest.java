@@ -86,7 +86,7 @@ public class FrontendImplTest {
 
         //test1
         FrontendImpl.status resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
-        Assert.assertEquals(resStatus, FrontendImpl.status.haveCookieAndPost, "Status is wrong, expected haveCookieAndPost");
+        Assert.assertEquals(FrontendImpl.status.haveCookieAndPost, resStatus, "Status is wrong, expected haveCookieAndPost");
 
         //test2
         sessionId = "123456";
@@ -96,31 +96,31 @@ public class FrontendImplTest {
         when(userData.getUserSessionBySessionId(sessionId)).thenReturn(userDataSet);
         when(userDataSet.getId()).thenReturn(id);
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
-        Assert.assertEquals(resStatus, FrontendImpl.status.ready, "Status is wrong, expected ready");
+        Assert.assertEquals( FrontendImpl.status.ready,  resStatus, "Status is wrong, expected ready");
 
 
         //test3
         target = frontend.WAIT_URL;
         status = FrontendImpl.status.ready;
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
-        Assert.assertEquals(resStatus, FrontendImpl.status.nothing, "Status is wrong, expected nothing");
+        Assert.assertEquals( FrontendImpl.status.nothing, resStatus, "Status is wrong, expected nothing");
 
         //test4
         status = FrontendImpl.status.nothing;
         when(userDataSet.getPostStatus()).thenReturn(0);
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
-        Assert.assertEquals(resStatus, FrontendImpl.status.nothing, "Status is wrong, expected nothing");
+        Assert.assertEquals( FrontendImpl.status.nothing, resStatus, "Status is wrong, expected nothing");
 
         //test5
         when(userDataSet.getPostStatus()).thenReturn(1);
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
-        Assert.assertEquals(resStatus, FrontendImpl.status.waiting, "Status is wrong, expected waiting");
+        Assert.assertEquals(FrontendImpl.status.waiting,  resStatus,"Status is wrong, expected waiting");
 
         //test6
         status = FrontendImpl.status.nothing;
         target = frontend.ADMIN_URL;
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
-        Assert.assertEquals(resStatus, status, "Status is wrong, expected the as status");
+        Assert.assertEquals(status, resStatus, "Status is wrong, expected the as status");
     }
 
     @Test
@@ -172,6 +172,37 @@ public class FrontendImplTest {
         target = "asdasd";
         res = frontend.inWebTest(target);
         Assert.assertEquals(false, res);
+    }
+
+    @Test
+    public void testIsStatic(){
+        boolean res;
+
+        //test1
+        target = "/js";
+        res = frontend.isStaticTest(target);
+        Assert.assertEquals(false, res);
+
+        //test2
+        target = "/js/";
+        res = frontend.isStaticTest(target);
+        Assert.assertEquals(true, res);
+
+        //test3
+        target = "/img/";
+        res = frontend.isStaticTest(target);
+        Assert.assertEquals(true, res);
+
+        //test4
+        target = "/img/";
+        res = frontend.isStaticTest(target);
+        Assert.assertEquals(true, res);
+
+        //test5
+        target = "/lalal/";
+        res = frontend.isStaticTest(target);
+        Assert.assertEquals(false, res);
+
     }
 
     @Test
