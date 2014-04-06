@@ -16,4 +16,12 @@ public class MsgCreateChat extends MsgToGameChat{
 	public void exec(GameChat gameChat){
 		gameChat.createChat(sessionId1, sessionId2);
 	}
+
+    String get_sessionId1() {
+        return sessionId1;
+    }
+
+    String get_sessionId2() {
+        return sessionId2;
+    }
 }

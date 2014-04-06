@@ -23,4 +23,8 @@ public class MsgCreateGames extends MsgToGameMechanic{
 		MsgUpdateColors msg=new MsgUpdateColors(gameMechanic.getAddress(),to,sessionIdToColor);
 		gameMechanic.getMessageSystem().putMsg(to, msg);
 	}
+
+    public Map<String, UserDataSet> get_users() {
+        return users;
+    }
 }
