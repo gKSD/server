@@ -206,6 +206,40 @@ public class FrontendImplTest {
     }
 
     @Test
+    public  void  testNewUser()
+    {
+        boolean res;
+        String startServerTime = new String();
+
+        //test1
+        sessionId = "";
+        res = frontend.newUserTest(sessionId, startServerTime);
+        Assert.assertEquals(true, res);
+
+        //test2
+        sessionId = "aa";
+        startServerTime = "";
+        res = frontend.newUserTest(sessionId, startServerTime);
+        Assert.assertEquals(true, res);
+
+        //test3
+        startServerTime = "aa";
+        sessionId = "bb";
+        UserDataImpl userData = mock(UserDataImpl.class);
+        when(userData.checkServerTime(startServerTime)).thenReturn(false);
+        res = frontend.newUserTest(sessionId, startServerTime);
+        Assert.assertEquals(true, res);
+
+        //test4
+        startServerTime = "aa";
+        sessionId = "bb";
+        when(userData.checkServerTime(startServerTime)).thenReturn(true);
+        when(userData.containsSessionId(sessionId)).thenReturn(false);
+        res = frontend.newUserTest(sessionId, startServerTime);
+        Assert.assertEquals(true, res); 
+    }
+
+    @Test
     public void testGetAddress() throws Exception {
 
     }
