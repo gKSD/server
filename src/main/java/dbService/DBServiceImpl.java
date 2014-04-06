@@ -80,10 +80,6 @@ public class DBServiceImpl implements DataAccessObject{
 		}
 	}
 
-	public void updateAI(String table, int[] fields, String winner, int whiteQuantity, int blackQuantity){
-		TExecutor.findPosition(connection, table, fields, whiteQuantity, blackQuantity);
-	}
-
     public void Connect() {
         try{
         Driver driver = (Driver) Class.forName("com.mysql.jdbc.Driver").newInstance();

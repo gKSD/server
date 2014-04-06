@@ -1,6 +1,5 @@
 package dbService;
 
-import junit.framework.TestCase;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -12,7 +11,7 @@ import org.testng.annotations.BeforeMethod;
 /**
  * Created by phil on 07.04.14.
  */
-public class TExecutorTest extends TestCase {
+public class TExecutorTest  {
 
     private Connection connect;
     private String Login = "Some_Login";
@@ -26,10 +25,6 @@ public class TExecutorTest extends TestCase {
         Assert.assertEquals(0, cout.intValue());
     }
 
-    public void testFindPosition() throws Exception {
-
-
-    }
 
     @BeforeMethod
     public void setUp() throws Exception {
