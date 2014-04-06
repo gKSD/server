@@ -11,6 +11,8 @@ import org.testng.annotations.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
+import utils.TimeHelper;
+
 import static org.mockito.Mockito.*;
 
 import javax.servlet.http.Cookie;
@@ -119,6 +121,57 @@ public class FrontendImplTest {
         target = frontend.ADMIN_URL;
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
         Assert.assertEquals(resStatus, status, "Status is wrong, expected the as status");
+    }
+
+    @Test
+    public void testInWeb(){
+
+        boolean res;
+
+        //test1
+        target = frontend.ROOT_URL;
+        res = frontend.inWebTest(target);
+        Assert.assertEquals(true, res);
+
+        //test2
+        target = frontend.WAIT_URL;
+        res = frontend.inWebTest(target);
+        Assert.assertEquals(true, res);
+
+        //test3
+        target = frontend.GAME_URL;
+        res = frontend.inWebTest(target);
+        Assert.assertEquals(true, res);
+
+        //test4
+        target = frontend.PROFILE_URL;
+        res = frontend.inWebTest(target);
+        Assert.assertEquals(true, res);
+
+        //test5
+        target = frontend.ADMIN_URL;
+        res = frontend.inWebTest(target);
+        Assert.assertEquals(true, res);
+
+        //test6
+        target = frontend.RULES_URL;
+        res = frontend.inWebTest(target);
+        Assert.assertEquals(true, res);
+
+        //test7
+        target = frontend.LOGOUT_URL;
+        res = frontend.inWebTest(target);
+        Assert.assertEquals(true, res);
+
+        //test8
+        target = frontend.REG_URL;
+        res = frontend.inWebTest(target);
+        Assert.assertEquals(true, res);
+
+        //test9
+        target = "asdasd";
+        res = frontend.inWebTest(target);
+        Assert.assertEquals(false, res);
     }
 
     @Test
