@@ -62,6 +62,31 @@ public class TExecutor {
 		}
 	}
 
+    public static void delUser(Connection connection,String login){
+        PreparedStatement stmt=null;
+        String query="Delete from Users where nickname = ?";
+        System.out.println(query);
+        try{
+            stmt = connection.prepareStatement(query);
+            stmt.setString(1, login);
+            stmt.executeUpdate();
+            stmt.close();
+            System.out.println(query);
+        }
+        catch(Exception e){
+            System.err.println("\nError");
+            System.err.println("TExecutor, addUser");
+            System.err.println(e.getMessage());
+        }
+        finally{
+            try{
+                stmt.close();
+            }
+            catch(Exception ignor){
+            }
+        }
+    }
+
 	public static int findUser(Connection connection, String login){
 		int rows=0;
 		PreparedStatement stmt=null;
