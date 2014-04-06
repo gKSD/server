@@ -6,16 +6,27 @@ import java.util.Map;
 import frontend.UserDataImpl;
 
 public class SysInfo implements Runnable{
+
+    static final public String MEMORY_USAGE_FIELD = "MemoryUsage";
+    static final public String TOTAL_MEMORY_FIELD = "TotalMemory";
+    static final public String TIME_FIELD = "Time";
+    static final public String CCU_FIELD = "CCU";
+
+    static final public String MEMORY_USAGE_DATA = "/statistic/memoryUsage";
+    static final public String TOTAL_MEMORY_DATA = "/statistic/totalMemory";
+    static final public String TIME_DATA = "/statistic/time";
+    static final public String CCU_DATA = "/statistic/ccu";
+
 	private Runtime runtime = Runtime.getRuntime();
 	private String lastDate;
 	private static Map<String, String> data =
 			new HashMap<String, String>();
 
 	public SysInfo(){
-		data.put("MemoryUsage", "/statistic/memoryUsage");
-		data.put("TotalMemory", "/statistic/totalMemory");
-		data.put("Time", "/statistic/time");
-		data.put("CCU", "/statistic/ccu");
+		data.put(MEMORY_USAGE_FIELD, MEMORY_USAGE_DATA);
+		data.put(TOTAL_MEMORY_FIELD, TOTAL_MEMORY_DATA);
+		data.put(TIME_FIELD, TIME_DATA);
+		data.put(CCU_FIELD, CCU_DATA);
 	}
 
 	public static String getStat(String service){

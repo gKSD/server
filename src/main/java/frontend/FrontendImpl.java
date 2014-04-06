@@ -33,6 +33,42 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 	final private MessageSystem messageSystem;
 	enum status {nothing,haveCookie,haveCookieAndPost,waiting,ready}
 
+    final public String ADMIN_URL = "/admin";
+    final public String RULES_URL = "/rules";
+    final public String WAIT_URL = "/wait";
+    final public String GAME_URL = "/game";
+    final public String PROFILE_URL = "/profile";
+    final public String LOGOUT_URL = "/logout";
+    final public String REG_URL = "/reg";
+    final public String ROOT_URL = "/";
+
+    final public String INDEX_HTML = "index.html";
+    final public String TEMPLATE_HTML = "template.html";
+    final public String ADMIN_HTML = "admin.html";
+    final public String REG_HTML = "reg.html";
+    final public String GAME_HTML = "game.html";
+    final public String WAIT_HTML = "wait.html";
+    final public String PROFILE_HTML = "profile.html";
+    final public String RULES_HTML = "rules.html";
+    final public String STATUS_404_HTML = "404.html";
+
+    final public  String PAGE_PARAMETR = "page";
+
+    final public String CONTENT_TYPE= "text/html;charset=utf-8";
+    final public String CACHE_CONTROL_HEADER = "Cache-Control";
+    final public String STORE_CACHE_REVALIDATE_HEADER = "no-store, no-cache, must-revalidate";
+
+    final public String NICKNAME_FIELD_HTML= "nick";
+    final public String REG_NICKNAME_FIELD_HTML= "regNick";
+    final public String ID_FIELD_HTML= "id";
+    final public String REG_PASSWORD_FIELD_HTML= "regPassword";
+    final public String PASSWORD_FIELD_HTML= "password";
+    final public String RATING_FIELD_HTML= "rating";
+
+    final public String SESSION_NULL__ID_FIELD_DATA = "0";
+    final public String SESSION_NULL__NICKNAME_FIELD_DATA = "Noname";
+    final public String SESSION_NULL__RATING_FIELD_DATA ="500";
+
 	public FrontendImpl(MessageSystem msgSystem){
 		address=new Address();
 		messageSystem=msgSystem;
@@ -44,21 +80,22 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 	}
 
 	private void getStatistic(HttpServletResponse response, UserDataSet userSession){
+
 		Map<String,String> data= new HashMap<String,String>();
-		String mu=SysInfo.getStat("MemoryUsage");
-		String tm = SysInfo.getStat("TotalMemory");
-		String time=SysInfo.getStat("Time");
-		String ccu = SysInfo.getStat("CCU");
-		data.put("MemoryUsage", mu);
-		data.put("Time", time);
-		data.put("TotalMemory", tm);
-		data.put("CCU", ccu);
-		data.put("page", "admin.html");
-		data.put("id", String.valueOf(userSession.getId()));
-		data.put("nick", String.valueOf(userSession.getNick()));
-		data.put("rating", String.valueOf(userSession.getRating()));
+		String mu=SysInfo.getStat(SysInfo.MEMORY_USAGE_FIELD);
+		String tm = SysInfo.getStat(SysInfo.TOTAL_MEMORY_FIELD);
+		String time=SysInfo.getStat(SysInfo.TIME_FIELD);
+		String ccu = SysInfo.getStat(SysInfo.CCU_FIELD);
+		data.put(SysInfo.MEMORY_USAGE_FIELD, mu);
+		data.put(SysInfo.TIME_FIELD, time);
+		data.put(SysInfo.TOTAL_MEMORY_FIELD, tm);
+		data.put(SysInfo.CCU_FIELD, ccu);
+		data.put(PAGE_PARAMETR, ADMIN_HTML);
+		data.put(ID_FIELD_HTML, String.valueOf(userSession.getId()));
+		data.put(NICKNAME_FIELD_HTML, String.valueOf(userSession.getNick()));
+		data.put(RATING_FIELD_HTML, String.valueOf(userSession.getRating()));
 		try {
-			TemplateHelper.renderTemplate("template.html", data, response.getWriter());
+			TemplateHelper.renderTemplate(TEMPLATE_HTML, data, response.getWriter());
 		} catch (IOException ignor) {
 		}
 	}
@@ -68,7 +105,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 			stat=status.haveCookieAndPost;
 		if((stat.equals(status.haveCookie))&&(UserDataImpl.getUserSessionBySessionId(sessionId).getId()!=0))
 			stat=status.ready;
-		if (target.equals("/wait")){
+		if (target.equals(WAIT_URL)){
 			if((!stat.equals(status.haveCookie)&&(!stat.equals(status.haveCookieAndPost)))
 					||(UserDataImpl.getUserSessionBySessionId(sessionId).getPostStatus()==0))
 				stat=status.nothing;
@@ -78,16 +115,17 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 		return stat;
 	}
 
+
 	private void prepareResponse(HttpServletResponse response){
-		response.setContentType("text/html;charset=utf-8");
+		response.setContentType(CONTENT_TYPE);
 		response.setStatus(HttpServletResponse.SC_OK);
-		response.setHeader("Cache-Control","no-store, no-cache, must-revalidate");
+		response.setHeader(CACHE_CONTROL_HEADER,STORE_CACHE_REVALIDATE_HEADER);
 		response.setHeader("Expires", TimeHelper.getGMT());
 	}
 
 	private boolean inWeb(String target){
-		return ((target.equals("/"))||(target.equals("/wait"))||(target.equals("/game"))||(target.equals("/profile"))
-				||(target.equals("/admin"))||(target.equals("/rules"))||(target.equals("/logout"))||(target.equals("/reg")));
+		return ((target.equals(ROOT_URL))||(target.equals(WAIT_URL))||(target.equals(GAME_URL))||(target.equals(PROFILE_URL))
+				||(target.equals(ADMIN_URL))||(target.equals(RULES_URL))||(target.equals(LOGOUT_URL))||(target.equals(REG_URL)));
 	}
 
 	private boolean isStatic(String target){
@@ -107,18 +145,18 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 	private void sendPage(String name, UserDataSet userSession, HttpServletResponse response){
 		try {
 			Map<String, String> data = new HashMap<String, String>();
-			data.put("page", name);
+			data.put(PAGE_PARAMETR, name);
 			if(userSession!=null){
-				data.put("id", String.valueOf(userSession.getId()));
-				data.put("nick", String.valueOf(userSession.getNick()));
-				data.put("rating", String.valueOf(userSession.getRating()));
+				data.put(ID_FIELD_HTML, String.valueOf(userSession.getId()));
+				data.put(NICKNAME_FIELD_HTML, String.valueOf(userSession.getNick()));
+				data.put(RATING_FIELD_HTML, String.valueOf(userSession.getRating()));
 			}
 			else{
-				data.put("id", "0");
-				data.put("nick", "Noname");
-				data.put("rating", "500");
+				data.put(ID_FIELD_HTML, SESSION_NULL__ID_FIELD_DATA);
+				data.put(NICKNAME_FIELD_HTML, SESSION_NULL__NICKNAME_FIELD_DATA);
+				data.put(RATING_FIELD_HTML, SESSION_NULL__RATING_FIELD_DATA);
 			}
-			TemplateHelper.renderTemplate("template.html", data, response.getWriter());
+			TemplateHelper.renderTemplate(TEMPLATE_HTML, data, response.getWriter());
 		} 
 		catch (IOException ignor) {
 		}
@@ -126,9 +164,9 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 
 	private void onNothingStatus(String target,String strSessionId, UserDataSet userSession, String strStartServerTime,HttpServletResponse response){
 		boolean moved=false;
-		if (!target.equals("/")){
+		if (!target.equals(ROOT_URL)){
 			response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-			response.addHeader("Location", "/");
+			response.addHeader("Location", ROOT_URL);
 			moved=true;
 		}
 		Cookie cookie1=new Cookie("sessionId", strSessionId);
@@ -136,36 +174,36 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 		response.addCookie(cookie1);
 		response.addCookie(cookie2);
 		if (!moved){
-			sendPage("index.html",userSession,response);
+			sendPage(INDEX_HTML,userSession,response);
 		}
 	}
 
 	private void onHaveCookieStatus(String target, UserDataSet userSession, HttpServletResponse response){
-		if (target.equals("/")){
-			sendPage("index.html",userSession,response);
+		if (target.equals(ROOT_URL)){
+			sendPage(INDEX_HTML,userSession,response);
 		}
-		else if (target.equals("/reg")){
-			sendPage("reg.html",userSession,response);
+		else if (target.equals(REG_URL)){
+			sendPage(REG_HTML,userSession,response);
 		}
 		else{
 			response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-			response.addHeader("Location", "/");
+			response.addHeader("Location", ROOT_URL);
 		}
 	}
 
 	private void onHaveCookieAndPostStatus(String target, String sessionId,UserDataSet userSession,HttpServletRequest request, HttpServletResponse response){
-		String nick=request.getParameter("nick");
-		String password = request.getParameter("password");
+		String nick=request.getParameter(NICKNAME_FIELD_HTML);
+		String password = request.getParameter(PASSWORD_FIELD_HTML);
 		if ((nick==null)||(password==null)){
-			nick = request.getParameter("regNick");
-			password = request.getParameter("regPassword");
+			nick = request.getParameter(REG_NICKNAME_FIELD_HTML);
+			password = request.getParameter(REG_PASSWORD_FIELD_HTML);
 			if ((nick==null)||(password==null)||(nick.equals(""))||(password.equals(""))||(nick.length()>20)){
 				sendPage(target+".html",userSession,response);
 			}
 			else{
 				password=SHA2.getSHA2(password);
 				response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-				response.addHeader("Location", "/wait");
+				response.addHeader("Location", WAIT_URL);
 				userSession.setPostStatus(1);
 				Address to=messageSystem.getAddressByName("DBService");
 				Address from=messageSystem.getAddressByName("UserData");
@@ -176,7 +214,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 		else{
 			password=SHA2.getSHA2(password);
 			response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-			response.addHeader("Location", "/wait");
+			response.addHeader("Location", WAIT_URL);
 			userSession.setPostStatus(1);
 			Address to=messageSystem.getAddressByName("DBService");
 			Address from=messageSystem.getAddressByName("UserData");
@@ -186,33 +224,33 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 	}
 
 	private void onWaitingStatus(HttpServletResponse response){
-		sendPage("wait.html",null,response);
+		sendPage(WAIT_HTML,null,response);
 	}
 
 	private void onReadyStatus(String target, String sessionId, UserDataSet userSession,HttpServletResponse response){
-		if(target.equals("/")){
+		if(target.equals(ROOT_URL)){
 			UserDataImpl.putLogInUser(sessionId, userSession);
-			sendPage("index.html",userSession,response);			
+			sendPage(INDEX_HTML,userSession,response);
 		}
-		else if (target.equals("/game")){
+		else if (target.equals(GAME_URL)){
 			UserDataImpl.putLogInUser(sessionId, userSession);
 			UserDataImpl.playerWantToPlay(sessionId, userSession);
-			sendPage("game.html",userSession,response);
+			sendPage(GAME_HTML,userSession,response);
 		}
-		else if(target.equals("/logout")){
+		else if(target.equals(LOGOUT_URL)){
 			response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-			response.addHeader("Location", "/");
+			response.addHeader("Location", ROOT_URL);
 			String strSessionId = sessionId=SHA2.getSHA2(String.valueOf(creatorSessionId.incrementAndGet()));
 			Cookie cookie=new Cookie("sessionId", strSessionId);
 			response.addCookie(cookie);
 			UserDataImpl.putSessionIdAndUserSession(sessionId, new UserDataSet());
 		}
-		else if (target.equals("/profile")){
-			sendPage("profile.html",userSession,response);
+		else if (target.equals(PROFILE_URL)){
+			sendPage(PROFILE_HTML,userSession,response);
 		}
 		else{
 			response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-			response.addHeader("Location", "/");
+			response.addHeader("Location", ROOT_URL);
 		}
 	}
 
@@ -237,19 +275,19 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 		}
 		if(!inWeb(target)){
 			if(!isStatic(target)){
-				sendPage("404.html",userSession,response);
+				sendPage(STATUS_404_HTML,userSession,response);
 			}
 			return;	
 		}
 		userSession.visit();
 		stat=getStatus(request, target, stat, sessionId);
 		if (stat!=status.haveCookieAndPost){
-			if(target.equals("/admin")){
+			if(target.equals(ADMIN_URL)){
 				getStatistic(response,userSession);
 				return;
 			}
-			else if (target.equals("/rules")){
-				sendPage("rules.html",userSession, response);
+			else if (target.equals(RULES_URL)){
+				sendPage(RULES_HTML,userSession, response);
 				return;
 			}
 		}
