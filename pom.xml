@@ -63,6 +63,13 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.8.5</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-websocket</artifactId>
             <version>8.1.9.v20130131</version>
@@ -145,11 +152,10 @@
                 <artifactId>surefire-report-maven-plugin</artifactId>
                 <inherited>true</inherited>
             </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.5</version>
+                <version>2.6</version>
             </plugin>
         </plugins>
     </reporting>
