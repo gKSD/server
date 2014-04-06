@@ -309,4 +309,40 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 			break;
 		}
 	}
+
+
+    public void getStatisticTest(HttpServletResponse response, UserDataSet userSession){
+        getStatistic(response, userSession);
+    }
+    public void onReadyStatusTest(String target, String sessionId, UserDataSet userSession,HttpServletResponse response){
+        onReadyStatus(target, sessionId, userSession, response);
+    }
+    public void onWaitingStatusTest(HttpServletResponse response){
+        onWaitingStatus(response);
+    }
+    public void onHaveCookieAndPostStatusTest(String target, String sessionId,UserDataSet userSession,HttpServletRequest request, HttpServletResponse response){
+        onHaveCookieAndPostStatus(target, sessionId, userSession, request, response);
+    }
+    public void onHaveCookieStatusTest(String target, UserDataSet userSession, HttpServletResponse response){
+        onHaveCookieStatus(target, userSession, response);
+    }
+    public void sendPageTest(String name, UserDataSet userSession, HttpServletResponse response){
+        sendPage(name, userSession, response);
+    }
+    public boolean newUserTest(String strSessionId, String strStartServerTime){
+        return newUser(strSessionId, strStartServerTime);
+    }
+    public boolean isStaticTest(String target){
+        return isStatic(target);
+    }
+    public boolean inWebTest(String target){
+        return inWeb(target);
+    }
+
+    public void prepareResponseTest(HttpServletResponse response){
+        prepareResponse(response);
+    }
+    public status getStatusTest(HttpServletRequest request,String target,status stat,String sessionId){
+        return getStatus(request, target, stat, sessionId);
+    }
 }
