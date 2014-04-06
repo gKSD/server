@@ -29,13 +29,13 @@ public class CookieDescriptorTest {
     public void ThisTest() {
         CookieDescriptor checkObj = new CookieDescriptor(coo);
         String testRes = checkObj.getCookieByName("username");
-        Assert.assertEquals("John", testRes);
+        Assert.assertEquals(testRes, "John");
         testRes = checkObj.getCookieByName("result");
-        Assert.assertEquals("1000 points", testRes);
+        Assert.assertEquals(testRes, "1000 points");
         testRes = checkObj.getCookieByName("playtime");
-        Assert.assertEquals("40 minutes", testRes);
+        Assert.assertEquals(testRes, "40 minutes");
         testRes = checkObj.getCookieByName("sdfsd");
-        Assert.assertEquals(null, testRes);
+        Assert.assertEquals(testRes, null);
     }
 
     @AfterMethod
