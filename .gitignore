@@ -1,6 +1,6 @@
 ./statistic/.*
 target/
-
+./.idea/*
 *.ipr
 *.iws
 *.iml
