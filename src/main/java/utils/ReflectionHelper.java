@@ -6,7 +6,7 @@ public class ReflectionHelper{
 	
 	public static Object createInstance(String className){
 		try{
-			return Class.forName(className).newInstance();
+			return Class.forName(className).newInstance(); //помещаем как бы класс с именем className и возвращаем экземпляры этого класса
 		}
 		catch(Exception e){
 			System.err.println("ReflectionHelper, createInstance");
