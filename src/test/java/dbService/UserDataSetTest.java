@@ -8,7 +8,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import sun.plugin2.util.NativeLibLoader;
 import utils.TimeHelper;
 
 import javax.servlet.http.HttpServletRequest;
