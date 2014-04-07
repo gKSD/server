@@ -687,7 +687,87 @@ public class FrontendImplTest {
     }
 
     @Test
-    public void testGetAddress() throws Exception {
+    public void testOnReadyStatusRootUrl() throws Exception {
+        TemplateHelper.init();
+
+        int id= 123, rating = 55;
+        UserDataImpl userData = new UserDataImpl(messageSystem);
+        sessionId = "123356";
+        String nick = "__Test_Bob_";
+
+        //test1
+        UserDataSet userDataSet = mock(UserDataSet.class);
+        when(userDataSet.getId()).thenReturn(id);
+        when(userDataSet.getNick()).thenReturn(nick);
+        when(userDataSet.getRating()).thenReturn(rating);
+
+        StringWriter stringWriter = new StringWriter();
+        try
+        {
+            when(httpServletResponse.getWriter()).thenReturn(new PrintWriter(stringWriter));
+        }
+        catch (Exception e)
+        {}
+
+        String result;
+        //test1
+        target = frontend.ROOT_URL;
+        frontend.onReadyStatusTest(target, sessionId, userDataSet, httpServletResponse);
+        result = stringWriter.toString();
+        Assert.assertTrue(result.contains("<title>Шашечки</title>"));
+        Assert.assertTrue(result.contains("<a href='/profile' >__Test_Bob_</a>"));
+
+        //test2
+        target = frontend.GAME_URL;
+        frontend.onReadyStatusTest(target, sessionId, userDataSet, httpServletResponse);
+        result = stringWriter.toString();
+        Assert.assertTrue(result.contains("<a href='/profile' >__Test_Bob_</a>"));
+        Assert.assertTrue(result.contains("<button id='surrend'>Сдаться</button>"));
+
+        //test3
+        target = frontend.LOGOUT_URL;
+        frontend.onReadyStatusTest(target, sessionId, userDataSet, httpServletResponse);
+        ArgumentCaptor<Integer> statusCodeCaptor = ArgumentCaptor.forClass(Integer.class);
+        ArgumentCaptor<String> header1CodeCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> header2CodeCaptor = ArgumentCaptor.forClass(String.class);
+
+        verify(httpServletResponse, times(1)).setStatus(statusCodeCaptor.capture());
+        Integer res = statusCodeCaptor.getValue();
+        Assert.assertTrue(res == HttpServletResponse.SC_MOVED_TEMPORARILY);
+
+        verify(httpServletResponse, times(1)).addHeader(header1CodeCaptor.capture(), header2CodeCaptor.capture());
+        String header1 = header1CodeCaptor.getValue();
+        String header2 = header2CodeCaptor.getValue();
+
+        Assert.assertEquals("Location", header1);
+        Assert.assertEquals(frontend.ROOT_URL,header2);
+
+
+        ArgumentCaptor<Cookie> cookieArgumentCaptor = ArgumentCaptor.forClass(Cookie.class);
+        verify(httpServletResponse, times(1)).addCookie(cookieArgumentCaptor.capture());
+        Assert.assertNotNull(cookieArgumentCaptor.getValue().getValue());
+
+        //test4
+        target = frontend.PROFILE_URL;
+        frontend.onReadyStatusTest(target, sessionId, userDataSet, httpServletResponse);
+        result = stringWriter.toString();
+        Assert.assertTrue(result.contains("<title>Шашечки</title>"));
+        Assert.assertTrue(result.contains("<a href='/profile' >__Test_Bob_</a>"));
+
+        //test5
+        target = frontend.ADMIN_URL;
+        frontend.onReadyStatusTest(target, sessionId, userDataSet, httpServletResponse);
+
+        verify(httpServletResponse, times(2)).setStatus(statusCodeCaptor.capture());
+        res = statusCodeCaptor.getValue();
+        Assert.assertTrue(res == HttpServletResponse.SC_MOVED_TEMPORARILY);
+
+        verify(httpServletResponse, times(2)).addHeader(header1CodeCaptor.capture(), header2CodeCaptor.capture());
+        header1 = header1CodeCaptor.getValue();
+        header2 = header2CodeCaptor.getValue();
+
+        Assert.assertEquals("Location", header1);
+        Assert.assertEquals(frontend.ROOT_URL,header2);
 
     }
 
