@@ -15,7 +15,7 @@ import java.util.List;
 public class VFSTest {
 
     private static String dir=System.getProperty("user.dir")+'/';
-    private static String YOUR_PATH = "/home/step/Technopark_3_sem/Tests_QA/server/";
+    private static String YOUR_PATH = "/home/sofia/tp/testings/hw2/server/";
     VFS testObj = new VFS();
 
     @BeforeMethod
