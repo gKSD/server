@@ -5,8 +5,10 @@ import base.GameMechanic;
 import base.MessageSystem;
 import dbService.DBServiceImpl;
 import dbService.UserDataSet;
+import gameClasses.Stroke;
 import junit.framework.Assert;
 import messageSystem.MessageSystemImpl;
+import org.mockito.ArgumentCaptor;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -86,13 +88,33 @@ public class GameMechanicImplTest {
 
     @Test
     public void testCheckStroke() throws Exception {
-
+        Stroke stroke = new Stroke();
+        Map<Integer,Stroke> resp;
+        resp = game.checkStroke(1,stroke);
+        Assert.assertEquals(0,resp.size());
+        game.filluserIdToSessionRunTest();
+        resp = game.checkStroke(1,stroke);
+       // ArgumentCaptor<Address> captorAddress = ArgumentCaptor.forClass(Address.class);
+        GameSession gameSession = mock(GameSession.class);
+        when(gameSession.checkStroke(1,stroke.getFrom_X(),stroke.getFrom_Y(),stroke.getTo_X(),stroke.getTo_Y())).thenReturn(true);
+        resp = game.checkStroke(1,stroke);
+        Assert.assertEquals(1,resp.size());
+        stroke.setStatus("lose");
+        when(gameSession.getWinnerId()).thenReturn(1);
+        resp = game.checkStroke(1,stroke);
+        Assert.assertEquals(0,resp.size());
 
 
     }
 
     @Test
     public void testRemoveDeadGames_pub() throws Exception {
+        ArgumentCaptor<Object> captor =  ArgumentCaptor.forClass(Object.class);
+        Map<Integer,GameSession> userIdToSession = mock(HashMap.class);
+       // verify(userIdToSession, times(1)).get(captor);
+       when(userIdToSession.get(1)).thenReturn(null);
+        game.filluserIdToSessionRunTest();
+        game.removeDeadGames_pub();
 
     }
 }

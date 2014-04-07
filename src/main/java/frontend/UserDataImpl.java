@@ -29,7 +29,7 @@ import utils.SHA2;
 import utils.TimeHelper;
 
 public class UserDataImpl implements UserData{
-	final private static String startServerTime=SHA2.getSHA2(TimeHelper.getCurrentTime());
+	public static String startServerTime=SHA2.getSHA2(TimeHelper.getCurrentTime());
 	final private static Map<String, UserDataSet> sessionIdToUserSession =
 			new ConcurrentHashMap<String,UserDataSet>();
 	final private static Map<String, UserDataSet> logInUsers =
@@ -38,7 +38,7 @@ public class UserDataImpl implements UserData{
 			new ConcurrentHashMap<String,UserDataSet>();
 	final private static Map<String,WebSocketImpl>sessionIdToWS = 
 			new HashMap<String,WebSocketImpl>();
-	final private static Map<String,ChatWSImpl> sessionIdToChatWS = 
+	public static Map<String,ChatWSImpl> sessionIdToChatWS =
 			new HashMap<String,ChatWSImpl>();
 	static private MessageSystem messageSystem;
 	final private Address address;
