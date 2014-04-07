@@ -75,6 +75,21 @@ public class GameSessionTest {
         Assert.assertEquals(true, game.pawnEating_pub(3,0,5,2));
 
     }
+
+    @Test
+    public void testEating() throws Exception {
+        Assert.assertEquals(false, game.eating_pub(0,1,0,1));
+        Assert.assertEquals(false, game.eating_pub(0, 1, 2, 0));
+        Assert.assertEquals(false, game.eating_pub(0, 2, 2, 1));
+        Assert.assertEquals(false, game.eating_pub(0, 0, 2, 2));
+        Assert.assertEquals(true, game.eating_pub(3, 0, 5, 2));
+    }
+
+    @Test
+    public void testMakeUsualStroke() throws Exception {
+        Assert.assertEquals(true, game.makeUsualStroke_pub(0,0,0,0));
+        Assert.assertEquals(false, game.makeUsualStroke_pub(0,0,0,0));
+    }
     @Test
     public void testCheckStroke() throws Exception {
 

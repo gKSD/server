@@ -224,12 +224,18 @@ public class GameSession{
 		if(canEat(myColor)){
 			return false;
 		}
+
 		move(from_x, from_y, to_x, to_y);
 		if(becameKing(to_x, to_y)){
 			makeKing(to_x, to_y);
 		}
 		return true;
 	}
+
+    public boolean makeUsualStroke_pub(int from_x, int from_y, int to_x, int to_y){
+        System.out.println("fromx");
+        return makeUsualStroke(from_x,from_y, to_x,to_y);
+    }
 	
 	private void makeKing(int x, int y){
 		currentPositions[y][x].makeKing();
@@ -434,6 +440,10 @@ public class GameSession{
 		else
 			return pawnEating(from_x, from_y, to_x, to_y);
 	}
+
+    public boolean eating_pub(int from_x, int from_y, int to_x, int to_y){
+        return eating(from_x, from_y,to_x,to_y);
+    }
 	
 	private boolean canMoveRightUp(int x, int y){
 		if((y<settings.getFieldSize()-1)&&(x<settings.getFieldSize()-1)&&fieldIsEmpty(x+1, y+1))
