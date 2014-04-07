@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import utils.VFS;
 
 import java.io.*;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -60,20 +61,14 @@ public class VFSTest {
     public void bfsTest() {
         List<File> testRes = testObj.bfs("static/css/admin.css");
         Assert.assertEquals(testRes.get(0).getAbsolutePath(), YOUR_PATH + "static/css/admin.css");
-        testRes = testObj.bfs("static/img");
-        for (int i = 0; i< 3; i++) {
-            switch (i) {
-                case 0:
-                   Assert.assertEquals(testRes.get(0).getAbsolutePath(), YOUR_PATH + "static/img/figure.gif");
-                    break;
-                case 1:
-                    Assert.assertEquals(testRes.get(1).getAbsolutePath(), YOUR_PATH + "static/img/games.jpg");
-                    break;
-                case 2:
-                    Assert.assertEquals(testRes.get(2).getAbsolutePath(), YOUR_PATH + "static/img/games3.jpg");
-                    break;
-            }
+        testRes = testObj.bfs("static/js");
+        HashSet<String> myHashSet = new HashSet<String>();
+        for (int i = 0; i< 8; i++) {
+            myHashSet.add(testRes.get(i).getAbsolutePath());
         }
+        Assert.assertTrue(myHashSet.contains(YOUR_PATH + "static/js/template.js"));
+        Assert.assertTrue(myHashSet.contains(YOUR_PATH + "static/js/game.js"));
+        Assert.assertTrue(myHashSet.contains(YOUR_PATH + "static/js/rules.js"));
     }
 
     @Test
