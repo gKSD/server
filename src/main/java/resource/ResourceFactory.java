@@ -8,6 +8,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import utils.SAXHandler;
+import utils.SysInfo;
 import utils.VFS;
 
 public class ResourceFactory {
@@ -37,6 +38,7 @@ public class ResourceFactory {
 	}
 
 	public Resource getResource(String path) {
+        System.out.println(path);
 		if (resource.containsKey(path)) {
 			return resource.get(path);
 		}
