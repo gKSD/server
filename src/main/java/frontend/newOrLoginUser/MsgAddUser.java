@@ -11,7 +11,7 @@ public class MsgAddUser extends MsgToDBService{
 	final private String sessionId;
 	final private String password;
 
-	public MsgAddUser(Address from, Address to, String sessionId,String nick, String password){
+	public MsgAddUser(Address from, Address to, String sessionId, String nick, String password){
 		super(from,to);
 		this.login=nick;
 		this.sessionId=sessionId;

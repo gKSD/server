@@ -19,4 +19,9 @@ public class MsgUpdateUser extends MsgToUserData{
 	public void exec(UserData userData){
 		userData.updateUserId(sessionId, uds);
 	}
+
+    public UserDataSet getUDS_ForTest()
+    {
+        return uds;
+    }
 }
