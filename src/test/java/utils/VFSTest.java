@@ -15,7 +15,7 @@ import java.util.List;
 public class VFSTest {
 
     private static String dir=System.getProperty("user.dir")+'/';
-    private static String YOUR_PATH = "/home/step/Technopark_3_sem/Tests_QA/server/";
+    private static String YOUR_PATH = "/home/phil/GIT/server/";
     VFS testObj = new VFS();
 
     @BeforeMethod
@@ -64,13 +64,13 @@ public class VFSTest {
         for (int i = 0; i< 3; i++) {
             switch (i) {
                 case 0:
-                   Assert.assertEquals(testRes.get(0).getAbsolutePath(), YOUR_PATH + "static/img/games.jpg");
+                   Assert.assertEquals(testRes.get(0).getAbsolutePath(), YOUR_PATH + "static/img/figure.gif");
                     break;
                 case 1:
-                    Assert.assertEquals(testRes.get(1).getAbsolutePath(), YOUR_PATH + "static/img/games3.jpg");
+                    Assert.assertEquals(testRes.get(1).getAbsolutePath(), YOUR_PATH + "static/img/games.jpg");
                     break;
                 case 2:
-                    Assert.assertEquals(testRes.get(4).getAbsolutePath(), YOUR_PATH + "static/img/slide-01.jpg");
+                    Assert.assertEquals(testRes.get(2).getAbsolutePath(), YOUR_PATH + "static/img/games3.jpg");
                     break;
             }
         }

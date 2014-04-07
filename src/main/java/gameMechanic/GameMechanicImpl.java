@@ -18,7 +18,7 @@ import utils.TimeHelper;
 public class GameMechanicImpl implements GameMechanic{
 	final private Map<Integer,GameSession> userIdToSession=
 			new HashMap<Integer,GameSession>();
-	final private Map<String, UserDataSet> wantToPlay = 
+	final private Map<String, UserDataSet> wantToPlay =
 			new HashMap<String, UserDataSet>();
 	final private Address address;
 	final private MessageSystem messageSystem;
@@ -55,20 +55,28 @@ public class GameMechanicImpl implements GameMechanic{
 			wantToPlay.clear();
 		}
 	}
+    public void removeRepeatUsers_pub(Map<String, UserDataSet> users) {
+        removeRepeatUsers(users);
+    }
 
 	private void removeAlreadyInGameUsers(Map<String, UserDataSet> users){
 		String sessionId;
-		int userId;
+		Integer userId;
 		String[] keys = Caster.castKeysToStrings(users);
 		for(int count=0;count<keys.length;count++){
 			sessionId=keys[count];
 			userId=users.get(sessionId).getId();
 			if(userIdToSession.containsKey(userId)){
+                System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQqq");
 				users.remove(sessionId);
 				sendSnapshot(userId);
 			}
 		}
 	}
+
+    public void removeAlreadyInGameUsers_pub(Map<String, UserDataSet> users) {
+        removeAlreadyInGameUsers(users);
+    }
 
 	private void createGame(String sessionIdWhite, String sessionIdBlack, 
 			Map<String, String> sessionIdToColor, Map<String, UserDataSet> users){
@@ -122,6 +130,7 @@ public class GameMechanicImpl implements GameMechanic{
 		}
 		return sessionIdToColor;
 	}
+
 
 	public Map<Integer,Stroke> checkStroke(int id, Stroke stroke){
 		GameSession gameSession=userIdToSession.get(id);
@@ -196,6 +205,10 @@ public class GameMechanicImpl implements GameMechanic{
 		}
 	}
 
+    public void removeDeadGames_pub() {
+        removeDeadGames();
+    }
+
 	public Snapshot getSnapshot(int id) {
 		GameSession gameSession=userIdToSession.get(id);
 		return gameSession.getSnapshot(id);
@@ -212,4 +225,16 @@ public class GameMechanicImpl implements GameMechanic{
 			TimeHelper.sleep(200);
 		}
 	}
+
+    public  void fillWantToPlayFotRunTest()
+    {
+        wantToPlay.put("key1",new UserDataSet(1,"User1",1,1,1));
+        wantToPlay.put("key2",new UserDataSet(1,"User2",1,1,1));
+        wantToPlay.put("key3",new UserDataSet(1,"User3",1,1,1));
+    }
+    public  void filluserIdToSessionRunTest()
+    {
+        userIdToSession.put(1,new GameSession(1,2));
+        userIdToSession.put(2,new GameSession(1,1));
+    }
 }
