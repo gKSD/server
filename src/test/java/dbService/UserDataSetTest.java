@@ -1,5 +1,8 @@
 package dbService;
 
+import base.MessageSystem;
+import frontend.FrontendImpl;
+import frontend.UserDataImpl;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
@@ -8,6 +11,9 @@ import org.testng.annotations.Test;
 import sun.plugin2.util.NativeLibLoader;
 import utils.TimeHelper;
 
+import javax.servlet.http.HttpServletRequest;
+
+import static org.mockito.Mockito.*;
 /**
  * Created by phil on 06.04.14.
  */
@@ -92,6 +98,7 @@ public class UserDataSetTest {
         userdata.lose(5);
         Assert.assertEquals(14,userdata.getLoseQuantity());
         Assert.assertEquals(-4,userdata.getRating());
+
     }
 
     @Test

@@ -64,6 +64,10 @@ public class DBServiceImpl implements DataAccessObject{
 		return (rows==0);
 	}
 
+    public void delUDS(String Login) {
+        TExecutor.delUser(connection, Login);
+    }
+
 	public void updateUsers(List<UserDataSet> users){
 		ListIterator<UserDataSet> li = users.listIterator();
 		while(li.hasNext()){
@@ -76,10 +80,23 @@ public class DBServiceImpl implements DataAccessObject{
 		}
 	}
 
-	public void updateAI(String table, int[] fields, String winner, int whiteQuantity, int blackQuantity){
-		TExecutor.findPosition(connection, table, fields, whiteQuantity, blackQuantity);
-	}
-	
+    public void Connect() {
+        try{
+        Driver driver = (Driver) Class.forName("com.mysql.jdbc.Driver").newInstance();
+        DriverManager.registerDriver(driver);
+        String url="jdbc:mysql://localhost:3306/checkers?user=checkers&password=fuckingpassword";
+            connection = DriverManager.getConnection(url);
+        }
+        catch(Exception e){
+            System.err.println("\nError");
+            System.err.println("DVServiceImpl, run2");
+            System.err.println(e.getMessage());
+            System.exit(-1);
+        }
+    }
+
+
+
 	public void run(){
 		try{
 			//			Driver driver = (Driver) Class.forName("org.sqlite.JDBC").newInstance();
