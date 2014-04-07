@@ -185,6 +185,10 @@ public class GameSession{
 		else 
 			return checker.black;
 	}
+
+    public checker getPlayerColor_pub(int id) {
+        return getPlayerColor(id);
+    }
 	
 	private boolean checking(int id,int from_x, int from_y, int to_x, int to_y){
 		if(id==lastStroke){

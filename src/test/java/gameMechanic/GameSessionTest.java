@@ -25,13 +25,20 @@ public class GameSessionTest {
     @Test
     public void testGetAnotherColor() throws Exception {
         checker check = checker.black;
-        Assert.assertEquals(checker.white,game.getAnotherColor_pub(check));
+        Assert.assertEquals(checker.white, game.getAnotherColor_pub(check));
         check = checker.white;
         Assert.assertEquals(checker.black,game.getAnotherColor_pub(check));
         check = checker.nothing;
         Assert.assertEquals(checker.nothing,game.getAnotherColor_pub(check));
     }
 
+    @Test
+    public void testGetPlayerColor() throws Exception {
+        int id =1;
+        Assert.assertEquals(checker.white, game.getPlayerColor_pub(id));
+        id = 2;
+        Assert.assertEquals(checker.black, game.getPlayerColor_pub(id));
+    }
     @Test
     public void testCheckStroke() throws Exception {
 
