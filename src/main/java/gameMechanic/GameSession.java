@@ -59,6 +59,10 @@ public class GameSession{
 		}
 	}
 
+    public void descInit_pub(int id1, int id2) {
+        descInit(id1,id2);
+    }
+
 	private void generateEmptyLine(int y) {
 		for(int x=0;x<settings.getFieldSize();x++)
 			generateField(x, y,checker.nothing);
@@ -88,6 +92,10 @@ public class GameSession{
 		else
 			return checker.nothing;
 	}
+
+    public checker getAnotherColor_pub(checker myColor) {
+        return getAnotherColor(myColor);
+    }
 
 	public boolean checkStroke(int id, int from_x, int from_y, int to_x, int to_y){
 		String inLog="gameSession.checkStroke("+String.valueOf(id)+','+String.valueOf(from_x)+','+String.valueOf(from_y)+','+String.valueOf(to_x)+','+String.valueOf(to_y)+");\n";
