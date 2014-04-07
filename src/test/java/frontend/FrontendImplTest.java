@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 
 import sun.print.resources.serviceui_sv;
 import utils.SHA2;
+import utils.SysInfo;
 import utils.TemplateHelper;
 import utils.TimeHelper;
 
@@ -65,7 +66,6 @@ public class FrontendImplTest {
 
         Class<?> secretClass = frontend.getClass();
         Method methods[] = secretClass.getDeclaredMethods();
-        //System.out.println("Access all the methods");
         for (Method method : methods) {
             //System.out.println("Method Name: " + method.getName());
             //System.out.println("Return type: " + method.getReturnType());
@@ -97,12 +97,10 @@ public class FrontendImplTest {
         FrontendImpl.status status = FrontendImpl.status.haveCookie;
 
         //test1
-        System.out.println("1");
         FrontendImpl.status resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
         Assert.assertEquals(FrontendImpl.status.haveCookieAndPost, resStatus, "Status is wrong, expected haveCookieAndPost");
 
         ///test2
-        System.out.println("2");
         when(httpServletRequest.getMethod()).thenReturn("GET");
         sessionId = "123456";
         status = FrontendImpl.status.haveCookie;
@@ -118,7 +116,6 @@ public class FrontendImplTest {
         Assert.assertEquals( FrontendImpl.status.ready,  resStatus, "Status is wrong, expected ready");
 
         ///test3
-        System.out.println("3");
         when(httpServletRequest.getMethod()).thenReturn("GET");
         sessionId = "123456";
         status = FrontendImpl.status.haveCookie;
@@ -135,45 +132,38 @@ public class FrontendImplTest {
         Assert.assertEquals( FrontendImpl.status.nothing, resStatus, "Status is wrong, expected nothing");
 
         //test5
-        System.out.println("5");
         status = FrontendImpl.status.nothing;
         userDataSet.setPostStatus(0);
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
         Assert.assertEquals( FrontendImpl.status.nothing, resStatus, "Status is wrong, expected nothing");
         //test6
-        System.out.println("6");
         status = FrontendImpl.status.haveCookieAndPost;
         userDataSet.setPostStatus(0);
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
         Assert.assertEquals( resStatus, FrontendImpl.status.nothing, "Status is wrong, expected nothing");
         //test7
-        System.out.println("6");
         status = FrontendImpl.status.haveCookie;
         userDataSet.setPostStatus(0);
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
         Assert.assertEquals( resStatus, FrontendImpl.status.nothing, "Status is wrong, expected nothing");
         //test8
-        System.out.println("7");
         status = FrontendImpl.status.nothing;
         userDataSet.setPostStatus(1);
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
         Assert.assertEquals( resStatus, FrontendImpl.status.nothing, "Status is wrong, expected nothing");
 
         //test9
-        System.out.println("8");
         status = FrontendImpl.status.haveCookieAndPost;
         userDataSet.setPostStatus(1);
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
         Assert.assertEquals(resStatus, FrontendImpl.status.waiting,"Status is wrong, expected waiting");
         //test10
-        System.out.println("8");
         status = FrontendImpl.status.haveCookie;
         userDataSet.setPostStatus(1);
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
         Assert.assertEquals(resStatus, FrontendImpl.status.waiting,"Status is wrong, expected waiting");
 
         //test11
-        System.out.println("9");
         status = FrontendImpl.status.nothing;
         target = frontend.ADMIN_URL;
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
@@ -322,7 +312,6 @@ public class FrontendImplTest {
         }
         frontend.sendPageTest(name, userDataSet, httpServletResponse);
 
-        System.out.println(stringWriter.toString());
         Assert.assertTrue(stringWriter.toString().contains("<title>Шашечки</title>"));
         Assert.assertTrue(stringWriter.toString().contains("Bob"));
         Assert.assertTrue(stringWriter.toString().contains("Rating: 55"));
@@ -345,7 +334,6 @@ public class FrontendImplTest {
         }
         frontend.sendPageTest(name, null, httpServletResponse);
 
-        System.out.println(stringWriter.toString());
         Assert.assertTrue(stringWriter.toString().contains("<title>Шашечки</title>"));
         Assert.assertTrue(stringWriter.toString().contains(frontend.SESSION_NULL__NICKNAME_FIELD_DATA));
         Assert.assertTrue(stringWriter.toString().contains(frontend.SESSION_NULL__RATING_FIELD_DATA));
@@ -426,7 +414,6 @@ public class FrontendImplTest {
         verify(httpServletResponse, times(2)).addCookie(cookieArgumentCaptor.capture());
         Assert.assertEquals(startServerTime,cookieArgumentCaptor.getValue().getValue());
 
-        System.out.println(stringWriter.toString());
         Assert.assertTrue(stringWriter.toString().contains("<title>Шашечки</title>"));
         Assert.assertTrue(stringWriter.toString().contains(nick));
     }
@@ -458,7 +445,6 @@ public class FrontendImplTest {
         }
 
         frontend.onHaveCookieStatusTest(target, userDataSet, httpServletResponse);
-        System.out.println(stringWriter.toString());
         Assert.assertTrue(stringWriter.toString().contains("<title>Шашечки</title>"));
         Assert.assertTrue(stringWriter.toString().contains(nick));
 
@@ -773,57 +759,183 @@ public class FrontendImplTest {
 
     }
 
+
+
     @Test
     public void testHandle() throws Exception {
 
         TemplateHelper.init();
 
-        /*ArgumentCaptor<Integer> statusCodeCaptor = ArgumentCaptor.forClass(Integer.class);
-        ArgumentCaptor<String> header1CodeCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<String> header2CodeCaptor = ArgumentCaptor.forClass(String.class);
+        int id= 123, rating = 55;
+        UserDataImpl userDataImpl = new UserDataImpl(messageSystem);
+        sessionId = "123356";
+        String nick = "__Test_Bob_";
 
-        verify(httpServletResponse, times(1)).setStatus(statusCodeCaptor.capture());
-        Integer res = statusCodeCaptor.getValue();
-        Assert.assertTrue(res == HttpServletResponse.SC_MOVED_TEMPORARILY);
+        UserDataSet userDataSet = mock(UserDataSet.class);
+        when(userDataSet.getId()).thenReturn(id);
+        when(userDataSet.getNick()).thenReturn(nick);
+        when(userDataSet.getRating()).thenReturn(rating);
 
-        verify(httpServletResponse, times(1)).addHeader(header1CodeCaptor.capture(), header2CodeCaptor.capture());
-        String header1 = header1CodeCaptor.getValue();
-        String header2 = header2CodeCaptor.getValue();
-
-        Assert.assertEquals("Location", header1);
-        Assert.assertEquals(frontend.ROOT_URL,header2);*/
-
-
-        //response.setContentType(CONTENT_TYPE);
-        //response.setStatus(HttpServletResponse.SC_OK);
-        //response.setHeader(CACHE_CONTROL_HEADER,STORE_CACHE_REVALIDATE_HEADER);
-        //response.setHeader("Expires", TimeHelper.getGMT());
-
-        /*String path = "/abcderfg";
-        Request request = mock(Request.class);
-
-        StringWriter html = new StringWriter();
-
-        when(httpServletResponse.getWriter()).thenReturn(new PrintWriter(html));
-
-        frontend.handle(path, request, httpServletRequest, httpServletResponse);
-        Assert.assertEquals(html.toString(), "apple");*/
+        Boolean isNewUser = false;
 
         //test aa-cc-dd
         Request request = mock(Request.class);
         StringWriter stringWriter = new StringWriter();
+        Cookie cookie1 = mock(Cookie.class);
+        Cookie cookie2 = mock(Cookie.class);
 
-        Cookie cookie = mock(Cookie.class);
-        when(cookie.getName()).thenReturn("access_token");
-        when(cookie.getValue()).thenReturn("qwertyuio");
-        Cookie[] cookies = new Cookie[1];
-        cookies[0] = cookie;
+        String sessionId = new String();
+        String startServerTime = new String();
+
+        Cookie[] cookies = new Cookie[2];
+        cookies[0] = cookie1;
+        cookies[1] = cookie2;
         when(request.getCookies()).thenReturn(cookies);
-
+        when(cookie1.getName()).thenReturn("sessionId");
+        when(cookie2.getName()).thenReturn("startServerTime");
         when(httpServletResponse.getWriter()).thenReturn(new PrintWriter(stringWriter));
         when(httpServletRequest.getCookies()).thenReturn(cookies);
-        frontend.handle("index", request, httpServletRequest, httpServletResponse);
-        Assert.assertEquals(stringWriter.toString(), "apple");
+
+        Integer counter = 0;
+        //test1
+        //sessionId == null
+        //bb-cc-dd
+        sessionId = null;
+        startServerTime = UserDataImpl.getStartServerTime();
+        when(cookie1.getValue()).thenReturn(sessionId);
+        when(cookie2.getValue()).thenReturn(startServerTime);
+        counter++;
+        testHandle_Function1("index",request, stringWriter, sessionId, startServerTime, userDataImpl, counter);
+
+        //test2
+        //sessionId != null and startServerTime == nul
+        sessionId = "123354asdzc";
+        startServerTime = null;
+        when(cookie1.getValue()).thenReturn(sessionId);
+        when(cookie2.getValue()).thenReturn(startServerTime);
+        counter++;
+        testHandle_Function1("index", request, stringWriter, sessionId, startServerTime, userDataImpl, counter);
+
+        //test3
+        //sessionId != null and startServerTime != null and checkServerTime() == false
+        sessionId = "123354asdzc";
+        startServerTime = "123456";
+        when(cookie1.getValue()).thenReturn(sessionId);
+        when(cookie2.getValue()).thenReturn(startServerTime);
+        counter++;
+        testHandle_Function1("index", request, stringWriter, sessionId, startServerTime, userDataImpl, counter);
+
+        //test4
+        //sessionId != null and startServerTime != null and checkServerTime() != false and containsSessionId() == false
+        sessionId = "123354asdzc";
+        startServerTime = UserDataImpl.getStartServerTime();
+        when(cookie1.getValue()).thenReturn(sessionId);
+        when(cookie2.getValue()).thenReturn(startServerTime);
+        counter++;
+        testHandle_Function1("index", request, stringWriter, sessionId, startServerTime, userDataImpl, counter);
+
+        //test5
+        //Не проходим условие NewUser() и попадаем в else
+        isNewUser = false;
+        counter = -1;
+        sessionId = "123354asdzc";
+        startServerTime = UserDataImpl.getStartServerTime();
+        userDataImpl.putSessionIdAndUserSession(sessionId, userDataSet);
+        when(cookie1.getValue()).thenReturn(sessionId);
+        when(cookie2.getValue()).thenReturn(startServerTime);
+        testHandle_Function2("index", request, stringWriter, sessionId, startServerTime, userDataImpl);
+    }
+
+    public void testHandle_Function1(String target,Request request,StringWriter stringWriter,
+                                     String sessionId, String startServerTime, UserDataImpl userDataImpl, Integer counter)
+    {
+        //aa
+
+        //test1.1
+        SysInfo testObj = new SysInfo();
+        target = frontend.ADMIN_URL;
+        frontend.handle(target, request, httpServletRequest, httpServletResponse);
+        counter += 1;
+        Assert.assertTrue(stringWriter.toString().contains("name: 'Used Memory'"));
+        Assert.assertTrue(stringWriter.toString().contains("name: 'Total Memory'"));
+        Assert.assertTrue(stringWriter.toString().contains("xAxis:"));
+        Assert.assertTrue(stringWriter.toString().contains("name: 'CCU',"));
+        //return
+
+        //test1.2
+        target = frontend.RULES_URL;
+        frontend.handle(target, request, httpServletRequest, httpServletResponse);
+        counter += 1;
+        Assert.assertTrue(stringWriter.toString().contains("Если шашки твоего противника оказываются под ударом, ты"));
+        Assert.assertTrue(stringWriter.toString().contains("Выигравшим партию становится тот, кто заберет все шашки противника или лишит их хода,"));
+        Assert.assertTrue(stringWriter.toString().contains("<span class=\"label label-important\">Есть обязательно!</span>"));
+        //return
+
+        //test3
+        //!inWeb && !isStatic
+        target = "/random_url";
+        frontend.handle(target, request, httpServletRequest, httpServletResponse);
+        counter += 1;
+        Assert.assertTrue(stringWriter.toString().contains("<p><b>Page not found</b></p>"));
+
+        //test2
+        //!inWeb && isStatic
+        target = "/css/"; //static url, аналогично функция isStaticUrl() тестировалась ранее, здесь рассмотрен только один вариант
+        frontend.handle(target, request, httpServletRequest, httpServletResponse);
+        counter += 1;
+        //просто ретерн
+
+        //test1.3
+        //inWeb !haveCookiesAndPost
+        target = frontend.ROOT_URL;
+        /*
+        //Для данных урлов inWeb() == true, функция тестировалась отдельно ранне, здесь рассмотрим тоько одно условие для выполнения фукнции
+        target = frontend.WAIT_URL;
+        target = frontend.GAME_URL;
+        target = frontend.PROFILE_URL;
+        target = frontend.ADMIN_URL;
+        target = frontend.RULES_URL;
+        target = frontend.LOGOUT_URL;
+        target = frontend.REG_URL;*/
+
+        frontend.handle(target, request, httpServletRequest, httpServletResponse);
+    }
+
+
+    public void testHandle_Function2(String target,Request request,StringWriter stringWriter,
+                                     String sessionId, String startServerTime, UserDataImpl userDataImpl)
+    {
+        //bb
+
+        //test3
+            //!inWeb && !isStatic
+            target = "/random_url";
+        frontend.handle(target, request, httpServletRequest, httpServletResponse);
+        Assert.assertTrue(stringWriter.toString().contains("<p><b>Page not found</b></p>"));
+
+        //test2
+        //!inWeb && isStatic
+        target = "/css/"; //static url, аналогично функция isStaticUrl() тестировалась ранее, здесь рассмотрен только один вариант
+        frontend.handle(target, request, httpServletRequest, httpServletResponse);
+        //просто ретерн
+
+        //test3
+        when(httpServletRequest.getMethod()).thenReturn("POST");
+
+        //inWeb !haveCookiesAndPost
+        target = frontend.ROOT_URL;
+        /*
+        //Для данных урлов inWeb() == true, функция тестировалась отдельно ранне, здесь рассмотрим тоько одно условие для выполнения фукнции
+        target = frontend.WAIT_URL;
+        target = frontend.GAME_URL;
+        target = frontend.PROFILE_URL;
+        target = frontend.ADMIN_URL;
+        target = frontend.RULES_URL;
+        target = frontend.LOGOUT_URL;
+        target = frontend.REG_URL;*/
+
+
+        frontend.handle(target, request, httpServletRequest, httpServletResponse);
 
     }
 

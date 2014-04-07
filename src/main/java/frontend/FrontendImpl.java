@@ -1,6 +1,7 @@
 package frontend;
 
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -258,45 +259,40 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 
 		prepareResponse(response);
 		status stat=status.nothing;
-		CookieDescriptor cookie=new CookieDescriptor(request.getCookies());
-		String sessionId=cookie.getCookieByName("sessionId");
-		String strStartServerTime=cookie.getCookieByName("startServerTime");
+
+		CookieDescriptor cookie = new CookieDescriptor(request.getCookies());
+
+		String sessionId = cookie.getCookieByName("sessionId");
+		String strStartServerTime = cookie.getCookieByName("startServerTime");
+
 		UserDataSet userSession;
+
 		baseRequest.setHandled(true);
 
 		if(newUser(sessionId, strStartServerTime)){
-            System.out.println("aa");
 			userSession=new UserDataSet();
 			sessionId=SHA2.getSHA2(String.valueOf(creatorSessionId.incrementAndGet()));
 			strStartServerTime=UserDataImpl.getStartServerTime();
 			UserDataImpl.putSessionIdAndUserSession(sessionId, userSession);
 		}
 		else{
-            System.out.println("bb");
 			stat=status.haveCookie;
 			userSession=UserDataImpl.getUserSessionBySessionId(sessionId);
 		}
 		if(!inWeb(target)){
-            System.out.println("cc");
 			if(!isStatic(target)){
-                System.out.println("dd");
 				sendPage(STATUS_404_HTML,userSession,response);
 			}
 			return;	
 		}
-        System.out.println("ee");
 		userSession.visit();
 		stat=getStatus(request, target, stat, sessionId);
 		if (stat!=status.haveCookieAndPost){
-
-            System.out.println("ff");
 			if(target.equals(ADMIN_URL)){
-                System.out.println("g");
 				getStatistic(response,userSession);
 				return;
 			}
 			else if (target.equals(RULES_URL)){
-                System.out.println("hh");
 				sendPage(RULES_HTML,userSession, response);
 				return;
 			}
