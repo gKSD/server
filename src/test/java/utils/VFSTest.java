@@ -6,7 +6,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import utils.VFS;
 
-import java.io.File;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -71,6 +71,19 @@ public class VFSTest {
                     break;
             }
         }
+    }
+
+    @Test
+    public void writeToFileTest() {
+        testObj.writeToFile("static/check", "this is it");
+        String str = null;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("/home/step/Technopark_3_sem/Tests_QA/server/static/check"));
+            str = br.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Assert.assertEquals(str, "this is it");
     }
 
     @AfterMethod
