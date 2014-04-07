@@ -318,27 +318,21 @@ public class FrontendImplTest {
     @Test
     public void testOnNothingStatus_TargetIsRootUrl() throws Exception {
 
-        TemplateHelper.init();
+        String startServerTime = new String();
+        int id= 123, rating = 55;
+        String nick = "Bob";
 
         target = frontend.REG_URL;
         sessionId = "123356";
-        int id= 123, rating = 55;
-        String nick = "Bob";
+        startServerTime = "34567";
 
         UserDataSet userDataSet = mock(UserDataSet.class);
         when(userDataSet.getId()).thenReturn(id);
         when(userDataSet.getNick()).thenReturn(nick);
         when(userDataSet.getRating()).thenReturn(rating);
 
-        String startServerTime = new String();
-
-        StringWriter stringWriter = new StringWriter();
-
-        //when(httpServletResponse.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY)).thenReturn(new PrintWriter(stringWriter));
 
         frontend.onNothingStatusTest(target, sessionId, userDataSet, startServerTime, httpServletResponse);
-
-        //Assert.assertEquals(httpServletResponse.getStatus(), 34);
 
         ArgumentCaptor<Integer> statusCodeCaptor = ArgumentCaptor.forClass(Integer.class);
         ArgumentCaptor<String> header1CodeCaptor = ArgumentCaptor.forClass(String.class);
@@ -346,45 +340,65 @@ public class FrontendImplTest {
 
         verify(httpServletResponse, times(1)).setStatus(statusCodeCaptor.capture());
         Integer res = statusCodeCaptor.getValue();
-        System.out.println(res);
         Assert.assertTrue(res == HttpServletResponse.SC_MOVED_TEMPORARILY);
 
         verify(httpServletResponse, times(1)).addHeader(header1CodeCaptor.capture(), header2CodeCaptor.capture());
         String header1 = header1CodeCaptor.getValue();
         String header2 = header2CodeCaptor.getValue();
 
-        Assert.assertEquals("Location",header1);
+        Assert.assertEquals("Location", header1);
         Assert.assertEquals(frontend.ROOT_URL,header2);
 
-        /*
-        ArgumentCaptor<Address> captorAddress = ArgumentCaptor.forClass(Address.class);
-        ArgumentCaptor<Msg> captorMsg = ArgumentCaptor.forClass(Msg.class);
-        verify(messageSystem, times(1)).putMsg(captorAddress.capture(), captorMsg.capture());
-        captorMsg.getValue().exec(dbService);
-        verify(messageSystem, times(2)).putMsg(captorAddress.capture(), captorMsg.capture());
-        */
 
-        /*private void onNothingStatus(String target,String strSessionId, UserDataSet userSession, String strStartServerTime,HttpServletResponse response){
-            boolean moved=false;
-            if (!target.equals(ROOT_URL)){
-                response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-                response.addHeader("Location", ROOT_URL);
-                moved=true;
-            }
-            Cookie cookie1=new Cookie("sessionId", strSessionId);
-            Cookie cookie2=new Cookie("startServerTime",strStartServerTime);
-            response.addCookie(cookie1);
-            response.addCookie(cookie2);
-            if (!moved){
-                sendPage(INDEX_HTML,userSession,response);
-            }
-        }*/
+        ArgumentCaptor<Cookie> cookieArgumentCaptor = ArgumentCaptor.forClass(Cookie.class);
+        verify(httpServletResponse, times(2)).addCookie(cookieArgumentCaptor.capture());
+        Assert.assertEquals(startServerTime,cookieArgumentCaptor.getValue().getValue());
     }
     @Test
     public void testOnNothingStatus_TargetIsNotRootUrl() throws Exception {
 
+        TemplateHelper.init();
+
+        String startServerTime = new String();
+        int id= 123, rating = 55;
+        String nick = "Bob";
+
+        target = frontend.ROOT_URL;
+        sessionId = "123356";
+        startServerTime = "34567";
+        StringWriter stringWriter = new StringWriter();
+
+        UserDataSet userDataSet = mock(UserDataSet.class);
+        when(userDataSet.getId()).thenReturn(id);
+        when(userDataSet.getNick()).thenReturn(nick);
+        when(userDataSet.getRating()).thenReturn(rating);
+
+
+        try
+        {
+            when(httpServletResponse.getWriter()).thenReturn(new PrintWriter(stringWriter));
+        }
+        catch (Exception e)
+        {
+
+        }
+
+        frontend.onNothingStatusTest(target, sessionId, userDataSet, startServerTime, httpServletResponse);
+
+        ArgumentCaptor<Cookie> cookieArgumentCaptor = ArgumentCaptor.forClass(Cookie.class);
+        verify(httpServletResponse, times(2)).addCookie(cookieArgumentCaptor.capture());
+        Assert.assertEquals(startServerTime,cookieArgumentCaptor.getValue().getValue());
+
+        System.out.println(stringWriter.toString());
+        Assert.assertTrue(stringWriter.toString().contains("<title>Шашечки</title>"));
+        Assert.assertTrue(stringWriter.toString().contains(nick));
     }
 
+
+    @Test
+    public void testOnHaveCookieStatus() throws  Exception{
+
+    }
 
     @Test
     public void testGetAddress() throws Exception {

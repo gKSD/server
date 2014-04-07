@@ -42,32 +42,32 @@ public class VFSTest {
     public void getAbsolutePathTest() {
         String testRes = testObj.getAbsolutePath("static/img/games.jpg");
         System.out.println(testRes);
-        Assert.assertEquals(testRes, "/home/step/Technopark_3_sem/Tests_QA/server/static/img/games.jpg");
+        Assert.assertEquals(testRes, "/home/sofia/tp/testings/hw2/server/static/img/games.jpg");
     }
 
     @Test
     public void getRelativePathTest() {
         String testRes = testObj.getRelativePath("static/img/games.jpg");
         Assert.assertEquals(testRes, "static/img/games.jpg");
-        testRes = testObj.getRelativePath("/home/step/Technopark_3_sem/Tests_QA/server/static/img/games.jpg");
+        testRes = testObj.getRelativePath("/home/sofia/tp/testings/hw2/server/static/img/games.jpg");
         Assert.assertEquals(testRes, "static/img/games.jpg");
     }
 
     @Test
     public void bfsTest() {
         List<File> testRes = testObj.bfs("static/css/admin.css");
-        Assert.assertEquals(testRes.get(0).getAbsolutePath(), "/home/step/Technopark_3_sem/Tests_QA/server/static/css/admin.css");
+        Assert.assertEquals(testRes.get(0).getAbsolutePath(), "/home/sofia/tp/testings/hw2/server/static/css/admin.css");
         testRes = testObj.bfs("static/img");
         for (int i = 0; i< 3; i++) {
             switch (i) {
                 case 0:
-                   Assert.assertEquals(testRes.get(0).getAbsolutePath(), "/home/step/Technopark_3_sem/Tests_QA/server/static/img/games.jpg");
+                   Assert.assertEquals(testRes.get(0).getAbsolutePath(), "/home/sofia/tp/testings/hw2/server/static/img/games.jpg");
                     break;
                 case 1:
-                    Assert.assertEquals(testRes.get(1).getAbsolutePath(), "/home/step/Technopark_3_sem/Tests_QA/server/static/img/games3.jpg");
+                    Assert.assertEquals(testRes.get(1).getAbsolutePath(), "/home/sofia/tp/testings/hw2/server/static/img/games3.jpg");
                     break;
                 case 2:
-                    Assert.assertEquals(testRes.get(4).getAbsolutePath(), "/home/step/Technopark_3_sem/Tests_QA/server/static/img/slide-01.jpg");
+                    Assert.assertEquals(testRes.get(4).getAbsolutePath(), "/home/sofia/tp/testings/hw2/server/static/img/slide-01.jpg");
                     break;
             }
         }
@@ -78,7 +78,7 @@ public class VFSTest {
         testObj.writeToFile("static/check", "this is it");
         String str = null;
         try {
-            BufferedReader br = new BufferedReader(new FileReader("/home/step/Technopark_3_sem/Tests_QA/server/static/check"));
+            BufferedReader br = new BufferedReader(new FileReader("/home/sofia/tp/testings/hw2/server/static/check"));
             str = br.readLine();
         } catch (IOException e) {
             e.printStackTrace();
