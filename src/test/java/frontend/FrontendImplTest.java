@@ -396,7 +396,113 @@ public class FrontendImplTest {
 
 
     @Test
-    public void testOnHaveCookieStatus() throws  Exception{
+    public void testOnHaveCookieStatus_ROOT_URL() throws  Exception{
+
+        TemplateHelper.init();
+
+        int id= 123, rating = 55;
+        String nick = "Bob";
+
+        target = frontend.ROOT_URL;
+        StringWriter stringWriter = new StringWriter();
+
+        UserDataSet userDataSet = mock(UserDataSet.class);
+        when(userDataSet.getId()).thenReturn(id);
+        when(userDataSet.getNick()).thenReturn(nick);
+        when(userDataSet.getRating()).thenReturn(rating);
+
+        try
+        {
+            when(httpServletResponse.getWriter()).thenReturn(new PrintWriter(stringWriter));
+        }
+        catch (Exception e)
+        {
+
+        }
+
+        frontend.onHaveCookieStatusTest(target, userDataSet, httpServletResponse);
+        System.out.println(stringWriter.toString());
+        Assert.assertTrue(stringWriter.toString().contains("<title>Шашечки</title>"));
+        Assert.assertTrue(stringWriter.toString().contains(nick));
+
+        Assert.assertTrue(stringWriter.toString().contains("id=\"carousel\""));
+        Assert.assertTrue(stringWriter.toString().contains("<div class=\"carousel-caption\">"));
+    }
+
+    @Test
+    public void testOnHaveCookieStatus_REG_URL() throws  Exception{
+
+
+        TemplateHelper.init();
+
+        int id= 123, rating = 55;
+        String nick = "Bob";
+
+        target = frontend.REG_URL;
+        StringWriter stringWriter = new StringWriter();
+
+        UserDataSet userDataSet = mock(UserDataSet.class);
+        when(userDataSet.getId()).thenReturn(id);
+        when(userDataSet.getNick()).thenReturn(nick);
+        when(userDataSet.getRating()).thenReturn(rating);
+
+        try
+        {
+            when(httpServletResponse.getWriter()).thenReturn(new PrintWriter(stringWriter));
+        }
+        catch (Exception e)
+        {
+
+        }
+
+        frontend.onHaveCookieStatusTest(target, userDataSet, httpServletResponse);
+        Assert.assertTrue(stringWriter.toString().contains("<title>Шашечки</title>"));
+        Assert.assertTrue(stringWriter.toString().contains(frontend.REG_NICKNAME_FIELD_HTML));
+        Assert.assertTrue(stringWriter.toString().contains(frontend.REG_PASSWORD_FIELD_HTML));
+
+        /*private void onHaveCookieStatus(String target, UserDataSet userSession, HttpServletResponse response){
+            if (target.equals(ROOT_URL)){
+                sendPage(INDEX_HTML,userSession,response);
+            }
+            else if (target.equals(REG_URL)){
+                sendPage(REG_HTML,userSession,response);
+            }
+            else{
+                response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
+                response.addHeader("Location", ROOT_URL);
+            }
+        }*/
+    }
+    @Test
+    public void testOnHaveCookieStatus_DEFAULT() throws  Exception{
+
+        int id= 123, rating = 55;
+        String nick = "Bob";
+
+        target = frontend.PROFILE_URL;
+        StringWriter stringWriter = new StringWriter();
+
+        UserDataSet userDataSet = mock(UserDataSet.class);
+        when(userDataSet.getId()).thenReturn(id);
+        when(userDataSet.getNick()).thenReturn(nick);
+        when(userDataSet.getRating()).thenReturn(rating);
+
+        frontend.onHaveCookieStatusTest(target, userDataSet, httpServletResponse);
+
+        ArgumentCaptor<Integer> statusCodeCaptor = ArgumentCaptor.forClass(Integer.class);
+        ArgumentCaptor<String> header1CodeCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> header2CodeCaptor = ArgumentCaptor.forClass(String.class);
+
+        verify(httpServletResponse, times(1)).setStatus(statusCodeCaptor.capture());
+        Integer res = statusCodeCaptor.getValue();
+        Assert.assertTrue(res == HttpServletResponse.SC_MOVED_TEMPORARILY);
+
+        verify(httpServletResponse, times(1)).addHeader(header1CodeCaptor.capture(), header2CodeCaptor.capture());
+        String header1 = header1CodeCaptor.getValue();
+        String header2 = header2CodeCaptor.getValue();
+
+        Assert.assertEquals("Location", header1);
+        Assert.assertEquals(frontend.ROOT_URL,header2);
 
     }
 
