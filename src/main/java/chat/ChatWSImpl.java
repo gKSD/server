@@ -12,40 +12,36 @@ public class ChatWSImpl  extends WebSocketAdapter{
 	public ChatWSImpl(){
 	}
 
-	@Override
-	public void onWebSocketText(String message) {
-		if (isNotConnected()) {
+	public void onWebSocketText(JSONObject json) {
+       /* if (isNotConnected()) {
 			return; 
-		}
-//		System.out.println(message);
+		} */
+        String message = json.toString();
 		String sessionId=null,startServerTime=null;
 		String text=null;
-		JSONParser parser = new JSONParser();
-		JSONObject json=null;
 		try{
-			json = (JSONObject) parser.parse(message);
 			sessionId=json.get("sessionId").toString();
 			startServerTime=json.get("startServerTime").toString();
-			text=json.get("text").toString();
+            text = json.get("text").toString();
 		}
 		catch (Exception ignor){
 		}
 		if((sessionId!=null)&&(startServerTime!=null)&&(text!=null)&&(!text.equals(""))&&(UserDataImpl.checkServerTime(startServerTime))){
-			addMessageToChat(sessionId, text);
+            addMessageToChat(sessionId, text);
 		}
-		else if((sessionId!=null)&&(startServerTime!=null)&&UserDataImpl.checkServerTime(startServerTime)){
-			addNewChater(sessionId);
+		else if((sessionId!=null)&&(startServerTime!=null)&&(UserDataImpl.checkServerTime(startServerTime))){
+            addNewChater(sessionId);
 		}
-	}
+    }
 
 	private void addNewChater(String sessionId){
 		UserDataImpl.putSessionIdAndChatWS(sessionId, this);
 	}
 	
-	private void addMessageToChat(String sessionId, String text){
+	public void addMessageToChat(String sessionId, String text){
 		UserDataSet user = UserDataImpl.getLogInUserBySessionId(sessionId);
 		if(user!=null){
-			GameChatImpl.sendMessage(sessionId, text);
+            GameChatImpl.sendMessage(sessionId, text);
 		}
 	}
 	

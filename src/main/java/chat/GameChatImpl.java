@@ -17,7 +17,7 @@ import frontend.UserDataImpl;
 
 public class GameChatImpl implements GameChat{
 
-	private static final Map<String, List<ChatMessage>> sessionIdToChat = 
+	public static final Map<String, List<ChatMessage>> sessionIdToChat =
 			new HashMap<String, List<ChatMessage>>();
 	private static final Map<String, String> sessionIdToAnotherSessionId = 
 			new HashMap<String, String>();
