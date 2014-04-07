@@ -22,8 +22,9 @@ public class VFS{
 	}
 
 	public static String getAbsolutePath(String path){
-		if(isAbsolute(path))
+		if(isAbsolute(path)) {
 			return path;
+        }
 		else
 			return (dir+path);
 	}
@@ -93,7 +94,9 @@ public class VFS{
         FileWriter err = null;
         try{
 		    File file = new File(path);
-			err=new FileWriter(file,true);
+            file.delete();
+            File file1 = new File(path);
+			err=new FileWriter(file1,true);
 			err.write(data);
 		}
 		catch(Exception e){
