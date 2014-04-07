@@ -206,6 +206,10 @@ public class GameSession{
 		}
 		return true;
 	}
+
+    public boolean Checking_pub(int id,int from_x, int from_y, int to_x, int to_y) {
+        return checking(id,from_x,from_y,to_x,to_y);
+    }
 	
 	private boolean makeEatingStroke(int from_x, int from_y, int to_x, int to_y){
 		eat(from_x, from_y,to_x, to_y);
@@ -389,6 +393,10 @@ public class GameSession{
 		}
 		return true;
 	}
+
+    public boolean standartCheck_pub(int from_x, int from_y, int to_x, int to_y) {
+        return standartCheck(from_x, from_y, to_x,to_y);
+    };
 
 	private boolean kingEating(int from_x, int from_y, int to_x, int to_y){
 		checker myColor=getFieldType(from_x, from_y),anotherColor=getAnotherColor(myColor);
