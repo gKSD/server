@@ -15,6 +15,7 @@ import java.util.List;
 public class VFSTest {
 
     private static String dir=System.getProperty("user.dir")+'/';
+    private static String YOUR_PATH = "/home/step/Technopark_3_sem/Tests_QA/server/";
     VFS testObj = new VFS();
 
     @BeforeMethod
@@ -42,32 +43,34 @@ public class VFSTest {
     public void getAbsolutePathTest() {
         String testRes = testObj.getAbsolutePath("static/img/games.jpg");
         System.out.println(testRes);
-        Assert.assertEquals(testRes, "/home/sofia/tp/testings/hw2/server/static/img/games.jpg");
+        Assert.assertEquals(testRes, YOUR_PATH + "static/img/games.jpg");
+        testRes = testObj.getAbsolutePath(YOUR_PATH + "static/img/games.jpg");
+        Assert.assertEquals(testRes, YOUR_PATH + "static/img/games.jpg");
     }
 
     @Test
     public void getRelativePathTest() {
         String testRes = testObj.getRelativePath("static/img/games.jpg");
         Assert.assertEquals(testRes, "static/img/games.jpg");
-        testRes = testObj.getRelativePath("/home/sofia/tp/testings/hw2/server/static/img/games.jpg");
+        testRes = testObj.getRelativePath(YOUR_PATH +"static/img/games.jpg");
         Assert.assertEquals(testRes, "static/img/games.jpg");
     }
 
     @Test
     public void bfsTest() {
         List<File> testRes = testObj.bfs("static/css/admin.css");
-        Assert.assertEquals(testRes.get(0).getAbsolutePath(), "/home/sofia/tp/testings/hw2/server/static/css/admin.css");
+        Assert.assertEquals(testRes.get(0).getAbsolutePath(), YOUR_PATH + "static/css/admin.css");
         testRes = testObj.bfs("static/img");
         for (int i = 0; i< 3; i++) {
             switch (i) {
                 case 0:
-                   Assert.assertEquals(testRes.get(0).getAbsolutePath(), "/home/sofia/tp/testings/hw2/server/static/img/games.jpg");
+                   Assert.assertEquals(testRes.get(0).getAbsolutePath(), YOUR_PATH + "static/img/games.jpg");
                     break;
                 case 1:
-                    Assert.assertEquals(testRes.get(1).getAbsolutePath(), "/home/sofia/tp/testings/hw2/server/static/img/games3.jpg");
+                    Assert.assertEquals(testRes.get(1).getAbsolutePath(), YOUR_PATH + "static/img/games3.jpg");
                     break;
                 case 2:
-                    Assert.assertEquals(testRes.get(4).getAbsolutePath(), "/home/sofia/tp/testings/hw2/server/static/img/slide-01.jpg");
+                    Assert.assertEquals(testRes.get(4).getAbsolutePath(), YOUR_PATH + "static/img/slide-01.jpg");
                     break;
             }
         }
@@ -78,12 +81,19 @@ public class VFSTest {
         testObj.writeToFile("static/check", "this is it");
         String str = null;
         try {
-            BufferedReader br = new BufferedReader(new FileReader("/home/sofia/tp/testings/hw2/server/static/check"));
+            BufferedReader br = new BufferedReader(new FileReader( YOUR_PATH + "static/check"));
             str = br.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
         Assert.assertEquals(str, "this is it");
+        testObj.writeToFile("static/img/check1/check2/", "This is it");
+        testObj.writeToEndOfFile("static/img/check1/check2/", "This is it");
+    }
+
+    @Test
+    public void readFileTest() {
+
     }
 
     @AfterMethod

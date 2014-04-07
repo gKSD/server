@@ -21,6 +21,11 @@ public class ResourceFactoryTest {
         testObj.instanse();
     }
 
+    @Test
+    public void getResourceTest() {
+        testObj.instanse();
+        testObj.getResource("sffsd");
+    }
     @AfterMethod
     public void tearDown() throws Exception {
 
