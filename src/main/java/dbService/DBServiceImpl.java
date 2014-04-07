@@ -64,9 +64,11 @@ public class DBServiceImpl implements DataAccessObject{
 		return (rows==0);
 	}
 
-    public void delUDS(String Login) {
-        TExecutor.delUser(connection, Login);
-    }
+
+
+
+
+
 
 	public void updateUsers(List<UserDataSet> users){
 		ListIterator<UserDataSet> li = users.listIterator();
@@ -79,6 +81,7 @@ public class DBServiceImpl implements DataAccessObject{
 			TExecutor.updateUser(connection, login, rating, winQuantity, loseQuantity);
 		}
 	}
+
 
     public void Connect() {
         try{
@@ -125,4 +128,8 @@ public class DBServiceImpl implements DataAccessObject{
 			TimeHelper.sleep(200);
 		}
 	}
+
+    public void delUDS(String Login) {
+        TExecutor.delUser(connection, Login);
+    }
 }
