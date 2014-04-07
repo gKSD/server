@@ -50,7 +50,7 @@ public class SysInfo implements Runnable{
 			}
 		}
 		while (true){
-			TimeHelper.sleep(10000);
+			TimeHelper.sleep(1000);
 			for(String service:data.keySet()){
 				lastDate=TimeHelper.getTime();
 				if(service.equals("MemoryUsage")){

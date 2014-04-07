@@ -166,8 +166,6 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 			response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
 			response.addHeader("Location", ROOT_URL);
 			moved=true;
-
-            return;
 		}
 		Cookie cookie1=new Cookie("sessionId", strSessionId);
 		Cookie cookie2=new Cookie("startServerTime",strStartServerTime);

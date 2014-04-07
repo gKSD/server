@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import utils.SysInfo;
 import utils.TimeHelper;
 
 import base.AccountService;
@@ -14,7 +15,7 @@ import base.MessageSystem;
 public class AccountServiceImpl implements AccountService{
 	private AtomicInteger creatorId=new AtomicInteger();
 	final public MessageSystem messageSystem;
-	private Map<String,Integer> nickToId;
+	public Map<String,Integer> nickToId;
 	final private Address address;
 
 	public AccountServiceImpl(MessageSystem msgSystem){
