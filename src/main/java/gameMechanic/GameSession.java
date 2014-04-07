@@ -421,6 +421,10 @@ public class GameSession{
 		int on_x=normal(to_x-from_x), on_y=normal(to_y-from_y);
 		return (getFieldType(from_x+on_x,from_y+on_y)==anotherColor)&&fieldIsEmpty(to_x,to_y);
 	}
+
+    public boolean pawnEating_pub(int from_x, int from_y, int to_x, int to_y){
+        return pawnEating(from_x,from_y, to_x, to_y);
+    }
 	
 	private boolean eating(int from_x, int from_y, int to_x, int to_y){
 		if((abs(from_x-to_x)<2)||(abs(from_y-to_y)<2))

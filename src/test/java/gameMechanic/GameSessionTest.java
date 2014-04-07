@@ -65,6 +65,16 @@ public class GameSessionTest {
         Assert.assertEquals(false, game.standartCheck_pub( 1, 1, 1, 65535));
         Assert.assertEquals(true, game.standartCheck_pub(1,1,1,3));
     }
+
+    @Test
+    public void testpawnEating() throws Exception {
+        Assert.assertEquals(false, game.pawnEating_pub(0,1,0,1));
+        Assert.assertEquals(false, game.pawnEating_pub(0,1,2,0));
+        Assert.assertEquals(false, game.pawnEating_pub(0,2,2,1));
+        Assert.assertEquals(false, game.pawnEating_pub(0,0,2,2));
+        Assert.assertEquals(true, game.pawnEating_pub(3,0,5,2));
+
+    }
     @Test
     public void testCheckStroke() throws Exception {
 
