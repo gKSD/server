@@ -4,6 +4,7 @@ import base.*;
 import dbService.UserDataSet;
 import frontend.newOrLoginUser.MsgAddUser;
 import frontend.newOrLoginUser.MsgGetUser;
+import org.eclipse.jetty.server.Request;
 import org.mockito.ArgumentCaptor;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -26,6 +27,7 @@ import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -773,6 +775,55 @@ public class FrontendImplTest {
 
     @Test
     public void testHandle() throws Exception {
+
+        TemplateHelper.init();
+
+        /*ArgumentCaptor<Integer> statusCodeCaptor = ArgumentCaptor.forClass(Integer.class);
+        ArgumentCaptor<String> header1CodeCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> header2CodeCaptor = ArgumentCaptor.forClass(String.class);
+
+        verify(httpServletResponse, times(1)).setStatus(statusCodeCaptor.capture());
+        Integer res = statusCodeCaptor.getValue();
+        Assert.assertTrue(res == HttpServletResponse.SC_MOVED_TEMPORARILY);
+
+        verify(httpServletResponse, times(1)).addHeader(header1CodeCaptor.capture(), header2CodeCaptor.capture());
+        String header1 = header1CodeCaptor.getValue();
+        String header2 = header2CodeCaptor.getValue();
+
+        Assert.assertEquals("Location", header1);
+        Assert.assertEquals(frontend.ROOT_URL,header2);*/
+
+
+        //response.setContentType(CONTENT_TYPE);
+        //response.setStatus(HttpServletResponse.SC_OK);
+        //response.setHeader(CACHE_CONTROL_HEADER,STORE_CACHE_REVALIDATE_HEADER);
+        //response.setHeader("Expires", TimeHelper.getGMT());
+
+        /*String path = "/abcderfg";
+        Request request = mock(Request.class);
+
+        StringWriter html = new StringWriter();
+
+        when(httpServletResponse.getWriter()).thenReturn(new PrintWriter(html));
+
+        frontend.handle(path, request, httpServletRequest, httpServletResponse);
+        Assert.assertEquals(html.toString(), "apple");*/
+
+        //test aa-cc-dd
+        Request request = mock(Request.class);
+        StringWriter stringWriter = new StringWriter();
+
+        Cookie cookie = mock(Cookie.class);
+        when(cookie.getName()).thenReturn("access_token");
+        when(cookie.getValue()).thenReturn("qwertyuio");
+        Cookie[] cookies = new Cookie[1];
+        cookies[0] = cookie;
+        when(request.getCookies()).thenReturn(cookies);
+
+        when(httpServletResponse.getWriter()).thenReturn(new PrintWriter(stringWriter));
+        when(httpServletRequest.getCookies()).thenReturn(cookies);
+        frontend.handle("index", request, httpServletRequest, httpServletResponse);
+        Assert.assertEquals(stringWriter.toString(), "apple");
 
     }
 
