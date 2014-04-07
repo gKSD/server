@@ -67,7 +67,6 @@ public class GameMechanicImpl implements GameMechanic{
 			sessionId=keys[count];
 			userId=users.get(sessionId).getId();
 			if(userIdToSession.containsKey(userId)){
-                System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQqq");
 				users.remove(sessionId);
 				sendSnapshot(userId);
 			}

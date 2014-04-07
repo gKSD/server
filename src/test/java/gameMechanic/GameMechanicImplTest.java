@@ -54,10 +54,12 @@ public class GameMechanicImplTest {
         UserDataSet user = new UserDataSet(1,"NICK",1,1,1);
         hashmap.put("1", user);
         hashmap.put("2",new UserDataSet(2,"NICK_1",1,1,1));
-        game.removeAlreadyInGameUsers_pub(hashmap);
-        Assert.assertEquals(2,hashmap.size());
+        MessageSystem msg = new MessageSystemImpl();
+        msg.addService();
+       // game.removeAlreadyInGameUsers_pub(hashmap);
+      //  Assert.assertEquals(2,hashmap.size());
         game.filluserIdToSessionRunTest();
-        game.removeAlreadyInGameUsers_pub(hashmap);
+      //  game.removeAlreadyInGameUsers_pub(hashmap);
         Assert.assertEquals(0, hashmap.size());
     }
 
