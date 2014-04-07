@@ -1,9 +1,6 @@
 package frontend;
 
-import base.Address;
-import base.AddressService;
-import base.MessageSystem;
-import base.Msg;
+import base.*;
 import dbService.UserDataSet;
 import frontend.newOrLoginUser.MsgAddUser;
 import frontend.newOrLoginUser.MsgGetUser;
@@ -98,10 +95,12 @@ public class FrontendImplTest {
         FrontendImpl.status status = FrontendImpl.status.haveCookie;
 
         //test1
+        System.out.println("1");
         FrontendImpl.status resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
         Assert.assertEquals(FrontendImpl.status.haveCookieAndPost, resStatus, "Status is wrong, expected haveCookieAndPost");
 
         ///test2
+        System.out.println("2");
         when(httpServletRequest.getMethod()).thenReturn("GET");
         sessionId = "123456";
         status = FrontendImpl.status.haveCookie;
@@ -116,31 +115,63 @@ public class FrontendImplTest {
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
         Assert.assertEquals( FrontendImpl.status.ready,  resStatus, "Status is wrong, expected ready");
 
+        ///test3
+        System.out.println("3");
+        when(httpServletRequest.getMethod()).thenReturn("GET");
+        sessionId = "123456";
+        status = FrontendImpl.status.haveCookie;
+        userDataSet = new UserDataSet(0, "lalal", 5, 6, 6);
+        userData.putSessionIdAndUserSession(sessionId, userDataSet);
+        resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
+        Assert.assertEquals( status,  resStatus, "Status is wrong, expected ready");
 
 
-        UserDataSet userDataSet0 = mock(UserDataSet.class);
-
-        //test3
+        //test4
         target = frontend.WAIT_URL;
         status = FrontendImpl.status.ready;
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
         Assert.assertEquals( FrontendImpl.status.nothing, resStatus, "Status is wrong, expected nothing");
 
-        //test4
+        //test5
+        System.out.println("5");
         status = FrontendImpl.status.nothing;
-        when(userDataSet0.getPostStatus()).thenReturn(0);
         userDataSet.setPostStatus(0);
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
         Assert.assertEquals( FrontendImpl.status.nothing, resStatus, "Status is wrong, expected nothing");
-
-        //test5
+        //test6
+        System.out.println("6");
         status = FrontendImpl.status.haveCookieAndPost;
-        when(userDataSet0.getPostStatus()).thenReturn(1);
+        userDataSet.setPostStatus(0);
+        resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
+        Assert.assertEquals( resStatus, FrontendImpl.status.nothing, "Status is wrong, expected nothing");
+        //test7
+        System.out.println("6");
+        status = FrontendImpl.status.haveCookie;
+        userDataSet.setPostStatus(0);
+        resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
+        Assert.assertEquals( resStatus, FrontendImpl.status.nothing, "Status is wrong, expected nothing");
+        //test8
+        System.out.println("7");
+        status = FrontendImpl.status.nothing;
+        userDataSet.setPostStatus(1);
+        resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
+        Assert.assertEquals( resStatus, FrontendImpl.status.nothing, "Status is wrong, expected nothing");
+
+        //test9
+        System.out.println("8");
+        status = FrontendImpl.status.haveCookieAndPost;
+        userDataSet.setPostStatus(1);
+        resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
+        Assert.assertEquals(resStatus, FrontendImpl.status.waiting,"Status is wrong, expected waiting");
+        //test10
+        System.out.println("8");
+        status = FrontendImpl.status.haveCookie;
         userDataSet.setPostStatus(1);
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
         Assert.assertEquals(resStatus, FrontendImpl.status.waiting,"Status is wrong, expected waiting");
 
-        //test6
+        //test11
+        System.out.println("9");
         status = FrontendImpl.status.nothing;
         target = frontend.ADMIN_URL;
         resStatus = frontend.getStatusTest(httpServletRequest, target, status, sessionId);
@@ -219,7 +250,7 @@ public class FrontendImplTest {
         Assert.assertEquals(true, res);
 
         //test4
-        target = "/img/";
+        target = "/css/";
         res = frontend.isStaticTest(target);
         Assert.assertEquals(true, res);
 
@@ -238,7 +269,7 @@ public class FrontendImplTest {
 
         //test1
         res = frontend.newUserTest(null, startServerTime);
-            Assert.assertEquals(true, res);
+        Assert.assertEquals(true, res);
 
         //test2
         sessionId = "aa";
@@ -500,27 +531,6 @@ public class FrontendImplTest {
     {
         String nick = "Bob";
         String password = "123456";
-
-        testOnHaveCookieAndPostStatus_Function2(nick,password);
-    }
-    @Test
-    public void testOnHaveCookieAndPostStatus_NickIsNull()
-    {
-        String nick = null;
-        String password = "123456";
-
-        testOnHaveCookieAndPostStatus_Function1(nick, password);
-    }
-    @Test
-    public void testOnHaveCookieAndPostStatus_PassIsNull()
-    {
-        String nick = "__Test__Bob";
-        String password = null;
-
-        testOnHaveCookieAndPostStatus_Function1(nick, password);
-    }
-    public void testOnHaveCookieAndPostStatus_Function2(String nick, String password)
-    {
         int id= 123, rating = 55;
 
         target = frontend.ROOT_URL;
@@ -538,6 +548,25 @@ public class FrontendImplTest {
         when(userDataSet.getId()).thenReturn(id);
         when(userDataSet.getNick()).thenReturn(nick);
         when(userDataSet.getRating()).thenReturn(rating);
+        testOnHaveCookieAndPostStatus_Function2(target, sessionId, userDataSet);
+    }
+    @Test
+    public void testOnHaveCookieAndPostStatus_NickIsNull()
+    {
+        testOnHaveCookieAndPostStatus_Function1(null, "123465");
+    }
+    @Test
+    public void testOnHaveCookieAndPostStatus_PassIsNull()
+    {
+        testOnHaveCookieAndPostStatus_Function1("__Test__Bob", null);
+    }
+    @Test
+    public void testOnHaveCookieAndPostStatus_PassNickIsNull()
+    {
+        testOnHaveCookieAndPostStatus_Function1(null, null);
+    }
+    public void testOnHaveCookieAndPostStatus_Function2(String target, String sessionId, UserDataSet userDataSet)
+    {
 
         frontend.onHaveCookieAndPostStatusTest(target, sessionId, userDataSet, httpServletRequest, httpServletResponse);
 
@@ -641,7 +670,20 @@ public class FrontendImplTest {
 
 
         //test6
-        testOnHaveCookieAndPostStatus_Function2("Vasyliy", "1123345");
+
+        when(httpServletRequest.getParameter(frontend.REG_NICKNAME_FIELD_HTML)).thenReturn("Vasiliy");
+        when(httpServletRequest.getParameter(frontend.REG_PASSWORD_FIELD_HTML)).thenReturn("123456");
+
+        sessionId = "123356";
+
+        when(httpServletRequest.getParameter(frontend.NICKNAME_FIELD_HTML)).thenReturn(nick);
+        when(httpServletRequest.getParameter(frontend.PASSWORD_FIELD_HTML)).thenReturn(password);
+
+
+        Address address = mock(Address.class);
+        when(messageSystem.getAddressByName("DBService")).thenReturn(address);
+        when(messageSystem.getAddressByName("UserData")).thenReturn(address);
+        testOnHaveCookieAndPostStatus_Function2(target, sessionId, userDataSet);
     }
 
     @Test

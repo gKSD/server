@@ -102,15 +102,15 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 
 	private status getStatus(HttpServletRequest request,String target,status stat,String sessionId){
 		if((stat.equals(status.haveCookie))&&(request.getMethod().equals("POST")))
-			stat=status.haveCookieAndPost;
+            stat=status.haveCookieAndPost;
 		if((stat.equals(status.haveCookie))&&(UserDataImpl.getUserSessionBySessionId(sessionId).getId()!=0))
-			stat=status.ready;
+        stat=status.ready;
 		if (target.equals(WAIT_URL)){
 			if((!stat.equals(status.haveCookie)&&(!stat.equals(status.haveCookieAndPost)))
 					||(UserDataImpl.getUserSessionBySessionId(sessionId).getPostStatus()==0))
-				stat=status.nothing;
+            stat=status.nothing;
 			else 
-				stat=status.waiting;
+            stat=status.waiting;
 		}
 		return stat;
 	}
