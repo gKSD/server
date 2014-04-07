@@ -1,5 +1,6 @@
 package gameMechanic;
 
+import base.Address;
 import base.GameMechanic;
 import base.MessageSystem;
 import dbService.DBServiceImpl;
@@ -20,10 +21,11 @@ import static org.mockito.Mockito.*;
  */
 public class GameMechanicImplTest {
     private Map<String, UserDataSet> wantToPlay = new HashMap<String, UserDataSet>();
-    GameMechanicImpl game;
+    private GameMechanicImpl game;
+    private MessageSystem msg;
     @BeforeMethod
     public void setUp() throws Exception {
-        MessageSystem msg = new MessageSystemImpl();
+        msg = mock(MessageSystem.class);
         game = new GameMechanicImpl(msg);
     }
     @AfterMethod
@@ -47,29 +49,45 @@ public class GameMechanicImplTest {
 
     @Test
     public void testRemoveAlreadyInGameUsers() throws Exception {
-
+        //1
         Map<String, UserDataSet> hashmap = new HashMap<String, UserDataSet>();
         game.removeAlreadyInGameUsers_pub(hashmap);
         Assert.assertEquals(0,hashmap.size());
         UserDataSet user = new UserDataSet(1,"NICK",1,1,1);
+        //2
         hashmap.put("1", user);
         hashmap.put("2",new UserDataSet(2,"NICK_1",1,1,1));
-        MessageSystem msg = new MessageSystemImpl();
-        msg.addService();
-       // game.removeAlreadyInGameUsers_pub(hashmap);
-      //  Assert.assertEquals(2,hashmap.size());
+        Assert.assertEquals(2,hashmap.size());
         game.filluserIdToSessionRunTest();
-      //  game.removeAlreadyInGameUsers_pub(hashmap);
-        Assert.assertEquals(0, hashmap.size());
+        Address address = mock(Address.class);
+        when(msg.getAddressByName("WebSocket")).thenReturn(address);
+        //3
+        game.removeAlreadyInGameUsers_pub(hashmap);
+        Assert.assertEquals(0,hashmap.size());
+        game.filluserIdToSessionRunTest();
+        //4
+       // game.removeAlreadyInGameUsers_pub(hashmap);
+       // Assert.assertEquals(0, hashmap.size());
+//        Assert.assertEquals(0, hashmap.size());
     }
 
     @Test
     public void testCreateGames() throws Exception {
-
+        Map<String,UserDataSet> users = new HashMap<String, UserDataSet>();
+        Assert.assertEquals(0,game.createGames(users).size());
+        users.put("key1", new UserDataSet(1, "User", 1, 1, 1));
+        game.createGames(users);
+        users.put("key2", new UserDataSet(2, "User2", 2, 2, 2));
+        Address address = mock(Address.class);
+        when(msg.getAddressByName("GameChat")).thenReturn(address);
+        Map<String, String> crgame = game.createGames(users);
+        Assert.assertEquals(2,crgame.size());
     }
 
     @Test
     public void testCheckStroke() throws Exception {
+
+
 
     }
 
