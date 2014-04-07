@@ -1,6 +1,7 @@
 package frontend;
 
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -255,13 +256,19 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 
 	public void handle(String target,Request baseRequest,
 			HttpServletRequest request, HttpServletResponse response){
+
 		prepareResponse(response);
 		status stat=status.nothing;
-		CookieDescriptor cookie=new CookieDescriptor(request.getCookies());
-		String sessionId=cookie.getCookieByName("sessionId");
-		String strStartServerTime=cookie.getCookieByName("startServerTime");
+
+		CookieDescriptor cookie = new CookieDescriptor(request.getCookies());
+
+		String sessionId = cookie.getCookieByName("sessionId");
+		String strStartServerTime = cookie.getCookieByName("startServerTime");
+
 		UserDataSet userSession;
+
 		baseRequest.setHandled(true);
+
 		if(newUser(sessionId, strStartServerTime)){
 			userSession=new UserDataSet();
 			sessionId=SHA2.getSHA2(String.valueOf(creatorSessionId.incrementAndGet()));
