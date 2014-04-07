@@ -83,12 +83,21 @@ public class VFSTest {
         }
         Assert.assertEquals(str, "this is it");
         testObj.writeToFile("static/img/check1/check2/", "This is it");
-        testObj.writeToEndOfFile("static/img/check1/check2/", "This is it");
+        testObj.writeToEndOfFile("static/check2", "Error!!!");
+        try {
+            BufferedReader br = new BufferedReader(new FileReader( YOUR_PATH + "static/check2"));
+            str = br.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Assert.assertEquals(str, "Error!!!");
+        testObj.writeToEndOfFile("static/img/check1/check2/", "err");
     }
 
     @Test
     public void readFileTest() {
-
+        String str = testObj.readFile("static/check");
+        Assert.assertEquals(str, "this is it");
     }
 
     @AfterMethod

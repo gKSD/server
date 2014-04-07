@@ -93,7 +93,9 @@ public class VFS{
         FileWriter err = null;
         try{
 		    File file = new File(path);
-			err=new FileWriter(file,true);
+            file.delete();
+            File file1 = new File(path);
+			err=new FileWriter(file1,true);
 			err.write(data);
 		}
 		catch(Exception e){
