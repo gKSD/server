@@ -22,8 +22,9 @@ public class VFS{
 	}
 
 	public static String getAbsolutePath(String path){
-		if(isAbsolute(path))
+		if(isAbsolute(path)) {
 			return path;
+        }
 		else
 			return (dir+path);
 	}

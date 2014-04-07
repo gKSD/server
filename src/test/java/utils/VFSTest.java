@@ -16,7 +16,7 @@ import java.util.List;
 public class VFSTest {
 
     private static String dir=System.getProperty("user.dir")+'/';
-    private static String YOUR_PATH = "/home/sofia/tp/testings/hw2/server/";
+    private static String YOUR_PATH = "/home/step/Technopark_3_sem/Tests_QA/server/";
     VFS testObj = new VFS();
 
     @BeforeMethod
@@ -98,6 +98,8 @@ public class VFSTest {
     public void readFileTest() {
         String str = testObj.readFile("static/check");
         Assert.assertEquals(str, "this is it");
+        str = testObj.readFile("static/none");
+        Assert.assertEquals(str, "");
     }
 
     @AfterMethod
