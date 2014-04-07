@@ -166,11 +166,14 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
 			response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
 			response.addHeader("Location", ROOT_URL);
 			moved=true;
+
+            return;
 		}
 		Cookie cookie1=new Cookie("sessionId", strSessionId);
 		Cookie cookie2=new Cookie("startServerTime",strStartServerTime);
 		response.addCookie(cookie1);
 		response.addCookie(cookie2);
+
 		if (!moved){
 			sendPage(INDEX_HTML,userSession,response);
 		}
@@ -342,5 +345,9 @@ public class FrontendImpl extends AbstractHandler implements Frontend{
     }
     public status getStatusTest(HttpServletRequest request,String target,status stat,String sessionId){
         return getStatus(request, target, stat, sessionId);
+    }
+
+    public void onNothingStatusTest(String target,String strSessionId, UserDataSet userSession, String strStartServerTime,HttpServletResponse response){
+        onNothingStatus(target, strSessionId, userSession, strStartServerTime, response);
     }
 }

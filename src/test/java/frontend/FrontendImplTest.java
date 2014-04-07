@@ -1,12 +1,16 @@
 package frontend;
 
+import base.Address;
 import base.MessageSystem;
+import base.Msg;
 import dbService.UserDataSet;
+import org.mockito.ArgumentCaptor;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import sun.print.resources.serviceui_sv;
 import utils.TemplateHelper;
 import utils.TimeHelper;
 
@@ -256,10 +260,12 @@ public class FrontendImplTest {
     }
 
     @Test
-    public void testSendPage()
+    public void testSendPage_UserSessionExists()
     {
+        TemplateHelper.init();
+
         String name = frontend.PROFILE_HTML;
-        String nick = "Nick";
+        String nick = "Bob";
         int id = 123;
         int rating = 55;
         StringWriter stringWriter = new StringWriter();
@@ -268,7 +274,6 @@ public class FrontendImplTest {
         when(userDataSet.getId()).thenReturn(id);
         when(userDataSet.getNick()).thenReturn(nick);
         when(userDataSet.getRating()).thenReturn(rating);
-
 
         try
         {
@@ -281,28 +286,105 @@ public class FrontendImplTest {
         frontend.sendPageTest(name, userDataSet, httpServletResponse);
 
         System.out.println(stringWriter.toString());
-        Assert.assertEquals(stringWriter.toString(), "apple");
-        //Assert.assertEquals( FrontendImpl.status.ready,  resStatus, "Status is wrong, expected ready");
+        Assert.assertTrue(stringWriter.toString().contains("<title>Шашечки</title>"));
+        Assert.assertTrue(stringWriter.toString().contains("Bob"));
+        Assert.assertTrue(stringWriter.toString().contains("Rating: 55"));
+    }
+    @Test
+    public void testSendPage_UserSessionIsNull()
+    {
+        TemplateHelper.init();
 
-        /*private void sendPage(String name, UserDataSet userSession, HttpServletResponse response){
-        try {
-            Map<String, String> data = new HashMap<String, String>();
-            data.put(PAGE_PARAMETR, name);
-            if(userSession!=null){
-                data.put(ID_FIELD_HTML, String.valueOf(userSession.getId()));
-                data.put(NICKNAME_FIELD_HTML, String.valueOf(userSession.getNick()));
-                data.put(RATING_FIELD_HTML, String.valueOf(userSession.getRating()));
-            }
-            else{
-                data.put(ID_FIELD_HTML, SESSION_NULL__ID_FIELD_DATA);
-                data.put(NICKNAME_FIELD_HTML, SESSION_NULL__NICKNAME_FIELD_DATA);
-                data.put(RATING_FIELD_HTML, SESSION_NULL__RATING_FIELD_DATA);
-            }
-            TemplateHelper.renderTemplate(TEMPLATE_HTML, data, response.getWriter());
+        String name = frontend.PROFILE_HTML;
+        StringWriter stringWriter = new StringWriter();
+
+        try
+        {
+            when(httpServletResponse.getWriter()).thenReturn(new PrintWriter(stringWriter));
         }
-        catch (IOException ignor) {
+        catch (Exception e)
+        {
+
+        }
+        frontend.sendPageTest(name, null, httpServletResponse);
+
+        System.out.println(stringWriter.toString());
+        Assert.assertTrue(stringWriter.toString().contains("<title>Шашечки</title>"));
+        Assert.assertTrue(stringWriter.toString().contains(frontend.SESSION_NULL__NICKNAME_FIELD_DATA));
+        Assert.assertTrue(stringWriter.toString().contains(frontend.SESSION_NULL__RATING_FIELD_DATA));
+    }
+
+
+    @Test
+    public void testOnNothingStatus_TargetIsRootUrl() throws Exception {
+
+        TemplateHelper.init();
+
+        target = frontend.REG_URL;
+        sessionId = "123356";
+        int id= 123, rating = 55;
+        String nick = "Bob";
+
+        UserDataSet userDataSet = mock(UserDataSet.class);
+        when(userDataSet.getId()).thenReturn(id);
+        when(userDataSet.getNick()).thenReturn(nick);
+        when(userDataSet.getRating()).thenReturn(rating);
+
+        String startServerTime = new String();
+
+        StringWriter stringWriter = new StringWriter();
+
+        //when(httpServletResponse.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY)).thenReturn(new PrintWriter(stringWriter));
+
+        frontend.onNothingStatusTest(target, sessionId, userDataSet, startServerTime, httpServletResponse);
+
+        //Assert.assertEquals(httpServletResponse.getStatus(), 34);
+
+        ArgumentCaptor<Integer> statusCodeCaptor = ArgumentCaptor.forClass(Integer.class);
+        ArgumentCaptor<String> header1CodeCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> header2CodeCaptor = ArgumentCaptor.forClass(String.class);
+
+        verify(httpServletResponse, times(1)).setStatus(statusCodeCaptor.capture());
+        Integer res = statusCodeCaptor.getValue();
+        System.out.println(res);
+        Assert.assertTrue(res == HttpServletResponse.SC_MOVED_TEMPORARILY);
+
+        verify(httpServletResponse, times(1)).addHeader(header1CodeCaptor.capture(), header2CodeCaptor.capture());
+        String header1 = header1CodeCaptor.getValue();
+        String header2 = header2CodeCaptor.getValue();
+
+        Assert.assertEquals("Location",header1);
+        Assert.assertEquals(frontend.ROOT_URL,header2);
+
+        /*
+        ArgumentCaptor<Address> captorAddress = ArgumentCaptor.forClass(Address.class);
+        ArgumentCaptor<Msg> captorMsg = ArgumentCaptor.forClass(Msg.class);
+        verify(messageSystem, times(1)).putMsg(captorAddress.capture(), captorMsg.capture());
+        captorMsg.getValue().exec(dbService);
+        verify(messageSystem, times(2)).putMsg(captorAddress.capture(), captorMsg.capture());
+        */
+
+        /*private void onNothingStatus(String target,String strSessionId, UserDataSet userSession, String strStartServerTime,HttpServletResponse response){
+            boolean moved=false;
+            if (!target.equals(ROOT_URL)){
+                response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
+                response.addHeader("Location", ROOT_URL);
+                moved=true;
+            }
+            Cookie cookie1=new Cookie("sessionId", strSessionId);
+            Cookie cookie2=new Cookie("startServerTime",strStartServerTime);
+            response.addCookie(cookie1);
+            response.addCookie(cookie2);
+            if (!moved){
+                sendPage(INDEX_HTML,userSession,response);
+            }
         }*/
     }
+    @Test
+    public void testOnNothingStatus_TargetIsNotRootUrl() throws Exception {
+
+    }
+
 
     @Test
     public void testGetAddress() throws Exception {
