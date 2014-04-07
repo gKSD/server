@@ -7,6 +7,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import sun.misc.ExtensionInstallationException;
+import utils.VFS;
 
 import static org.mockito.Mockito.*;
 
@@ -62,8 +63,6 @@ public class GameSessionTest {
         Assert.assertEquals(false, game.standartCheck_pub( 1, 65535, 1, 1));
         Assert.assertEquals(false, game.standartCheck_pub( 1, 1, 65535, 1));
         Assert.assertEquals(false, game.standartCheck_pub( 1, 1, 1, 65535));
-       // Field field = mock(Field.class);
-       // when(field.getType()).thenReturn(checker.white);
         Assert.assertEquals(true, game.standartCheck_pub(1,1,1,3));
     }
     @Test
@@ -93,7 +92,17 @@ public class GameSessionTest {
 
     @Test
     public void testSaveLog() throws Exception {
-
+        int id = 1;
+        int winnerid = 1;
+        game.saveLog(winnerid);
+        String fileName="/log/AI/"+String.valueOf(id)+".txt";
+        String compare = VFS.readFile(fileName);
+        Assert.assertEquals("white", compare);
+        winnerid = 2;
+        game.saveLog(winnerid);
+        fileName="/log/AI/"+String.valueOf(id)+".txt";
+        compare = VFS.readFile(fileName);
+        Assert.assertEquals("black", compare);
     }
 
     @Test
