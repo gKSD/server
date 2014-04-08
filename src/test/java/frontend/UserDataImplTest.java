@@ -108,6 +108,35 @@ public class UserDataImplTest {
     }
 
 
+    @Test
+    public void testGetWSBySessionId() throws Exception {
+        String sessionId1 = "12313132";
+        WebSocketImpl webSocket1 = mock(WebSocketImpl.class);
+        org.eclipse.jetty.websocket.api.Session session1 = mock(org.eclipse.jetty.websocket.api.Session.class);
+        org.eclipse.jetty.websocket.api.RemoteEndpoint remoteEndpoint1 = mock(org.eclipse.jetty.websocket.api.RemoteEndpoint.class);
+        when(webSocket1.getSession()).thenReturn(session1);
+        when(session1.getRemote()).thenReturn(remoteEndpoint1);
+
+        String sessionId2 = "12313132";
+        WebSocketImpl webSocket2 = mock(WebSocketImpl.class);
+        org.eclipse.jetty.websocket.api.Session session2 = mock(org.eclipse.jetty.websocket.api.Session.class);
+        org.eclipse.jetty.websocket.api.RemoteEndpoint remoteEndpoint2 = mock(org.eclipse.jetty.websocket.api.RemoteEndpoint.class);
+        when(webSocket2.getSession()).thenReturn(session2);
+        when(session2.getRemote()).thenReturn(remoteEndpoint2);
+
+        String sessionId3 = "adsfw4";
+
+        userDataImpl.putSessionIdAndWS(sessionId1, webSocket1);
+        userDataImpl.putSessionIdAndWS(sessionId2, webSocket2);
+        userDataImpl.putSessionIdAndWS(sessionId3, null);
+
+        Assert.assertNull(userDataImpl.getWSBySessionId(sessionId3));
+        Assert.assertNotNull(userDataImpl.getWSBySessionId(sessionId1));
+        Assert.assertNotNull(userDataImpl.getWSBySessionId(sessionId2));
+        //Assert.assertTrue(userDataImpl.getWSBySessionId(sessionId2) == remoteEndpoint2);
+
+    }
+
     @AfterMethod
     public void tearDown() throws Exception {
 
@@ -162,11 +191,6 @@ public class UserDataImplTest {
 
     @Test
     public void testPutSessionIdAndWS() throws Exception {
-
-    }
-
-    @Test
-    public void testGetWSBySessionId() throws Exception {
 
     }
 
