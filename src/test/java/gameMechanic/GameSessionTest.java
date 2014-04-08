@@ -28,9 +28,14 @@ public class GameSessionTest {
     }
     @Test
     public void testcheckotherEatingOpportunity() throws Exception {
+        Assert.assertEquals(false, game.checkOtherEatingOpportunityForField_pub(2, 2, 4, 4));
+        game = new GameSession(1,2);
+        game.move_pub(7,7,3,3);
+        Assert.assertEquals(true, game.checkOtherEatingOpportunityForField_pub(2, 2, 4, 4));
+        game = new GameSession(1,2);
         game.move_pub(7,7,3,3);
         game.move_pub(5,1,3,1);
-        Assert.assertEquals(false,game.checkOtherEatingOpportunityForField_pub(2,2,4,4));
+        Assert.assertEquals(true, game.checkOtherEatingOpportunityForField_pub(2, 2, 4, 4));
     }
 
 
