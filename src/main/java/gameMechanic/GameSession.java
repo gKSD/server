@@ -344,7 +344,7 @@ public class GameSession{
 		return false;
 	}
     public boolean kingCanEatLeftUp_pub(int x, int y){
-        return kingCanEatRightUp(x, y);
+        return kingCanEatLeftUp(x, y);
     }
 
     private boolean kingCanEatRightDown(int x, int y){
@@ -363,7 +363,7 @@ public class GameSession{
 	}
 
     public boolean kingCanEatRightDown_pub(int x, int y){
-        return kingCanEatRightUp(x, y);
+        return kingCanEatRightDown(x, y);
     }
 
 
@@ -379,7 +379,7 @@ public class GameSession{
 		return false;
 	}
     public boolean kingCanEatLeftDown_pub(int x, int y){
-        return kingCanEatRightUp(x, y);
+        return kingCanEatLeftDown(x, y);
     }
 
 	private boolean kingCanEat(int x, int y){

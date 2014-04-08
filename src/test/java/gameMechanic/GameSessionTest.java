@@ -37,6 +37,13 @@ public class GameSessionTest {
     @Test
     public void testkingCanEatLeftUp() throws Exception {
         Assert.assertEquals(false,game.kingCanEatLeftUp_pub(0,6));
+        game.move_pub(7,7,4,2);
+        Assert.assertEquals(false,game.kingCanEatLeftUp_pub(1,0));
+      /*  Assert.assertEquals(false,game.kingCanEatLeftUp_pub(0,4));
+        Assert.assertEquals(false,game.kingCanEatLeftUp_pub(0,3));
+        Assert.assertEquals(false,game.kingCanEatLeftUp_pub(0,2));
+        Assert.assertEquals(false,game.kingCanEatLeftUp_pub(0,1));
+        Assert.assertEquals(false,game.kingCanEatLeftUp_pub(0,0));*/
 
     }
     @Test
@@ -47,6 +54,7 @@ public class GameSessionTest {
     @Test
     public void testkingCanEatLeftDown() throws Exception {
         Assert.assertEquals(false,game.kingCanEatLeftDown_pub(6,6));
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(1,1));
     }
 
     @Test
