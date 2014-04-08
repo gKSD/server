@@ -96,13 +96,6 @@ public class GameSessionTest {
         GameSession testObj = new GameSession(1,4,8,3);
         Field x;
         int i,j;
-        /*for (i=0;i<8;i++) {
-            for (j=0; j<4; j++) {
-                x = testObj.currentPositions[j][i];
-                testObj.currentPositions[j][i] = testObj.currentPositions[7-j][i];
-                testObj.currentPositions[7-j][i] = x;
-            }
-        } */
         boolean testRes = testObj.checkStroke(1,0,5,1,4);
         Assert.assertEquals(testRes,true);
         testRes = testObj.checkStroke(4,0,5,1,4);
@@ -121,6 +114,15 @@ public class GameSessionTest {
         Assert.assertEquals(testRes,true);
         Assert.assertEquals(false, game.checkStroke(1,1,1,0,0));
         Assert.assertEquals(false, game.checkStroke(2,1,1,0,0));
+        GameSession testObj2 = new GameSession(2,3,8,3);
+        testObj2.currentPositions[4][6] = new Field(checker.black);
+        testObj2.currentPositions[5][7] = new Field(checker.nothing);
+        testObj2.currentPositions[3][5] = new Field(checker.white);
+        testObj2.currentPositions[2][6] = new Field(checker.nothing);
+        //сделаем королём одну:
+        testObj2.currentPositions[3][5].makeKing();
+        testRes = testObj2.checkStroke(2,5,4,7,2);
+        Assert.assertEquals(testRes,true);
     }
 
     @Test
