@@ -242,9 +242,13 @@ public class GameSession{
 	}
 	
 	private boolean becameKing(int x, int y) {
-		checker myColor = getFieldType(x,y);
+		checker myColor = getFieldType(x, y);
 		return ((myColor==checker.black)&&(y==0))||((myColor==checker.white)&&(y==settings.getFieldSize()-1));
 	}
+
+    public boolean becameKing_pub(int x, int y) {
+        return becameKing(x,y);
+    }
 
 	private boolean fieldIsKing(int x, int y) {
 		return currentPositions[y][x].isKing();
@@ -282,7 +286,7 @@ public class GameSession{
 	}
 
 	private boolean pawnCanEat(int x, int y){
-		return pawnCanEatRightUp(x,y)||pawnCanEatLeftUp(x,y)||pawnCanEatRightDown(x,y)||pawnCanEatLeftDown(x,y);
+		return pawnCanEatRightUp(x, y)||pawnCanEatLeftUp(x, y)||pawnCanEatRightDown(x, y)||pawnCanEatLeftDown(x, y);
 	}
 
 	private boolean kingCanEatRightUp(int x, int y){
@@ -327,7 +331,7 @@ public class GameSession{
 	}
 
 	private boolean kingCanEatLeftDown(int x, int y){
-		checker myColor=getFieldType(x,y), anotherColor=getAnotherColor(myColor);
+		checker myColor=getFieldType(x, y), anotherColor=getAnotherColor(myColor);
 		for(int counter=1;counter<settings.getFieldSize();counter++){
 			if((x-counter<=1)||(y-counter<=1)||(getFieldType(x-counter,y-counter)==myColor))
 				return false;
@@ -361,7 +365,7 @@ public class GameSession{
 	}
 	
 	private void eat(int from_x, int from_y, int to_x, int to_y){
-		int on_x=normal(to_x-from_x),on_y=normal(to_y-from_y);
+		int on_x=normal(to_x - from_x),on_y=normal(to_y - from_y);
 		int x=from_x, y=from_y;
 		for(int counter=1; counter<abs(to_x-from_x);counter++){
 			x+=on_x; y+=on_y;
@@ -384,10 +388,18 @@ public class GameSession{
 		else
 			return number/abs(number);
 	}
+
+    public int normal_pub(int number) {
+        return normal(number);
+    }
 	
 	private boolean inBorder(int number){
 		return (number>=0)&&(number<=settings.getFieldSize()-1);
 	}
+
+    public boolean inBorder_pub(int number) {
+        return inBorder(number);
+    }
 	
 	private boolean standartCheck(int from_x, int from_y, int to_x, int to_y){
 		if(isOdd(abs(to_x-to_y))||isOdd(abs(from_x-from_y)))
@@ -427,7 +439,7 @@ public class GameSession{
 		int on_x=normal(to_x-from_x), on_y=normal(to_y-from_y);
 		return (getFieldType(from_x+on_x,from_y+on_y)==anotherColor)&&fieldIsEmpty(to_x,to_y);
 	}
-
+ 
     public boolean pawnEating_pub(int from_x, int from_y, int to_x, int to_y){
         return pawnEating(from_x,from_y, to_x, to_y);
     }
@@ -451,6 +463,10 @@ public class GameSession{
 		else
 			return false;
 	}
+
+    public boolean canMoveRightUp_pub(int x, int y) {
+        return canMoveRightUp( x, y);
+    }
 	
 	private boolean canMoveRightDown(int x, int y){
 		if((y>0)&&(x<settings.getFieldSize()-1)&&fieldIsEmpty(x+1, y-1))
@@ -458,6 +474,10 @@ public class GameSession{
 		else
 			return false;
 	}
+
+    public boolean canMoveRightDown_pub(int x, int y) {
+        return canMoveRightDown(x, y);
+    }
 	
 	private boolean canMoveLeftUp(int x, int y){
 		if((y<settings.getFieldSize()-1)&&(x>0)&&fieldIsEmpty(x-1, y+1))
@@ -465,6 +485,9 @@ public class GameSession{
 		else
 			return false;
 	}
+    public boolean canMoveLeftUp_pub(int x, int y) {
+        return canMoveLeftUp(x, y);
+    }
 	
 	private boolean canMoveLeftDown(int x, int y){
 		if((y>0)&&(x>0)&&fieldIsEmpty(x-1, y-1))
@@ -472,14 +495,22 @@ public class GameSession{
 		else
 			return false;
 	}
-	
-	private boolean canMove(int x, int y){
+
+    public boolean canMoveLeftDown_pub(int x, int y) {
+        return canMoveLeftDown( x, y);
+    }
+  private boolean canMove(int x, int y){
 		checker myColor=getFieldType(x,y);
 		if(myColor==checker.white)
 			return canMoveRightUp(x,y)||canMoveLeftUp(x,y);
 		else 
 			return canMoveRightDown(x,y)||canMoveLeftDown(x,y);
 	}
+
+
+    public boolean CanMove_pub(int x, int y) {
+        return canMove(x, y);
+    }
 
 	private boolean canMove(checker myColor){
 		for(int x=0;x<settings.getFieldSize();x++)

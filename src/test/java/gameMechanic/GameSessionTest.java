@@ -137,23 +137,59 @@ public class GameSessionTest {
     }
 
     @Test
-    public void testGetNext() throws Exception {
+    public void testcanMoveRightUp() throws Exception {
+        Assert.assertEquals(false, game.canMoveRightUp_pub(65535,1));
+        Assert.assertEquals(false, game.canMoveRightUp_pub(1,65535));
+    }
 
+    @Test
+    public void testcanMoveRightDown() throws Exception {
+        Assert.assertEquals(false, game.canMoveRightDown_pub(1, -1));
+        Assert.assertEquals(false, game.canMoveRightUp_pub(65535,1));
+        Assert.assertEquals(true, game.canMoveRightDown_pub(0,1));
+        Assert.assertEquals(false, game.canMoveRightDown_pub(1024,4));
+    }
+
+    @Test
+    public void testcanMoveLeftUp() throws Exception {
+       // Assert.assertEquals(false, game.canMoveLeftUp_pub(-8,1));
+        Assert.assertEquals(false, game.canMoveLeftUp_pub(1,1));
+        Assert.assertEquals(false, game.canMoveLeftUp_pub(1,-1));
+      //  Assert.assertEquals(false, game.canMoveLeftUp_pub(1,-1));
+    }
+
+    @Test
+    public void testcanMoveLeftDown() throws Exception {
+        Assert.assertEquals(false, game.canMoveLeftDown_pub(-1, 1));
+        Assert.assertEquals(false, game.canMoveLeftDown_pub(1, -1));
+        Assert.assertEquals(false, game.canMoveLeftDown_pub(2,2));
+    }
+
+    @Test
+    public void testinBorder() throws Exception {
+        Assert.assertEquals(true, game.inBorder_pub(1));
+        Assert.assertEquals(false, game.inBorder_pub(-1));
+        Assert.assertEquals(false, game.inBorder_pub(1024));
     }
 
     @Test
     public void testGetFields() throws Exception {
-        game.getFields();
+        Assert.assertEquals(24,game.getFields().length);
 
     }
 
     @Test
-    public void testGetWhiteQuantity() throws Exception {
+    public void testNormal() throws Exception {
+        Assert.assertEquals(1,game.normal_pub(1));
+        Assert.assertEquals(-1,game.normal_pub(-1));
+        Assert.assertEquals(0,game.normal_pub(0));
 
+       // Assert.assertEquals(10);
     }
 
     @Test
-    public void testGetBlackQuantity() throws Exception {
-
+    public void testbecameKing() throws Exception {
+        Assert.assertEquals(false, game.becameKing_pub(7,1));
+        Assert.assertEquals(false, game.becameKing_pub(1,7));
     }
 }
