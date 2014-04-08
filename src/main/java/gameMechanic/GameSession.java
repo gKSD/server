@@ -21,7 +21,7 @@ public class GameSession{
 	private int blackQuantity,whiteQuantity;
 	private int id=creatorId.incrementAndGet();
 	private long lastStrokeTime = TimeHelper.getCurrentTime();
-	private Field[][] currentPositions;
+	public Field[][] currentPositions;
 	private StringBuilder log = new StringBuilder();
 	final private GameSettings settings;
 
@@ -40,12 +40,6 @@ public class GameSession{
 		settings = new GameSettings(fieldSize,playerSize);
 		descInit(id1, id2);
         Field[][] check = currentPositions;
-        for (int i=0; i<8;i++) {
-            for (int x=0; x<8;x++){
-                System.out.print(check[i][x].getType() + " ");
-            }
-            System.out.println();
-        }
 	}
 
 	private void descInit(int id1, int id2) {

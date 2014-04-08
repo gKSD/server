@@ -93,11 +93,31 @@ public class GameSessionTest {
     @Test
     public void testCheckStroke() throws Exception {
         GameSession testObj = new GameSession(1,4,8,3);
-        boolean testRes = testObj.checkStroke(1,0,2,1,3);
-        //testObj
+        Field x;
+        int i,j;
+        /*for (i=0;i<8;i++) {
+            for (j=0; j<4; j++) {
+                x = testObj.currentPositions[j][i];
+                testObj.currentPositions[j][i] = testObj.currentPositions[7-j][i];
+                testObj.currentPositions[7-j][i] = x;
+            }
+        } */
+        boolean testRes = testObj.checkStroke(1,0,5,1,4);
         Assert.assertEquals(testRes,true);
-        testRes = testObj.checkStroke(4,1,5,0,4);
+        testRes = testObj.checkStroke(4,0,5,1,4);
         Assert.assertEquals(testRes, true);
+        testObj.currentPositions[4][6] = new Field(checker.black);
+        testObj.currentPositions[5][7] = new Field(checker.nothing);
+        testObj.currentPositions[3][5] = new Field(checker.white);
+        testObj.currentPositions[2][6] = new Field(checker.nothing);
+        for (i=0;i<8;i++) {
+            for (j=0; j<8; j++) {
+                System.out.print(testObj.currentPositions[i][j].getType()+" ");
+            }
+            System.out.println();
+        }
+        testRes = testObj.checkStroke(1,5,4,7,2);
+        Assert.assertEquals(testRes,true);
     }
 
     @Test
