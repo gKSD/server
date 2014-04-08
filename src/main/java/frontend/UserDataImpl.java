@@ -256,4 +256,8 @@ public class UserDataImpl implements UserData{
     {
         return getOldUserSessionId(id);
     }
+
+    public void keepAlive_For_test(String sessionId){
+        keepAlive(sessionId);
+    }
 }

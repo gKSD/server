@@ -3,13 +3,15 @@ package frontend;
 import base.MessageSystem;
 import chat.ChatWSImpl;
 import dbService.UserDataSet;
+import org.mockito.ArgumentCaptor;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import javax.servlet.http.HttpServletResponse;
+
+import static org.mockito.Mockito.*;
 
 /**
  * Created by sofia on 08.04.14.
@@ -247,6 +249,53 @@ public class UserDataImplTest {
         Assert.assertEquals(userDataImpl.getUserSessionBySessionId(sessionId3).getRating(), 4);
     }
 
+    @Test
+    public void testKeepAlive() throws Exception {
+        String sessionId1 = "12313132";
+        WebSocketImpl webSocket1 = mock(WebSocketImpl.class);
+        org.eclipse.jetty.websocket.api.Session session1 = mock(org.eclipse.jetty.websocket.api.Session.class);
+        org.eclipse.jetty.websocket.api.RemoteEndpoint remoteEndpoint1 = mock(org.eclipse.jetty.websocket.api.RemoteEndpoint.class);
+        when(webSocket1.getSession()).thenReturn(session1);
+        when(session1.getRemote()).thenReturn(remoteEndpoint1);
+
+        String sessionId2 = "12313132";
+        WebSocketImpl webSocket2 = mock(WebSocketImpl.class);
+        org.eclipse.jetty.websocket.api.Session session2 = mock(org.eclipse.jetty.websocket.api.Session.class);
+        org.eclipse.jetty.websocket.api.RemoteEndpoint remoteEndpoint2 = mock(org.eclipse.jetty.websocket.api.RemoteEndpoint.class);
+        when(webSocket2.getSession()).thenReturn(session2);
+        when(session2.getRemote()).thenReturn(remoteEndpoint2);
+
+        int id1 = 1;
+        UserDataSet userDataSet1 = new UserDataSet(id1, "Bob", 5, 6, 6);
+        userDataSet1.setLastVisit_ForTest(123);
+        int id2 = 2;
+        UserDataSet userDataSet2 = new UserDataSet(id2, "Tom", 5, 2, 87);
+        userDataSet2.setLastVisit_ForTest(345);
+        userDataImpl.putLogInUser(sessionId1, userDataSet1);
+        userDataImpl.putLogInUser(sessionId2, userDataSet2);
+
+        String sessionId3 = "adsfw4"; // for null return
+
+        userDataImpl.putSessionIdAndWS(sessionId1, webSocket1);
+        userDataImpl.putSessionIdAndWS(sessionId2, webSocket2);
+        userDataImpl.putSessionIdAndWS(sessionId3, null);
+
+        //test1
+        userDataImpl.keepAlive_For_test(sessionId3);
+
+        //test2
+        userDataSet1.setLastVisit_ForTest(123);
+        userDataImpl.putLogInUser(sessionId1, userDataSet1);
+        long oldVisitTime = userDataSet1.getLastVisit();
+
+        userDataImpl.keepAlive_For_test(sessionId1);
+
+        ArgumentCaptor<String> passCodeCaptor = ArgumentCaptor.forClass(String.class);
+        verify(remoteEndpoint2, times(1)).sendString(passCodeCaptor.capture());
+        Assert.assertTrue(passCodeCaptor.getValue().equals("1"));
+
+        Assert.assertFalse(oldVisitTime == userDataSet1.getLastVisit());
+    }
 
     @AfterMethod
     public void tearDown() throws Exception {
