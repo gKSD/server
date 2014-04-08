@@ -232,7 +232,7 @@ public class GameSessionTest {
         }
         testObj.currentPositions[6][0] = new Field(checker.white);
         boolean testRes = testObj.makeUsualStroke_pub(0,1,1,0);
-        Assert.assertEquals(testRes,true);
+        Assert.assertEquals(testRes,false);
     }
 
     @Test
