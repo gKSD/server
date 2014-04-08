@@ -281,12 +281,17 @@ public class GameSession{
 		checker anotherColor=getAnotherColor(getFieldType(x,y));
 		return (y<settings.getFieldSize()-2)&&(x<settings.getFieldSize()-2)&&(getFieldType(x+1,y+1)==anotherColor)&&(fieldIsEmpty(x+2,y+2));
 	}
-    //public boolean pawnCanEatRightUp(int x,int y)
+    public boolean pawnCanEatRightUp_pub(int x,int y) {
+        return pawnCanEatRightUp(x,y);
+    }
 
 	private boolean pawnCanEatRightDown(int x, int y){
 		checker anotherColor=getAnotherColor(getFieldType(x,y));
 		return (y>1)&&(x<settings.getFieldSize()-2)&&(getFieldType(x+1,y-1)==anotherColor)&&(fieldIsEmpty(x+2,y-2));
 	}
+    public boolean pawnCanEatRightDown_pub(int x,int y) {
+        return pawnCanEatRightDown(x,y);
+    }
 
 	private boolean pawnCanEatLeftUp(int x, int y){
 		checker anotherColor=getAnotherColor(getFieldType(x,y));

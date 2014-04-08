@@ -380,5 +380,33 @@ public class GameSessionTest {
         Assert.assertEquals(testRes,true); 
     }
 
-
+    @Test
+    public void pawnCanEatTests() {
+        GameSession testObj = new GameSession(1,2,8,3);
+        int i,j;
+        for (i=0;i<8;i++) {
+            for (j=0;j<8;j++) {
+                if (i!=6 & i!=1) {
+                    testObj.currentPositions[i][j]= new Field(checker.nothing);
+                }
+            }
+        }
+        testObj.currentPositions[2][0]= new Field(checker.white);
+        testObj.currentPositions[3][1]= new Field(checker.black);
+        boolean testRes = testObj.pawnCanEatRightUp_pub(0,2);
+        Assert.assertEquals(testRes,true);
+        testObj.currentPositions[1][1]= new Field(checker.black);
+        testRes = testObj.pawnCanEatRightDown_pub(0,2);
+        Assert.assertEquals(testRes,true);
+        testObj.currentPositions[0][2]= new Field(checker.black);
+        testRes = testObj.pawnCanEatRightDown_pub(0,2);
+        Assert.assertEquals(testRes,false);
+        testObj.currentPositions[1][1]= new Field(checker.white);
+        testRes = testObj.pawnCanEatRightDown_pub(0,2);
+        Assert.assertEquals(testRes,false);
+        testRes = testObj.pawnCanEatRightDown_pub(7,2);
+        Assert.assertEquals(testRes,false);
+        testRes = testObj.pawnCanEatRightDown_pub(0,0);
+        Assert.assertEquals(testRes,false);
+    }
 }
