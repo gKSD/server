@@ -366,6 +366,10 @@ public class GameSession{
 		clearField(from_x,from_y);
 	}
 
+    public void move_pub(int from_x, int from_y, int to_x, int to_y){
+        move(from_x,from_y,to_x,to_y);
+    }
+
 	private void clearField(int x, int y){
 		currentPositions[y][x].clear();
 	}
@@ -383,6 +387,10 @@ public class GameSession{
 		}
 		move(from_x,from_y,to_x,to_y);
 	}
+
+    public void eat_pub(int from_x, int from_y, int to_x, int to_y){
+        eat(from_x, from_y, to_x, to_y);
+    }
 
 	private int abs(int number){
 		return Math.abs(number);

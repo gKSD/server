@@ -28,6 +28,19 @@ public class GameSessionTest {
     }
 
     @Test
+    public void testEat() throws Exception {
+        game.move_pub(7,7,3,3);
+        game.eat_pub(2,2,4,4);
+        Assert.assertEquals(23,game.getFields().length);
+        game.move_pub(0,0,4,2);
+        game.eat_pub(5,3,3,1);
+        Assert.assertEquals(22,game.getFields().length);
+        game.eat_pub(5,7,3,5);
+        Assert.assertEquals(22,game.getFields().length);
+
+    }
+
+    @Test
     public void testGetAnotherColor() throws Exception {
         checker check = checker.black;
         Assert.assertEquals(checker.white, game.getAnotherColor_pub(check));
