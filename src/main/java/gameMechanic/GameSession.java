@@ -30,7 +30,19 @@ public class GameSession{
 		File dir = new File("log/"+dirForLog);
 		dir.mkdirs();
 	}
-	
+	public void getBlackQuantity_pub() {
+        blackQuantity=0;
+    }
+    public void getBlackQuantity1_pub() {
+        blackQuantity=1;
+    }
+    public void getkWhiteQuantuty_pub() {
+        whiteQuantity=0;
+    }
+    public void getkWhiteQuantuty1_pub() {
+        whiteQuantity=1;
+    }
+
 	public GameSession(int id1, int id2){
 		settings = (GameSettings) ResourceFactory.instanse().getResource("settings/gameSettings.xml");
 		descInit(id1, id2);
@@ -93,7 +105,7 @@ public class GameSession{
         return getAnotherColor(myColor);
     }
 
-    public void changeLastStroke(int id) {
+    public void changeLastStroke(int id) {  //моё
         lastStroke = id;
     }
 
@@ -294,7 +306,7 @@ public class GameSession{
 		return (y>1)&&(x<settings.getFieldSize()-2)&&(getFieldType(x+1,y-1)==anotherColor)&&(fieldIsEmpty(x+2,y-2));
 	}
     public boolean pawnCanEatRightDown_pub(int x,int y) {
-        return pawnCanEatRightDown(x,y);
+        return pawnCanEatRightDown(x, y);
     }
 
 	private boolean pawnCanEatLeftUp(int x, int y){
@@ -382,7 +394,7 @@ public class GameSession{
 
 	private void move(int from_x, int from_y, int to_x, int to_y){
 		currentPositions[to_y][to_x].make(currentPositions[from_y][from_x]);
-		clearField(from_x,from_y);
+		clearField(from_x, from_y);
 	}
 
     public void move_pub(int from_x, int from_y, int to_x, int to_y){
@@ -524,7 +536,7 @@ public class GameSession{
 		checker myColor=getFieldType(x,y);
 		if(myColor==checker.white)
 			return canMoveRightUp(x,y)||canMoveLeftUp(x,y);
-		else 
+		else
 			return canMoveRightDown(x,y)||canMoveLeftDown(x,y);
 	}
     public boolean canMoveInt_pub(int x,int y){
@@ -564,11 +576,11 @@ public class GameSession{
 			return 0;
 	}
 
-	private boolean blackLose(){
+	public boolean blackLose(){
 		return ((blackQuantity==0)||(!canMove(checker.black)));
 	}
 
-	private boolean blackWin(long currentTime) {
+	public boolean blackWin(long currentTime) {
 		return (lastStroke==blackId)&&(currentTime-lastStrokeTime>settings.getStrokeTime());
 	}
 
