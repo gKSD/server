@@ -87,6 +87,7 @@ public class UserDataImplTest {
         userDataImpl.putLogInUser(sessionId3, userDataSet3);
 
 
+
         ChatWSImpl chatWS1 = mock(ChatWSImpl.class);
         String sessionId5= "sdfgsfg";
         ChatWSImpl chatWS2 = mock(ChatWSImpl.class);
@@ -124,7 +125,16 @@ public class UserDataImplTest {
         when(webSocket2.getSession()).thenReturn(session2);
         when(session2.getRemote()).thenReturn(remoteEndpoint2);
 
-        String sessionId3 = "adsfw4";
+        int id1 = 1;
+        UserDataSet userDataSet1 = new UserDataSet(id1, "Bob", 5, 6, 6);
+        userDataSet1.setLastVisit_ForTest(123);
+        int id2 = 2;
+        UserDataSet userDataSet2 = new UserDataSet(id2, "Tom", 5, 2, 87);
+        userDataSet2.setLastVisit_ForTest(345);
+        userDataImpl.putLogInUser(sessionId1, userDataSet1);
+        userDataImpl.putLogInUser(sessionId2, userDataSet2);
+
+        String sessionId3 = "adsfw4"; // for null return
 
         userDataImpl.putSessionIdAndWS(sessionId1, webSocket1);
         userDataImpl.putSessionIdAndWS(sessionId2, webSocket2);
@@ -135,6 +145,33 @@ public class UserDataImplTest {
         Assert.assertNotNull(userDataImpl.getWSBySessionId(sessionId2));
         //Assert.assertTrue(userDataImpl.getWSBySessionId(sessionId2) == remoteEndpoint2);
 
+    }
+
+    @Test
+    public void testGetChatWSBySessionId() throws Exception {
+        String sessionId1 = "12313132";
+        ChatWSImpl chatWS1 = mock(ChatWSImpl.class);
+        org.eclipse.jetty.websocket.api.Session session1 = mock(org.eclipse.jetty.websocket.api.Session.class);
+        org.eclipse.jetty.websocket.api.RemoteEndpoint remoteEndpoint1 = mock(org.eclipse.jetty.websocket.api.RemoteEndpoint.class);
+        when(chatWS1.getSession()).thenReturn(session1);
+        when(session1.getRemote()).thenReturn(remoteEndpoint1);
+
+        String sessionId2 = "12313132";
+        ChatWSImpl chatWS2 = mock(ChatWSImpl.class);
+        org.eclipse.jetty.websocket.api.Session session2 = mock(org.eclipse.jetty.websocket.api.Session.class);
+        org.eclipse.jetty.websocket.api.RemoteEndpoint remoteEndpoint2 = mock(org.eclipse.jetty.websocket.api.RemoteEndpoint.class);
+        when(chatWS2.getSession()).thenReturn(session2);
+        when(session2.getRemote()).thenReturn(remoteEndpoint2);
+
+        String sessionId3 = "adsfw4";
+
+        userDataImpl.putSessionIdAndChatWS(sessionId1, chatWS1);
+        userDataImpl.putSessionIdAndChatWS(sessionId2, chatWS2);
+        userDataImpl.putSessionIdAndChatWS(sessionId3, null);
+
+        Assert.assertNull(userDataImpl.getChatWSBySessionId(sessionId3));
+        Assert.assertNotNull(userDataImpl.getChatWSBySessionId(sessionId1));
+        Assert.assertNotNull(userDataImpl.getChatWSBySessionId(sessionId2));
     }
 
     @AfterMethod
@@ -194,10 +231,6 @@ public class UserDataImplTest {
 
     }
 
-    @Test
-    public void testGetChatWSBySessionId() throws Exception {
-
-    }
 
     @Test
     public void testUpdateUserId() throws Exception {
