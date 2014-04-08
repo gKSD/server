@@ -1,6 +1,7 @@
 package frontend;
 
 import base.MessageSystem;
+import chat.ChatWSImpl;
 import dbService.UserDataSet;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -32,11 +33,13 @@ public class UserDataImplTest {
     public void testGetSessionIdByUserId() throws Exception {
 
         //test1
+        Assert.assertEquals(userDataImpl.getSessionIdByUserId(13), null);
+
+        //test2
         int id1 = 1;
         String sessionId1 = "113123";
         UserDataSet userDataSet1 = mock(UserDataSet.class);
         when(userDataSet1.getId()).thenReturn(id1);
-        userDataImpl.putLogInUser(sessionId1, userDataSet1);
 
         int id2 = 2;
         String sessionId2 = "45634563";
@@ -56,9 +59,54 @@ public class UserDataImplTest {
         Assert.assertEquals(userDataImpl.getSessionIdByUserId(id2), sessionId2);
         Assert.assertEquals(userDataImpl.getSessionIdByUserId(id3), sessionId3);
 
-        //when(userDataSet.getNick()).thenReturn(nick);
-        //when(userDataSet.getRating()).thenReturn(rating);
     }
+
+    @Test
+    public void testPutSessionIdAndChatWS() throws Exception {
+
+        int id1 = 1;
+        String sessionId1 = "113123";
+        UserDataSet userDataSet1 = new UserDataSet(id1, "Bob", 5, 6, 6);
+        userDataSet1.setLastVisit_ForTest(123);
+
+        int id4 = 4;
+        String sessionId4 = "adasdasd";
+
+        int id2 = 2;
+        String sessionId2 = "45634563";
+        UserDataSet userDataSet2 = new UserDataSet(id2, "Tom", 5, 2, 87);
+        userDataSet2.setLastVisit_ForTest(345);
+
+        int id3 = 3;
+        String sessionId3 = "sdfgsfg";
+        UserDataSet userDataSet3 = new UserDataSet(id3, "Alex", 3, 8, 6);
+        userDataSet3.setLastVisit_ForTest(456);
+
+        userDataImpl.putLogInUser(sessionId1, userDataSet1);
+        userDataImpl.putLogInUser(sessionId2, userDataSet2);
+        userDataImpl.putLogInUser(sessionId3, userDataSet3);
+
+
+        ChatWSImpl chatWS1 = mock(ChatWSImpl.class);
+        String sessionId5= "sdfgsfg";
+        ChatWSImpl chatWS2 = mock(ChatWSImpl.class);
+        String sessionId6 = "sdfgsfg";
+
+        long oldVisitTime = 0;
+
+        oldVisitTime = userDataSet1.getLastVisit();
+        userDataImpl.putSessionIdAndChatWS(sessionId1, chatWS1);
+        Assert.assertFalse(oldVisitTime == userDataSet1.getLastVisit());
+
+        oldVisitTime = userDataSet2.getLastVisit();
+        userDataImpl.putSessionIdAndChatWS(sessionId2, chatWS1);
+        Assert.assertFalse(oldVisitTime == userDataSet2.getLastVisit());
+
+        oldVisitTime = userDataSet3.getLastVisit();
+        userDataImpl.putSessionIdAndChatWS(sessionId3, chatWS2);
+        Assert.assertFalse(oldVisitTime == userDataSet3.getLastVisit());
+    }
+
 
     @AfterMethod
     public void tearDown() throws Exception {
@@ -114,11 +162,6 @@ public class UserDataImplTest {
 
     @Test
     public void testPutSessionIdAndWS() throws Exception {
-
-    }
-
-    @Test
-    public void testPutSessionIdAndChatWS() throws Exception {
 
     }
 

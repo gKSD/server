@@ -93,4 +93,9 @@ public class UserDataSet{
 		winQuantity++;
 		rating+=diff;
 	}
+
+
+    public void setLastVisit_ForTest(long time){
+        lastVisit = time;
+    }
 }
