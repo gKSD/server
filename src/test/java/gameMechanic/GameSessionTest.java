@@ -358,7 +358,7 @@ public class GameSessionTest {
         testRes = testObj.canMoveLeftUp(1,2);
         Assert.assertEquals(testRes,true);
         //LeftDown
-        testRes = testObj.canMoveLeftDown(0, 7);
+        testRes = testObj.canMoveLeftDown(2, 6);
         Assert.assertEquals(testRes,false);
         testRes = testObj.canMoveLeftDown(-1,2);
         Assert.assertEquals(testRes,false);
@@ -366,23 +366,22 @@ public class GameSessionTest {
         Assert.assertEquals(testRes,false);
         testRes = testObj.canMoveLeftDown(2,5);
         Assert.assertEquals(testRes,true);
-
-
-        testObj.currentPositions[2][2] = new Field(checker.white);
-        testRes = testObj.canMoveInt_pub(2,5);
-        Assert.assertEquals(testRes,true);
-        testObj.currentPositions[3][3] = new Field(checker.white);
-        testRes = testObj.canMoveRightUp(2,5);
-        Assert.assertEquals(testRes,true);
-        testObj.currentPositions[3][1] = new Field(checker.white);
-        testRes = testObj.canMoveInt_pub(2,5);
-        Assert.assertEquals(testRes,true);
-        testObj.currentPositions[1][1] = new Field(checker.white);
-        testRes = testObj.canMoveInt_pub(1,5);
-        Assert.assertEquals(testRes,true);
-        testObj.currentPositions[5][1] = new Field(checker.black);
-        testRes = testObj.canMoveInt_pub(1,2);
-        Assert.assertEquals(testRes,true); 
+        //CanMoveInt white
+        testObj.currentPositions[3][3]= new Field(checker.black);
+        testRes = testObj.canMoveInt_pub(2,2);
+        Assert.assertEquals(testRes, true);
+        testRes = testObj.canMoveInt_pub(0,2);
+        Assert.assertEquals(testRes, true);
+        testRes = testObj.canMoveInt_pub(1,1);
+        Assert.assertEquals(testRes, false);
+        //CanMoveInt black
+        testRes = testObj.canMoveInt_pub(7,5);
+        Assert.assertEquals(testRes, true);
+        testRes = testObj.canMoveInt_pub(0,6);
+        Assert.assertEquals(testRes, false);
+        testObj.currentPositions[4][2]= new Field(checker.black);
+        testRes = testObj.canMoveInt_pub(4,5);
+        Assert.assertEquals(testRes, true);
     }
 
     @Test
