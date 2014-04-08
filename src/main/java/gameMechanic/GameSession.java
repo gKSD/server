@@ -178,6 +178,10 @@ public class GameSession{
 		}
 		return ans;
 	}
+
+    public boolean checkOtherEatingOpportunity_pub(int x, int y, int from_x, int from_y, int to_x, int to_y){
+        return checkOtherEatingOpportunity(x,y,from_x,from_y,to_x,to_y);
+    }
 	
 	private Field getField(int x, int y){
 		return currentPositions[y][x];
@@ -254,7 +258,7 @@ public class GameSession{
 		return ((myColor==checker.black)&&(y==0))||((myColor==checker.white)&&(y==settings.getFieldSize()-1));
 	}
     public boolean becameKing_pub(int x,int y) {
-        return becameKing(x,y);
+        return becameKing(x, y);
     } 
 	private boolean fieldIsKing(int x, int y) {
 		return currentPositions[y][x].isKing();
