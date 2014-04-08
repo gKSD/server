@@ -42,7 +42,7 @@ public class ChatWSImplTest {
         gmObj.createChat("12345", "123456");
         objForTest.startServerTime = "14:09:12";
         ChatWSImpl testObj = new ChatWSImpl();
-        testObj.onWebSocketText(testJson);
+        testObj.onWebSocketText(testJson.toString());
         String testRes = gmObj.sessionIdToChat.get("12345").get(0).getMessage();
         Assert.assertEquals(testRes, "yes");
 
@@ -50,7 +50,7 @@ public class ChatWSImplTest {
         testJson1.put("sessionId","123456");
         testJson1.put("startServerTime","14:09:12");
         testJson1.put("text","");
-        testObj.onWebSocketText(testJson1);
+        testObj.onWebSocketText(testJson1.toString());
         boolean testResBool = false;
         if (objForTest.sessionIdToChatWS.get("123456").toString()!=null) {
             testResBool = true;
@@ -62,28 +62,28 @@ public class ChatWSImplTest {
         testJson2.put("sessionId","1234567");
         testJson2.put("startServerTime","14:19:12");
         testJson2.put("text","check");
-        testObj.onWebSocketText(testJson2);
+        testObj.onWebSocketText(testJson2.toString());
 
         JSONObject testJson3 = new JSONObject();
         testJson3.put("sessionId","1234567");
         testJson3.put("startServerTime","14:19:12");
-        testObj.onWebSocketText(testJson3);
+        testObj.onWebSocketText(testJson3.toString());
 
         JSONObject testJson4 = new JSONObject();
         testJson4.put("sessionId","1234567");
         testJson4.put("text","");
-        testObj.onWebSocketText(testJson4);
+        testObj.onWebSocketText(testJson4.toString());
 
         JSONObject testJson5 = new JSONObject();
         testJson4.put("text","");
-        testObj.onWebSocketText(testJson5);
+        testObj.onWebSocketText(testJson5.toString());
 
         //для addMessageChat
         JSONObject testJson6 = new JSONObject();
         testJson6.put("sessionId","0");
         testJson6.put("startServerTime","14:09:12");
         testJson6.put("text","check");
-        testObj.onWebSocketText(testJson2);
+        testObj.onWebSocketText(testJson2.toString());
     }
 
     //просто для покрытия нулевого ифа

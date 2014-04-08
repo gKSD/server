@@ -21,7 +21,7 @@ public class GameSession{
 	private int blackQuantity,whiteQuantity;
 	private int id=creatorId.incrementAndGet();
 	private long lastStrokeTime = TimeHelper.getCurrentTime();
-	private Field[][] currentPositions;
+	public Field[][] currentPositions;
 	private StringBuilder log = new StringBuilder();
 	final private GameSettings settings;
 
@@ -59,10 +59,6 @@ public class GameSession{
 		}
 	}
 
-    public void descInit_pub(int id1, int id2) {
-        descInit(id1,id2);
-    }
-
 	private void generateEmptyLine(int y) {
 		for(int x=0;x<settings.getFieldSize();x++)
 			generateField(x, y,checker.nothing);
@@ -97,6 +93,10 @@ public class GameSession{
         return getAnotherColor(myColor);
     }
 
+    public void changeLastStroke(int id) {
+        lastStroke = id;
+    }
+
 	public boolean checkStroke(int id, int from_x, int from_y, int to_x, int to_y){
 		String inLog="gameSession.checkStroke("+String.valueOf(id)+','+String.valueOf(from_x)+','+String.valueOf(from_y)+','+String.valueOf(to_x)+','+String.valueOf(to_y)+");\n";
 		boolean changeId=true;
@@ -107,7 +107,7 @@ public class GameSession{
 		else{
 			from_x=settings.getFieldSize()-1-from_x;
 			to_x=settings.getFieldSize()-1-to_x;
-		}
+        }
 		if(!checking(id,from_x, from_y, to_x, to_y))
 			return false;
 		if (eating(from_x, from_y, to_x, to_y)){
@@ -254,11 +254,17 @@ public class GameSession{
 		return currentPositions[y][x].getType();
 	}
 
+    public boolean canEat_pub(int x, int y) {
+        return canEat(x,y);
+    }
+
 	private boolean canEat(int x, int y){
-		if(fieldIsKing(x,y))
-			return kingCanEat(x,y);
-		else
-			return pawnCanEat(x,y);
+		if(fieldIsKing(x,y)) {
+            return kingCanEat(x,y);
+        }
+		else {
+            return pawnCanEat(x,y);
+        }
 	}
 
 	private boolean pawnCanEatRightUp(int x, int y){
@@ -384,17 +390,27 @@ public class GameSession{
 		else
 			return number/abs(number);
 	}
-	
+	public int normal_pub(int number){
+        return normal(number);
+    }
+
 	private boolean inBorder(int number){
 		return (number>=0)&&(number<=settings.getFieldSize()-1);
 	}
-	
+	public boolean inBorder_pub(int number) {
+        return inBorder(number);
+    }
+
 	private boolean standartCheck(int from_x, int from_y, int to_x, int to_y){
-		if(isOdd(abs(to_x-to_y))||isOdd(abs(from_x-from_y)))
+		if(isOdd(abs(to_x-to_y))||isOdd(abs(from_x-from_y))) {
 			return false;
-		if(!inBorder(to_x)||!inBorder(to_y)||!inBorder(from_x)||!inBorder(from_y))
+        }
+		if(!inBorder(to_x)||!inBorder(to_y)||!inBorder(from_x)||!inBorder(from_y)) {
+            System.out.println("inBorder");
 			return false;
+        }
 		if(getFieldType(to_x, to_y)!=checker.nothing){
+            System.out.println("nonNoth");
 			return false;
 		}
 		return true;
@@ -445,28 +461,28 @@ public class GameSession{
         return eating(from_x, from_y,to_x,to_y);
     }
 	
-	private boolean canMoveRightUp(int x, int y){
+	public boolean canMoveRightUp(int x, int y){
 		if((y<settings.getFieldSize()-1)&&(x<settings.getFieldSize()-1)&&fieldIsEmpty(x+1, y+1))
 			return true;
 		else
 			return false;
 	}
 	
-	private boolean canMoveRightDown(int x, int y){
+	public boolean canMoveRightDown(int x, int y){
 		if((y>0)&&(x<settings.getFieldSize()-1)&&fieldIsEmpty(x+1, y-1))
 			return true;
 		else
 			return false;
 	}
 	
-	private boolean canMoveLeftUp(int x, int y){
+	public boolean canMoveLeftUp(int x, int y){
 		if((y<settings.getFieldSize()-1)&&(x>0)&&fieldIsEmpty(x-1, y+1))
 			return true;
 		else
 			return false;
 	}
 	
-	private boolean canMoveLeftDown(int x, int y){
+	public boolean canMoveLeftDown(int x, int y){
 		if((y>0)&&(x>0)&&fieldIsEmpty(x-1, y-1))
 			return true;
 		else
@@ -480,8 +496,11 @@ public class GameSession{
 		else 
 			return canMoveRightDown(x,y)||canMoveLeftDown(x,y);
 	}
+    public boolean canMoveInt_pub(int x,int y){
+        return canMove(x,y);
+    }
 
-	private boolean canMove(checker myColor){
+	public boolean canMove(checker myColor){
 		for(int x=0;x<settings.getFieldSize();x++)
 			for(int y=0;y<settings.getFieldSize();y++){
 				if((getFieldType(x, y)!=myColor)||isOdd(x+y))
@@ -536,8 +555,6 @@ public class GameSession{
 		else
 			return returnSnapshot('b');
 	}
-
-
 
 	private Snapshot returnSnapshot(char color) {
 		return new Snapshot(currentPositions,color,settings.getFieldSize(),getNext());
