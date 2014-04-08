@@ -474,6 +474,7 @@ public class GameSessionTest {
                 }
             }
         }
+        //blackLose
         testObj.getBlackQuantity1_pub();
         boolean testRes = testObj.blackLose();
         Assert.assertEquals(testRes,false);
@@ -506,5 +507,39 @@ public class GameSessionTest {
         Assert.assertEquals(testRes,false);
         testRes = testObj.blackWin(0);
         Assert.assertEquals(testRes,false);
+
+        //whiteLose
+        for (i=0;i<8;i++) {
+            for (j=0;j<8;j++) {
+                if (i!=6 & i!=1) {
+                    testObj.currentPositions[i][j]= new Field(checker.nothing);
+                }
+            }
+        }
+        //blackLose
+        testObj.getkWhiteQuantuty1_pub();
+        testRes = testObj.whiteLose();
+        Assert.assertEquals(testRes,false);
+        testObj.getkWhiteQuantuty_pub();
+        testRes = testObj.whiteLose();
+        Assert.assertEquals(testRes,true);
+        testObj.currentPositions[1][1]= new Field(checker.black);
+        testRes = testObj.whiteLose();
+        Assert.assertEquals(testRes,true);
+        testObj.getkWhiteQuantuty1_pub();
+        testRes = testObj.whiteLose();
+        Assert.assertEquals(testRes,false);
+        for (i=0;i<8;i++) {
+            for (j=0;j<8;j++) {
+                if (i!=6 & i!=1) {
+                    testObj.currentPositions[i][j]= new Field(checker.black);
+                }
+            }
+        }
+        testRes = testObj.whiteLose();
+        Assert.assertEquals(testRes,true);
+        testObj.getkWhiteQuantuty_pub();
+        testRes = testObj.whiteLose();
+        Assert.assertEquals(testRes,true);
     }
 }

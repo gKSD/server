@@ -599,11 +599,11 @@ public class GameSession{
 		return (lastStroke==blackId)&&(currentTime-lastStrokeTime>settings.getStrokeTime());
 	}
 
-	private boolean whiteLose(){
+	public boolean whiteLose(){
 		return ((whiteQuantity==0)||(!canMove(checker.white)));
 	}
 	
-	private boolean whiteWin(long currentTime) {
+	public boolean whiteWin(long currentTime) {
 		return (lastStroke==whiteId)&&(currentTime-lastStrokeTime>settings.getStrokeTime());
 	}
 
