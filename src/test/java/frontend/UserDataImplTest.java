@@ -69,9 +69,6 @@ public class UserDataImplTest {
         UserDataSet userDataSet1 = new UserDataSet(id1, "Bob", 5, 6, 6);
         userDataSet1.setLastVisit_ForTest(123);
 
-        int id4 = 4;
-        String sessionId4 = "adasdasd";
-
         int id2 = 2;
         String sessionId2 = "45634563";
         UserDataSet userDataSet2 = new UserDataSet(id2, "Tom", 5, 2, 87);
@@ -204,6 +201,53 @@ public class UserDataImplTest {
         Assert.assertEquals(userDataImpl.getOldUserSessionId_ForTest(id3), sessionId3);
     }
 
+    @Test
+    public void testUpdateUserId() throws Exception {
+
+        int id1 = 1;
+        String sessionId1 = "113123";
+        UserDataSet userDataSet1 = new UserDataSet(id1, "Bob", 5, 6, 6);
+        userDataSet1.setLastVisit_ForTest(123);
+
+        int id2 = 2;
+        String sessionId2 = "45634563";
+        UserDataSet userDataSet2 = new UserDataSet(id2, "Tom", 5, 2, 87);
+        userDataSet2.setLastVisit_ForTest(345);
+
+        int id3 = 3;
+        String sessionId3 = "sdfgsfg";
+        UserDataSet userDataSet3 = new UserDataSet(id3, "Alex", 3, 8, 6);
+        userDataSet3.setLastVisit_ForTest(456);
+
+        userDataImpl.putSessionIdAndUserSession(sessionId1, userDataSet1);
+        userDataImpl.putSessionIdAndUserSession(sessionId2, userDataSet2);
+        userDataImpl.putSessionIdAndUserSession(sessionId3, userDataSet3);
+
+        //test1
+        userDataImpl.updateUserId(sessionId1, null);
+        Assert.assertEquals(userDataSet1.getPostStatus(), 0);
+
+        //test2
+        //logInUsers is empty
+        int id4 = 34;
+        UserDataSet userDataSet4 = new UserDataSet(id4, "Max", 4, 2, 34);
+        userDataSet3.setLastVisit_ForTest(345);
+        userDataImpl.updateUserId(sessionId1, userDataSet4);
+        Assert.assertEquals(userDataImpl.getUserSessionBySessionId(sessionId1).getNick(), "Max");
+        Assert.assertEquals(userDataImpl.getUserSessionBySessionId(sessionId1).getId(), id4);
+        Assert.assertEquals(userDataImpl.getUserSessionBySessionId(sessionId1).getRating(), 4);
+
+        //test3
+        //logInUsers has some
+        String sessionId4 = "123adasd";
+        userDataImpl.putLogInUser(sessionId4, userDataSet4);
+        userDataImpl.updateUserId(sessionId3, userDataSet4);
+        Assert.assertEquals(userDataImpl.getUserSessionBySessionId(sessionId3).getNick(), "Max");
+        Assert.assertEquals(userDataImpl.getUserSessionBySessionId(sessionId3).getId(), id4);
+        Assert.assertEquals(userDataImpl.getUserSessionBySessionId(sessionId3).getRating(), 4);
+    }
+
+
     @AfterMethod
     public void tearDown() throws Exception {
 
@@ -258,12 +302,6 @@ public class UserDataImplTest {
 
     @Test
     public void testPutSessionIdAndWS() throws Exception {
-
-    }
-
-
-    @Test
-    public void testUpdateUserId() throws Exception {
 
     }
 
