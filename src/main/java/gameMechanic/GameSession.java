@@ -339,6 +339,10 @@ public class GameSession{
 		return false;
 	}
 
+    public boolean kingCanEatRightUp_pub(int x, int y){
+        return kingCanEatRightUp(x, y);
+    }
+
 	private boolean kingCanEatLeftUp(int x, int y){
 		checker myColor=getFieldType(x,y), anotherColor=getAnotherColor(myColor);
 		for(int counter=1;counter<settings.getFieldSize();counter++){
@@ -351,8 +355,11 @@ public class GameSession{
 		}
 		return false;
 	}
+    public boolean kingCanEatLeftUp_pub(int x, int y){
+        return kingCanEatRightUp(x, y);
+    }
 
-	private boolean kingCanEatRightDown(int x, int y){
+    private boolean kingCanEatRightDown(int x, int y){
 		checker myColor=getFieldType(x,y), anotherColor=getAnotherColor(myColor);
 		for(int counter=1;counter<settings.getFieldSize();counter++){
 			if((x+counter>=settings.getFieldSize()-2)||(y+counter<=1)
@@ -367,6 +374,11 @@ public class GameSession{
 		return false;
 	}
 
+    public boolean kingCanEatRightDown_pub(int x, int y){
+        return kingCanEatRightUp(x, y);
+    }
+
+
 	private boolean kingCanEatLeftDown(int x, int y){
 		checker myColor=getFieldType(x,y), anotherColor=getAnotherColor(myColor);
 		for(int counter=1;counter<settings.getFieldSize();counter++){
@@ -378,6 +390,9 @@ public class GameSession{
 		}
 		return false;
 	}
+    public boolean kingCanEatLeftDown_pub(int x, int y){
+        return kingCanEatRightUp(x, y);
+    }
 
 	private boolean kingCanEat(int x, int y){
 		return kingCanEatRightUp(x, y)||kingCanEatRightDown(x,y)||kingCanEatLeftUp(x,y)||kingCanEatLeftDown(x,y);

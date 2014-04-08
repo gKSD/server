@@ -27,6 +27,29 @@ public class GameSessionTest {
 
     }
     @Test
+    public void testkingCanEatRightUp() throws Exception {
+        Assert.assertEquals(false,game.kingCanEatRightUp_pub(1,1));
+        game.move_pub(1,1,4,2);
+        Assert.assertEquals(false,game.kingCanEatRightUp_pub(4,2));
+        Assert.assertEquals(false,game.kingCanEatRightUp_pub(4,4));
+
+    }
+    @Test
+    public void testkingCanEatLeftUp() throws Exception {
+        Assert.assertEquals(false,game.kingCanEatLeftUp_pub(0,6));
+
+    }
+    @Test
+    public void testkingCanEatRightDown() throws Exception {
+        Assert.assertEquals(false,game.kingCanEatRightDown_pub(7,1));
+
+    }
+    @Test
+    public void testkingCanEatLeftDown() throws Exception {
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(6,6));
+    }
+
+    @Test
     public void testcheckotherEatingOpportunity() throws Exception {
         Assert.assertEquals(false, game.checkOtherEatingOpportunityForField_pub(2, 2, 4, 4));
         game = new GameSession(1,2);
@@ -233,6 +256,9 @@ public class GameSessionTest {
         testObj.currentPositions[6][0] = new Field(checker.white);
         boolean testRes = testObj.makeUsualStroke_pub(0,1,1,0);
         Assert.assertEquals(testRes,false);
+        testObj.move_pub(7,7,1,0);
+        testObj.currentPositions[7][7]= new Field(checker.white);
+       // Assert.assertEquals(true, testObj.makeUsualStroke_pub(1,1,7,7));
     }
 
     @Test
