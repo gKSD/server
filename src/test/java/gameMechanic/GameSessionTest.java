@@ -53,6 +53,13 @@ public class GameSessionTest {
     }
 
     @Test
+    public void testcheckOtherEatingOpportunity() throws Exception {
+       Assert.assertEquals(false, game.checkOtherEatingOpportunity_pub(2, -7, 2, 2, 4, 4));
+       Assert.assertEquals(true, game.checkOtherEatingOpportunity_pub(2,2,2, 2, 4, 4));
+        //Assert.assertEquals(true, game.checkOtherEatingOpportunity_pub(1,2,2, 2, 4, 4);
+    }
+
+    @Test
     public void testGetAnotherColor() throws Exception {
         checker check = checker.black;
         Assert.assertEquals(checker.white, game.getAnotherColor_pub(check));
