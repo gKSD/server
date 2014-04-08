@@ -250,4 +250,14 @@ public class UserDataImpl implements UserData{
 			TimeHelper.sleep(200);
 		}
 	}
+
+
+    public String getOldUserSessionId_ForTest(int id)
+    {
+        return getOldUserSessionId(id);
+    }
+
+    public void keepAlive_For_test(String sessionId){
+        keepAlive(sessionId);
+    }
 }
