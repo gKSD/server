@@ -39,6 +39,13 @@ public class GameSession{
 	public GameSession(int id1, int id2,int fieldSize, int playerSize){
 		settings = new GameSettings(fieldSize,playerSize);
 		descInit(id1, id2);
+        Field[][] check = currentPositions;
+        for (int i=0; i<8;i++) {
+            for (int x=0; x<8;x++){
+                System.out.print(check[i][x].getType() + " ");
+            }
+            System.out.println();
+        }
 	}
 
 	private void descInit(int id1, int id2) {
@@ -103,11 +110,12 @@ public class GameSession{
 		if(id==whiteId){
 			to_y=settings.getFieldSize()-1-to_y;
 			from_y=settings.getFieldSize()-1-from_y;
+            System.out.println(to_y + "  " + from_y);
 		}
 		else{
 			from_x=settings.getFieldSize()-1-from_x;
 			to_x=settings.getFieldSize()-1-to_x;
-		}
+        }
 		if(!checking(id,from_x, from_y, to_x, to_y))
 			return false;
 		if (eating(from_x, from_y, to_x, to_y)){
@@ -390,11 +398,16 @@ public class GameSession{
 	}
 	
 	private boolean standartCheck(int from_x, int from_y, int to_x, int to_y){
-		if(isOdd(abs(to_x-to_y))||isOdd(abs(from_x-from_y)))
+		if(isOdd(abs(to_x-to_y))||isOdd(abs(from_x-from_y))) {
+            System.out.println(abs(to_x-to_y) + "  " + abs(from_x-from_y));
 			return false;
-		if(!inBorder(to_x)||!inBorder(to_y)||!inBorder(from_x)||!inBorder(from_y))
+        }
+		if(!inBorder(to_x)||!inBorder(to_y)||!inBorder(from_x)||!inBorder(from_y)) {
+            System.out.println("inBorder");
 			return false;
+        }
 		if(getFieldType(to_x, to_y)!=checker.nothing){
+            System.out.println("nonNoth");
 			return false;
 		}
 		return true;

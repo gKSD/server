@@ -92,7 +92,12 @@ public class GameSessionTest {
     }
     @Test
     public void testCheckStroke() throws Exception {
-
+        GameSession testObj = new GameSession(1,4,8,3);
+        boolean testRes = testObj.checkStroke(1,0,2,1,3);
+        //testObj
+        Assert.assertEquals(testRes,true);
+        testRes = testObj.checkStroke(4,1,5,0,4);
+        Assert.assertEquals(testRes, true);
     }
 
     @Test
