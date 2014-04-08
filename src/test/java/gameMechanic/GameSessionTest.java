@@ -240,7 +240,10 @@ public class GameSessionTest {
 
     @Test
     public void testGetFields() throws Exception {
-        game.getFields();
+        int[] field = game.getFields();
+        Assert.assertEquals(24,field.length);
+        //Assert.assertEquals(game);
+       // Assert.assertEquals(24,);
 
     }
 
