@@ -302,6 +302,9 @@ public class GameSession{
 		checker anotherColor=getAnotherColor(getFieldType(x,y));
 		return (y>1)&&(x>1)&&(getFieldType(x-1,y-1)==anotherColor)&&(fieldIsEmpty(x-2,y-2));
 	}
+    public boolean pawnCanEatLeftDown_pub(int x,int y){
+        return pawnCanEatLeftDown(x,y);
+    }
 
 	private boolean pawnCanEat(int x, int y){
 		return pawnCanEatRightUp(x,y)||pawnCanEatLeftUp(x,y)||pawnCanEatRightDown(x,y)||pawnCanEatLeftDown(x,y);
