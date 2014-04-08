@@ -242,14 +242,16 @@ public class GameSession{
 	}
 
     public void makeking_for_test(int x, int y) {
-        makeKing(x,y);
+        makeKing(x, y);
     }
 	
 	private boolean becameKing(int x, int y) {
 		checker myColor = getFieldType(x,y);
 		return ((myColor==checker.black)&&(y==0))||((myColor==checker.white)&&(y==settings.getFieldSize()-1));
 	}
-
+    public boolean becameKing_pub(int x,int y) {
+        return becameKing(x,y);
+    } 
 	private boolean fieldIsKing(int x, int y) {
 		return currentPositions[y][x].isKing();
 	}
@@ -275,6 +277,7 @@ public class GameSession{
 		checker anotherColor=getAnotherColor(getFieldType(x,y));
 		return (y<settings.getFieldSize()-2)&&(x<settings.getFieldSize()-2)&&(getFieldType(x+1,y+1)==anotherColor)&&(fieldIsEmpty(x+2,y+2));
 	}
+    //public boolean pawnCanEatRightUp(int x,int y)
 
 	private boolean pawnCanEatRightDown(int x, int y){
 		checker anotherColor=getAnotherColor(getFieldType(x,y));

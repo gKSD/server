@@ -166,7 +166,27 @@ public class GameSessionTest {
         }
         testObj.changeLastStroke(1);
         testRes = testObj.checkStroke(4,6,5,4,7);
-        Assert.assertEquals(testRes,true);
+        Assert.assertEquals(testRes,false);
+        for (i=0;i<8;i++) {
+            for (j=0;j<8;j++) {
+                if (i!=6 & i!=1) {
+                    testObj.currentPositions[i][j]= new Field(checker.nothing);
+                }
+            }
+        }
+        testObj.currentPositions[7][1] = new Field(checker.white);
+        testRes =testObj.becameKing_pub(1,7);
+        Assert.assertEquals(testRes, true);
+        testRes =testObj.becameKing_pub(1,0);
+        Assert.assertEquals(testRes, false);
+        testObj.currentPositions[7][1] = new Field(checker.black);
+        testRes =testObj.becameKing_pub(1,7);
+        Assert.assertEquals(testRes, false);
+        testRes =testObj.becameKing_pub(5,7);
+        Assert.assertEquals(testRes, false);
+        testObj.currentPositions[0][0] = new Field(checker.black);
+        testRes =testObj.becameKing_pub(0,0);
+        Assert.assertEquals(testRes,true) ;
     }
 
     @Test
@@ -339,4 +359,6 @@ public class GameSessionTest {
         testRes = testObj.canMoveInt_pub(1,2);
         Assert.assertEquals(testRes,true); 
     }
+
+
 }
