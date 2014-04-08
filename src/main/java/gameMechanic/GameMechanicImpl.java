@@ -61,7 +61,7 @@ public class GameMechanicImpl implements GameMechanic{
 
 	private void removeAlreadyInGameUsers(Map<String, UserDataSet> users){
 		String sessionId;
-		Integer userId;
+		int userId;
 		String[] keys = Caster.castKeysToStrings(users);
 		for(int count=0;count<keys.length;count++){
 			sessionId=keys[count];
