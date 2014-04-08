@@ -111,11 +111,9 @@ public class UserDataImpl implements UserData{
 
 	public static void putSessionIdAndChatWS(String sessionId, ChatWSImpl chatWS){
 		sessionIdToChatWS.put(sessionId, chatWS);
-        logInUsers.get(sessionId).visit();
-        //проверка не нужна, так как ConcurrentHashMap doesnot allow null keys and values
-		/*if(logInUsers.get(sessionId)!=null){
+		if(logInUsers.get(sessionId)!=null){
 			logInUsers.get(sessionId).visit();
-		}*/
+		}
 	}
 
 	public static RemoteEndpoint getWSBySessionId(String sessionId){
