@@ -195,8 +195,8 @@ public class GameMechanicImpl implements GameMechanic{
 		GameSession gameSession;
 		for(count=0;count<keys.length;count++){
 			gameSession=userIdToSession.get(keys[count]);
-			if(gameSession==null)
-				continue;
+			/*if(gameSession==null)
+				continue;*/
 			winnerId=gameSession.getWinnerId();
 			if(winnerId!=0){
 				sendResultStroke(gameSession, winnerId);
@@ -235,5 +235,6 @@ public class GameMechanicImpl implements GameMechanic{
     {
         userIdToSession.put(1,new GameSession(1,2));
         userIdToSession.put(2,new GameSession(1,1));
+        userIdToSession.put(4,new GameSession(1,4,8,3));
     }
 }

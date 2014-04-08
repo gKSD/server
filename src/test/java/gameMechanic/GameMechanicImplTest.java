@@ -88,7 +88,7 @@ public class GameMechanicImplTest {
 
     @Test
     public void testCheckStroke() throws Exception {
-        Stroke stroke = new Stroke();
+        Stroke stroke = new Stroke(1,4,8,3,"king");
         Map<Integer,Stroke> resp;
         resp = game.checkStroke(1,stroke);
         Assert.assertEquals(0,resp.size());
@@ -99,6 +99,7 @@ public class GameMechanicImplTest {
         when(gameSession.checkStroke(1,stroke.getFrom_X(),stroke.getFrom_Y(),stroke.getTo_X(),stroke.getTo_Y())).thenReturn(true);
         resp = game.checkStroke(1,stroke);
         Assert.assertEquals(1,resp.size());
+
         stroke.setStatus("lose");
         when(gameSession.getWinnerId()).thenReturn(1);
         resp = game.checkStroke(1,stroke);
@@ -113,6 +114,7 @@ public class GameMechanicImplTest {
         Map<Integer,GameSession> userIdToSession = mock(HashMap.class);
        // verify(userIdToSession, times(1)).get(captor);
        when(userIdToSession.get(1)).thenReturn(null);
+
         game.filluserIdToSessionRunTest();
         game.removeDeadGames_pub();
 
