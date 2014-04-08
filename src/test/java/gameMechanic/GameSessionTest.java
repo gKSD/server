@@ -123,6 +123,50 @@ public class GameSessionTest {
         testObj2.currentPositions[3][5].makeKing();
         testRes = testObj2.checkStroke(2,5,4,7,2);
         Assert.assertEquals(testRes,true);
+        //пожирание своего:
+        testObj2.currentPositions[3][5] = new Field(checker.white);
+        testObj2.currentPositions[4][6] = new Field(checker.white);
+        testObj2.currentPositions[5][7] = new Field(checker.nothing);
+        testRes = testObj2.checkStroke(2,7,2,5,4);
+        Assert.assertEquals(testRes,false);
+        //проверка на возможность съесть ещё кого-то
+        testObj2.currentPositions[4][6] = new Field(checker.black);
+        testObj2.currentPositions[7][5] = new Field(checker.nothing);
+        System.out.println();
+        for (i=0;i<8;i++) {
+            for (j=0; j<8; j++) {
+                System.out.print(testObj.currentPositions[i][j].getType()+" ");
+            }
+            System.out.println();
+        }
+        testRes = testObj2.checkStroke(2,2,5,0,3);
+        Assert.assertEquals(testRes, false);
+    }
+
+    @Test
+    public void becameKingTest() {
+        GameSession testObj = new GameSession(1,4,8,3);
+        int i,j;
+        for (i=0;i<8;i++) {
+            for (j=0;j<8;j++) {
+                if (i!=6 & i!=1) {
+                    testObj.currentPositions[i][j]= new Field(checker.nothing);
+                }
+            }
+        }
+        testObj.currentPositions[5][7] = new Field(checker.white);
+        testObj.currentPositions[2][6] = new Field(checker.black);
+        boolean testRes = testObj.checkStroke(1,7,2,5,0);
+        Assert.assertEquals(testRes,true);
+        for (i=0;i<8;i++) {
+            for (j=0; j<8; j++) {
+                System.out.print(testObj.currentPositions[i][j].getType()+" ");
+            }
+            System.out.println();
+        }
+        testObj.changeLastStroke(1);
+        testRes = testObj.checkStroke(4,6,5,4,7);
+        Assert.assertEquals(testRes,true);
     }
 
     @Test

@@ -93,6 +93,10 @@ public class GameSession{
         return getAnotherColor(myColor);
     }
 
+    public void changeLastStroke(int id) {
+        lastStroke = id;
+    }
+
 	public boolean checkStroke(int id, int from_x, int from_y, int to_x, int to_y){
 		String inLog="gameSession.checkStroke("+String.valueOf(id)+','+String.valueOf(from_x)+','+String.valueOf(from_y)+','+String.valueOf(to_x)+','+String.valueOf(to_y)+");\n";
 		boolean changeId=true;
