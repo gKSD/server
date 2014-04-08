@@ -78,9 +78,11 @@ public class UserDataImpl implements UserData{
 	}
 
 	public static UserDataSet getLogInUserBySessionId(String sessionId){
-		if(logInUsers.get(sessionId)!=null){
+		/*if(logInUsers.get(sessionId)!=null){
 			logInUsers.get(sessionId).visit();
-		}
+		}*/
+        //проверка не нужна, так как ConcurrentHashMap doesnot allow null keys and values
+        logInUsers.get(sessionId).visit();
 		return logInUsers.get(sessionId);
 	}
 
@@ -94,7 +96,9 @@ public class UserDataImpl implements UserData{
 
 	public static String getSessionIdByUserId(int userId){
 		for(String sessionId:logInUsers.keySet()){
-			if((logInUsers.get(sessionId)!=null)&&(logInUsers.get(sessionId).getId()==userId)){
+			//if((logInUsers.get(sessionId)!=null)&&(logInUsers.get(sessionId).getId()==userId)){
+                //проверка не нужна, так как ConcurrentHashMap doesnot allow null keys and values
+                if(logInUsers.get(sessionId).getId()==userId){
 				return sessionId;
 			}
 		}
@@ -107,9 +111,11 @@ public class UserDataImpl implements UserData{
 
 	public static void putSessionIdAndChatWS(String sessionId, ChatWSImpl chatWS){
 		sessionIdToChatWS.put(sessionId, chatWS);
-		if(logInUsers.get(sessionId)!=null){
+        logInUsers.get(sessionId).visit();
+        //проверка не нужна, так как ConcurrentHashMap doesnot allow null keys and values
+		/*if(logInUsers.get(sessionId)!=null){
 			logInUsers.get(sessionId).visit();
-		}
+		}*/
 	}
 
 	public static RemoteEndpoint getWSBySessionId(String sessionId){
