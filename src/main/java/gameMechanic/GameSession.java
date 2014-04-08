@@ -240,6 +240,10 @@ public class GameSession{
 	private void makeKing(int x, int y){
 		currentPositions[y][x].makeKing();
 	}
+
+    public void makeking_for_test(int x, int y) {
+        makeKing(x,y);
+    }
 	
 	private boolean becameKing(int x, int y) {
 		checker myColor = getFieldType(x,y);
@@ -255,7 +259,7 @@ public class GameSession{
 	}
 
     public boolean canEat_pub(int x, int y) {
-        return canEat(x,y);
+        return canEat(x, y);
     }
 
 	private boolean canEat(int x, int y){
@@ -497,7 +501,7 @@ public class GameSession{
 			return canMoveRightDown(x,y)||canMoveLeftDown(x,y);
 	}
     public boolean canMoveInt_pub(int x,int y){
-        return canMove(x,y);
+        return canMove(x, y);
     }
 
 	public boolean canMove(checker myColor){

@@ -242,6 +242,11 @@ public class GameSessionTest {
     public void testGetFields() throws Exception {
         int[] field = game.getFields();
         Assert.assertEquals(24,field.length);
+        game.makeking_for_test(0,2);
+        game.makeking_for_test(7,7);
+        field = game.getFields();
+        Assert.assertEquals(-16,field[8]);
+        Assert.assertEquals(-63,field[23]);
         //Assert.assertEquals(game);
        // Assert.assertEquals(24,);
 
