@@ -156,7 +156,7 @@ public class UserDataImplTest {
         when(chatWS1.getSession()).thenReturn(session1);
         when(session1.getRemote()).thenReturn(remoteEndpoint1);
 
-        String sessionId2 = "12313132";
+        String sessionId2 = "sdfsdf";
         ChatWSImpl chatWS2 = mock(ChatWSImpl.class);
         org.eclipse.jetty.websocket.api.Session session2 = mock(org.eclipse.jetty.websocket.api.Session.class);
         org.eclipse.jetty.websocket.api.RemoteEndpoint remoteEndpoint2 = mock(org.eclipse.jetty.websocket.api.RemoteEndpoint.class);
