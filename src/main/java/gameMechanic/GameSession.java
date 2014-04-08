@@ -164,7 +164,11 @@ public class GameSession{
 		return ans;
 	}
 
-	private boolean checkOtherEatingOpportunity(int x, int y, int from_x, int from_y, int to_x, int to_y){
+    public boolean checkOtherEatingOpportunityForField_pub(int from_x, int from_y, int x, int y) {
+        return checkOtherEatingOpportunityForField(from_x, from_y,x,y);
+    }
+
+    private boolean checkOtherEatingOpportunity(int x, int y, int from_x, int from_y, int to_x, int to_y){
 		int on_x = normal(to_x-from_x), on_y=normal(to_y-from_y);
 		boolean ans=false;
 		for(x+=on_x,y+=on_y;inBorder(x)&&(inBorder(y));x+=on_x, y+=on_y){
@@ -369,6 +373,10 @@ public class GameSession{
 		clearField(from_x,from_y);
 	}
 
+    public void move_pub(int from_x, int from_y, int to_x, int to_y){
+        move(from_x,from_y,to_x,to_y);
+    }
+
 	private void clearField(int x, int y){
 		currentPositions[y][x].clear();
 	}
@@ -386,6 +394,10 @@ public class GameSession{
 		}
 		move(from_x,from_y,to_x,to_y);
 	}
+
+    public void eat_pub(int from_x, int from_y, int to_x, int to_y){
+        eat(from_x, from_y, to_x, to_y);
+    }
 
 	private int abs(int number){
 		return Math.abs(number);

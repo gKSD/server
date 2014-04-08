@@ -26,6 +26,26 @@ public class GameSessionTest {
     public void tearDown() throws Exception {
 
     }
+    @Test
+    public void testcheckotherEatingOpportunity() throws Exception {
+        game.move_pub(7,7,3,3);
+        game.move_pub(5,1,3,1);
+        Assert.assertEquals(false,game.checkOtherEatingOpportunityForField_pub(2,2,4,4));
+    }
+
+
+    @Test
+    public void testEat() throws Exception {
+        game.move_pub(7,7,3,3);
+        game.eat_pub(2,2,4,4);
+        Assert.assertEquals(23,game.getFields().length);
+        game.move_pub(0,0,4,2);
+        game.eat_pub(5,3,3,1);
+        Assert.assertEquals(22,game.getFields().length);
+        game.eat_pub(5,7,3,5);
+       // Assert.assertEquals(22,game.getFields().length);
+
+    }
 
     @Test
     public void testGetAnotherColor() throws Exception {
