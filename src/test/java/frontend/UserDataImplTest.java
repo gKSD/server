@@ -174,6 +174,36 @@ public class UserDataImplTest {
         Assert.assertNotNull(userDataImpl.getChatWSBySessionId(sessionId2));
     }
 
+    @Test
+    public void testGetOldUserSessionId() throws Exception {
+        //test1
+        Assert.assertEquals(userDataImpl.getOldUserSessionId_ForTest(13), null);
+
+        //test2
+        int id1 = 1;
+        String sessionId1 = "113123";
+        UserDataSet userDataSet1 = mock(UserDataSet.class);
+        when(userDataSet1.getId()).thenReturn(id1);
+
+        int id2 = 2;
+        String sessionId2 = "45634563";
+        UserDataSet userDataSet2 = mock(UserDataSet.class);
+        when(userDataSet2.getId()).thenReturn(id2);
+
+        int id3 = 3;
+        String sessionId3 = "sdfgsfg";
+        UserDataSet userDataSet3 = mock(UserDataSet.class);
+        when(userDataSet3.getId()).thenReturn(id3);
+
+        userDataImpl.putLogInUser(sessionId1, userDataSet1);
+        userDataImpl.putLogInUser(sessionId2, userDataSet2);
+        userDataImpl.putLogInUser(sessionId3, userDataSet3);
+
+        Assert.assertEquals(userDataImpl.getOldUserSessionId_ForTest(id1), sessionId1);
+        Assert.assertEquals(userDataImpl.getOldUserSessionId_ForTest(id2), sessionId2);
+        Assert.assertEquals(userDataImpl.getOldUserSessionId_ForTest(id3), sessionId3);
+    }
+
     @AfterMethod
     public void tearDown() throws Exception {
 
