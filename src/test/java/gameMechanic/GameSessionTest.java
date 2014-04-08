@@ -2,6 +2,7 @@ package gameMechanic;
 
 import gameClasses.Field;
 import gameClasses.Field.checker;
+import gameClasses.Snapshot;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -92,7 +93,8 @@ public class GameSessionTest {
     }
     @Test
     public void testCheckStroke() throws Exception {
-
+        Assert.assertEquals(false, game.checkStroke(1,1,1,0,0));
+        Assert.assertEquals(false, game.checkStroke(2,1,1,0,0));
     }
 
     @Test
@@ -105,11 +107,15 @@ public class GameSessionTest {
 
     }
 
-    @Test
+/*    @Test
     public void testGetSnapshot() throws Exception {
+        int id = 2;
 
+        Assert.assertEquals('w', game.getSnapshot(id));
+        id = 1;
+        Assert.assertEquals(new Snapshot(), game.getSnapshot(id));
     }
-
+*/
     @Test
     public void testSaveAILog() throws Exception {
 
@@ -137,6 +143,7 @@ public class GameSessionTest {
 
     @Test
     public void testGetFields() throws Exception {
+        game.getFields();
 
     }
 

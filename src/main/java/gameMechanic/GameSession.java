@@ -537,6 +537,8 @@ public class GameSession{
 			return returnSnapshot('b');
 	}
 
+
+
 	private Snapshot returnSnapshot(char color) {
 		return new Snapshot(currentPositions,color,settings.getFieldSize(),getNext());
 	}
