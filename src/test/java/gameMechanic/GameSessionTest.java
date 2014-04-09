@@ -635,5 +635,10 @@ public class GameSessionTest {
         testObj.currentPositions[1][1]= new Field(checker.black);
         testRes = testObj.kingCanEat_pub(0,0);
         Assert.assertEquals(testRes,true);
+
+        //for pawnCanEat
+        testObj.currentPositions[2][2]= new Field(checker.black);
+        testRes = testObj.pawnEating_pub(0,0,2,2);
+        Assert.assertEquals(testRes,false);
     }
 }
