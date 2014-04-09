@@ -8,6 +8,8 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import resource.TimeSettings;
+import utils.TimeHelper;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -297,70 +299,85 @@ public class UserDataImplTest {
         Assert.assertFalse(oldVisitTime == userDataSet1.getLastVisit());
     }
 
+    @Test
+     public void testCheckUsers() throws Exception {
+        int keepAlive = 0;
+
+        //test1
+        userDataImpl.checkUsers_ForTest(keepAlive);
+
+        //test2
+        int id1 = 1;
+        String sessionId1 = "113123";
+        UserDataSet userDataSet1 = new UserDataSet(id1, "Bob", 5, 6, 6);
+        userDataSet1.setLastVisit_ForTest(TimeHelper.getCurrentTime() - 100000);
+
+
+        int id2 = 2;
+        String sessionId2 = "45634563";
+        UserDataSet userDataSet2 = new UserDataSet(id2, "Tom", 5, 2, 87);
+        userDataSet2.setLastVisit_ForTest(TimeHelper.getCurrentTime() - 100);
+
+        int id3 = 3;
+        String sessionId3 = "sdfgsfg";
+        UserDataSet userDataSet3 = new UserDataSet(id3, "Alex", 3, 8, 6);
+        userDataSet3.setLastVisit_ForTest(TimeHelper.getCurrentTime() - 100);
+
+        userDataImpl.putSessionIdAndUserSession(sessionId1, userDataSet1);
+        userDataImpl.putSessionIdAndUserSession(sessionId2, userDataSet2);
+        userDataImpl.putSessionIdAndUserSession(sessionId3, userDataSet3);
+
+        userDataImpl.putLogInUser(sessionId1, userDataSet1);
+        userDataImpl.putLogInUser(sessionId2, userDataSet2);
+        userDataImpl.putLogInUser(sessionId3, userDataSet3);
+
+
+        TimeSettings.setExitTime_ForTest(300);
+
+        userDataImpl.checkUsers_ForTest(keepAlive);
+
+        //Assert.assertTrue(true == false);
+
+        Assert.assertNull(userDataImpl.getUserSessionBySessionId(sessionId1));
+        Assert.assertNull(userDataImpl.getLogInUserBySessionId(sessionId1));
+
+        //test3
+        keepAlive = 1;
+
+        WebSocketImpl webSocket1 = mock(WebSocketImpl.class);
+        org.eclipse.jetty.websocket.api.Session session1 = mock(org.eclipse.jetty.websocket.api.Session.class);
+        org.eclipse.jetty.websocket.api.RemoteEndpoint remoteEndpoint1 = mock(org.eclipse.jetty.websocket.api.RemoteEndpoint.class);
+        when(webSocket1.getSession()).thenReturn(session1);
+        when(session1.getRemote()).thenReturn(remoteEndpoint1);
+
+        WebSocketImpl webSocket2 = mock(WebSocketImpl.class);
+        org.eclipse.jetty.websocket.api.Session session2 = mock(org.eclipse.jetty.websocket.api.Session.class);
+        org.eclipse.jetty.websocket.api.RemoteEndpoint remoteEndpoint2 = mock(org.eclipse.jetty.websocket.api.RemoteEndpoint.class);
+        when(webSocket2.getSession()).thenReturn(session2);
+        when(session2.getRemote()).thenReturn(remoteEndpoint2);
+
+        WebSocketImpl webSocket3 = mock(WebSocketImpl.class);
+        org.eclipse.jetty.websocket.api.Session session3 = mock(org.eclipse.jetty.websocket.api.Session.class);
+        org.eclipse.jetty.websocket.api.RemoteEndpoint remoteEndpoint3 = mock(org.eclipse.jetty.websocket.api.RemoteEndpoint.class);
+        when(webSocket3.getSession()).thenReturn(session3);
+        when(session3.getRemote()).thenReturn(remoteEndpoint3);
+
+
+        userDataImpl.putSessionIdAndWS(sessionId1, webSocket1);
+        userDataImpl.putSessionIdAndWS(sessionId2, webSocket2);
+        userDataImpl.putSessionIdAndWS(sessionId3, webSocket3);
+
+        userDataSet3.setLastVisit_ForTest(TimeHelper.getCurrentTime() - 20);
+
+        userDataImpl.checkUsers_ForTest(keepAlive);
+
+        ArgumentCaptor<String> passCodeCaptor = ArgumentCaptor.forClass(String.class);
+        verify(remoteEndpoint3, times(1)).sendString(passCodeCaptor.capture());
+        Assert.assertTrue(passCodeCaptor.getValue().equals("1"));
+    }
+
     @AfterMethod
     public void tearDown() throws Exception {
-
-    }
-
-
-
-    @Test
-    public void testCheckServerTime() throws Exception {
-
-    }
-
-    @Test
-    public void testGetStartServerTime() throws Exception {
-
-    }
-
-    @Test
-    public void testGetUserSessionBySessionId() throws Exception {
-
-    }
-
-    @Test
-    public void testContainsSessionId() throws Exception {
-
-    }
-
-    @Test
-    public void testCcu() throws Exception {
-
-    }
-
-    @Test
-    public void testPutSessionIdAndUserSession() throws Exception {
-
-    }
-
-    @Test
-    public void testGetLogInUserBySessionId() throws Exception {
-
-    }
-
-    @Test
-    public void testPlayerWantToPlay() throws Exception {
-
-    }
-
-    @Test
-    public void testPutLogInUser() throws Exception {
-
-    }
-
-    @Test
-    public void testPutSessionIdAndWS() throws Exception {
-
-    }
-
-    @Test
-    public void testPartyEnd() throws Exception {
-
-    }
-
-    @Test
-    public void testRun() throws Exception {
 
     }
 }

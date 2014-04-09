@@ -6,5 +6,9 @@ public class TimeSettings implements Resource{
 	public static int getExitTime(){
 		return exitTime;
 	}
-	
+
+
+    public static  void setExitTime_ForTest(int time){
+        exitTime = time;
+    }
 }
