@@ -78,8 +78,9 @@ public class UserDataImpl implements UserData{
 	}
 
 	public static UserDataSet getLogInUserBySessionId(String sessionId){
-		/*if(logInUsers.get(sessionId)!=null){
+		if(logInUsers.get(sessionId)!=null){
 			logInUsers.get(sessionId).visit();
+<<<<<<< HEAD
 		}*/
         //проверка не нужна, так как ConcurrentHashMap doesnot allow null keys and values
         try {
@@ -88,6 +89,9 @@ public class UserDataImpl implements UserData{
         catch (Exception e) {
 
         }
+=======
+		}
+>>>>>>> 08c0fb96479d23c7585bb5b10f98bc3f7aeafebb
 		return logInUsers.get(sessionId);
 	}
 
@@ -202,10 +206,10 @@ public class UserDataImpl implements UserData{
 	private void checkUsers(int keepAlive){
 		for(String sessionId:sessionIdToUserSession.keySet()){
 			if(exitedUser(getUserSessionBySessionId(sessionId)))
-				removeUser(sessionId);
+                removeUser(sessionId);
 			else
 				if(keepAlive==1)
-					keepAlive(sessionId);
+                    keepAlive(sessionId);
 		}
 	}
 
@@ -264,5 +268,9 @@ public class UserDataImpl implements UserData{
 
     public void keepAlive_For_test(String sessionId){
         keepAlive(sessionId);
+    }
+
+    public void checkUsers_ForTest(int keepAlive){
+        checkUsers(keepAlive);
     }
 }

@@ -200,6 +200,10 @@ public class GameSession{
 	private Field getField(int x, int y){
 		return currentPositions[y][x];
 	}
+
+    public Field getField_pub(int x, int y) {
+        return getField(x,y);
+    }
 	
 	private checker getPlayerColor(int id){
 		if(id == whiteId)
