@@ -82,7 +82,12 @@ public class UserDataImpl implements UserData{
 			logInUsers.get(sessionId).visit();
 		}*/
         //проверка не нужна, так как ConcurrentHashMap doesnot allow null keys and values
-        logInUsers.get(sessionId).visit();
+        try {
+            logInUsers.get(sessionId).visit();
+        }
+        catch (Exception e) {
+
+        }
 		return logInUsers.get(sessionId);
 	}
 
