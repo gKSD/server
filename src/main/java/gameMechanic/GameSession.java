@@ -198,6 +198,10 @@ public class GameSession{
 	private Field getField(int x, int y){
 		return currentPositions[y][x];
 	}
+
+    public Field getField_pub(int x, int y) {
+        return getField(x,y);
+    }
 	
 	private checker getPlayerColor(int id){
 		if(id == whiteId)
@@ -397,6 +401,10 @@ public class GameSession{
 	private boolean kingCanEat(int x, int y){
 		return kingCanEatRightUp(x, y)||kingCanEatRightDown(x,y)||kingCanEatLeftUp(x,y)||kingCanEatLeftDown(x,y);
 	}
+
+    public boolean kingCanEat_pub(int x, int y) {
+        return kingCanEat(x,y);
+    }
 
 	private boolean canEat(checker myColor){
 		for(int x=0;x<settings.getFieldSize();x++)

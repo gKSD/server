@@ -16,10 +16,10 @@ import static org.mockito.Mockito.*;
  * Created by phil on 07.04.14.
  */
 public class GameSessionTest {
-    GameSession game = new GameSession(1,2);
+    GameSession game;
     @BeforeMethod
     public void setUp() throws Exception {
-
+        game = new GameSession(1,2);
     }
 
     @AfterMethod
@@ -32,6 +32,8 @@ public class GameSessionTest {
         game.move_pub(1,1,4,2);
         Assert.assertEquals(false,game.kingCanEatRightUp_pub(4,2));
         Assert.assertEquals(false,game.kingCanEatRightUp_pub(4,4));
+        game = new GameSession(1,1,0,1);
+        Assert.assertEquals(false,game.kingCanEatLeftUp_pub(5,1));
 
     }
     @Test
@@ -53,6 +55,12 @@ public class GameSessionTest {
         Assert.assertEquals(false,game.kingCanEatRightDown_pub(7,1));
         Assert.assertEquals(false,game.kingCanEatRightDown_pub(0,1));
         Assert.assertEquals(false,game.kingCanEatRightDown_pub(0,0));
+        game.getField_pub(7, 1).setType(checker.black);
+        game.getField_pub(0,1).setType(checker.black);
+        game.getField_pub(0,0).setType(checker.black);
+        Assert.assertEquals(false,game.kingCanEatRightDown_pub(7,1));
+        Assert.assertEquals(false,game.kingCanEatRightDown_pub(0,1));
+        Assert.assertEquals(false,game.kingCanEatRightDown_pub(0,0));
 
 
     }
@@ -60,6 +68,19 @@ public class GameSessionTest {
     public void testkingCanEatLeftDown() throws Exception {
         Assert.assertEquals(false,game.kingCanEatLeftDown_pub(6,6));
         Assert.assertEquals(false,game.kingCanEatLeftDown_pub(1,1));
+    } 
+    @Test
+    public void testkingCanEat() throws Exception {
+        game.getField_pub(0,0).setType(checker.black);
+        game.move_pub(2,2,3,3);
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(7,7));
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(0,0));
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(0,7));
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(7,0));
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(3,3));
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(4,4));
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(3,4));
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(4,3));
     }
 
     @Test
@@ -311,13 +332,14 @@ public class GameSessionTest {
 
     @Test
     public void testSaveLog() throws Exception {
-        int id = 1;
+        int id =44;
         int winnerid = 1;
         game.saveLog(winnerid);
         String fileName="/log/AI/"+String.valueOf(id)+".txt";
         String compare = VFS.readFile(fileName);
         Assert.assertEquals("white", compare);
         winnerid = 2;
+        id = 1;
         game.saveLog(winnerid);
         fileName="/log/AI/"+String.valueOf(id)+".txt";
         compare = VFS.readFile(fileName);
