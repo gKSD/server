@@ -32,8 +32,6 @@ public class GameSessionTest {
         game.move_pub(1,1,4,2);
         Assert.assertEquals(false,game.kingCanEatRightUp_pub(4,2));
         Assert.assertEquals(false,game.kingCanEatRightUp_pub(4,4));
-        game = new GameSession(1,1,0,1);
-        Assert.assertEquals(false,game.kingCanEatLeftUp_pub(5,1));
 
     }
     @Test
@@ -42,12 +40,7 @@ public class GameSessionTest {
         game.move_pub(7,7,4,2);
         Assert.assertEquals(false,game.kingCanEatLeftUp_pub(5,0));
         Assert.assertEquals(false,game.kingCanEatLeftUp_pub(0,5));
-        Assert.assertEquals(false,game.kingCanEatLeftUp_pub(5,1));
-      /*  Assert.assertEquals(false,game.kingCanEatLeftUp_pub(0,4));
-        Assert.assertEquals(false,game.kingCanEatLeftUp_pub(0,3));
-        Assert.assertEquals(false,game.kingCanEatLeftUp_pub(0,2));
-        Assert.assertEquals(false,game.kingCanEatLeftUp_pub(0,1));
-        Assert.assertEquals(false,game.kingCanEatLeftUp_pub(0,0));*/
+        Assert.assertEquals(true,game.kingCanEatLeftUp_pub(5,1));
 
     }
     @Test
@@ -71,8 +64,8 @@ public class GameSessionTest {
     } 
     @Test
     public void testkingCanEat() throws Exception {
-        game.getField_pub(0,0).setType(checker.black);
-        game.move_pub(2,2,3,3);
+        game.getField_pub(0, 0).setType(checker.black);
+        game.move_pub(2, 2, 3, 3);
         Assert.assertEquals(false,game.kingCanEatLeftDown_pub(7,7));
         Assert.assertEquals(false,game.kingCanEatLeftDown_pub(0,0));
         Assert.assertEquals(false,game.kingCanEatLeftDown_pub(0,7));
@@ -88,11 +81,11 @@ public class GameSessionTest {
         Assert.assertEquals(false, game.checkOtherEatingOpportunityForField_pub(2, 2, 4, 4));
         game = new GameSession(1,2);
         game.move_pub(7,7,3,3);
-        Assert.assertEquals(true, game.checkOtherEatingOpportunityForField_pub(2, 2, 4, 4));
+        Assert.assertEquals(false, game.checkOtherEatingOpportunityForField_pub(2, 2, 4, 4));
         game = new GameSession(1,2);
         game.move_pub(7,7,3,3);
         game.move_pub(5,1,3,1);
-        Assert.assertEquals(true, game.checkOtherEatingOpportunityForField_pub(2, 2, 4, 4));
+        Assert.assertEquals(false, game.checkOtherEatingOpportunityForField_pub(2, 2, 4, 4));
     }
 
 
@@ -332,16 +325,18 @@ public class GameSessionTest {
 
     @Test
     public void testSaveLog() throws Exception {
+        game = new GameSession(1,2);
         int id =44;
         int winnerid = 1;
         game.saveLog(winnerid);
-        String fileName="/log/AI/"+String.valueOf(id)+".txt";
+        String fileName="/log/AI/"+String.valueOf(game.getId())+".txt";
         String compare = VFS.readFile(fileName);
+        game.getWinnerId();
         Assert.assertEquals("white", compare);
         winnerid = 2;
         id = 1;
         game.saveLog(winnerid);
-        fileName="/log/AI/"+String.valueOf(id)+".txt";
+        fileName="/log/AI/"+String.valueOf(game.getId())+".txt";
         compare = VFS.readFile(fileName);
         Assert.assertEquals("black", compare);
     }

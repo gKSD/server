@@ -30,6 +30,10 @@ public class GameSession{
 		File dir = new File("log/"+dirForLog);
 		dir.mkdirs();
 	}
+
+    public int getId() {
+        return id;
+    }
 	public void getBlackQuantity_pub() {
         blackQuantity=0;
     }
