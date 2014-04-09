@@ -16,10 +16,10 @@ import static org.mockito.Mockito.*;
  * Created by phil on 07.04.14.
  */
 public class GameSessionTest {
-    GameSession game = new GameSession(1,2);
+    GameSession game;
     @BeforeMethod
     public void setUp() throws Exception {
-
+        game = new GameSession(1,2);
     }
 
     @AfterMethod
@@ -32,6 +32,8 @@ public class GameSessionTest {
         game.move_pub(1,1,4,2);
         Assert.assertEquals(false,game.kingCanEatRightUp_pub(4,2));
         Assert.assertEquals(false,game.kingCanEatRightUp_pub(4,4));
+        game = new GameSession(1,1,0,1);
+        Assert.assertEquals(false,game.kingCanEatLeftUp_pub(5,1));
 
     }
     @Test
@@ -53,6 +55,12 @@ public class GameSessionTest {
         Assert.assertEquals(false,game.kingCanEatRightDown_pub(7,1));
         Assert.assertEquals(false,game.kingCanEatRightDown_pub(0,1));
         Assert.assertEquals(false,game.kingCanEatRightDown_pub(0,0));
+        game.getField_pub(7, 1).setType(checker.black);
+        game.getField_pub(0,1).setType(checker.black);
+        game.getField_pub(0,0).setType(checker.black);
+        Assert.assertEquals(false,game.kingCanEatRightDown_pub(7,1));
+        Assert.assertEquals(false,game.kingCanEatRightDown_pub(0,1));
+        Assert.assertEquals(false,game.kingCanEatRightDown_pub(0,0));
 
 
     }
@@ -60,6 +68,19 @@ public class GameSessionTest {
     public void testkingCanEatLeftDown() throws Exception {
         Assert.assertEquals(false,game.kingCanEatLeftDown_pub(6,6));
         Assert.assertEquals(false,game.kingCanEatLeftDown_pub(1,1));
+    } 
+    @Test
+    public void testkingCanEat() throws Exception {
+        game.getField_pub(0,0).setType(checker.black);
+        game.move_pub(2,2,3,3);
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(7,7));
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(0,0));
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(0,7));
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(7,0));
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(3,3));
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(4,4));
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(3,4));
+        Assert.assertEquals(false,game.kingCanEatLeftDown_pub(4,3));
     }
 
     @Test
@@ -311,13 +332,14 @@ public class GameSessionTest {
 
     @Test
     public void testSaveLog() throws Exception {
-        int id = 1;
+        int id =44;
         int winnerid = 1;
         game.saveLog(winnerid);
         String fileName="/log/AI/"+String.valueOf(id)+".txt";
         String compare = VFS.readFile(fileName);
         Assert.assertEquals("white", compare);
         winnerid = 2;
+        id = 1;
         game.saveLog(winnerid);
         fileName="/log/AI/"+String.valueOf(id)+".txt";
         compare = VFS.readFile(fileName);
@@ -554,5 +576,91 @@ public class GameSessionTest {
         testObj.getkWhiteQuantuty_pub();
         testRes = testObj.whiteLose();
         Assert.assertEquals(testRes,true);
+    }
+
+    @Test
+    public void getWinnerIdTest() {
+        GameSession testObj = new GameSession(1,2,8,3);
+        int i,j;
+        for (i=0;i<8;i++) {
+            for (j=0;j<8;j++) {
+                if (i!=6 & i!=1) {
+                    testObj.currentPositions[i][j]= new Field(checker.nothing);
+                }
+            }
+        }
+        //не blackLose и whiteWin
+        testObj.currentPositions[3][3]= new Field(checker.black);
+        testObj.getBlackQuantity1_pub();
+        testObj.changeLastStroke(1);
+        testObj.changeLastStrokeTime(0);
+        int testRes = testObj.getWinnerId(240000);
+        Assert.assertEquals(testRes,1);
+        //blackLose,whiteWin
+        testObj.getBlackQuantity_pub();
+        testRes = testObj.getWinnerId(240000);
+        Assert.assertEquals(testRes,1);
+        //blackLose, !whiteWin
+        testRes = testObj.getWinnerId(0);
+        Assert.assertEquals(testRes,1);
+        //!blackLose, !whiteWin
+        testObj.getBlackQuantity1_pub();
+        testRes = testObj.getWinnerId(0);
+        Assert.assertEquals(testRes,0);
+        //!whiteLose, blackWin
+        testObj.currentPositions[3][3]= new Field(checker.white);
+        testObj.getkWhiteQuantuty1_pub();
+        testObj.changeLastStroke(2);
+        testRes = testObj.getWinnerId(240000);
+        Assert.assertEquals(testRes,2);
+        //whiteLose, blackWin
+        testObj.getkWhiteQuantuty_pub();
+        testRes = testObj.getWinnerId(240000);
+        Assert.assertEquals(testRes,2);
+        //whiteLose, !blackWin
+        testObj.changeLastStroke(1);
+        testRes = testObj.getWinnerId(0);
+        Assert.assertEquals(testRes,2);
+    }
+
+    @Test
+    public void kingCanEatTestOneMore() {
+        GameSession testObj = new GameSession(1,2,8,3);
+        int i,j;
+        for (i=0;i<8;i++) {
+            for (j=0;j<8;j++) {
+                if (i!=6 & i!=1) {
+                    testObj.currentPositions[i][j]= new Field(checker.nothing);
+                }
+            }
+        }
+        //0 0 0 1
+        testObj.currentPositions[6][7]= new Field(checker.white);
+        testObj.currentPositions[5][6]= new Field(checker.black);
+        boolean testRes = testObj.kingCanEat_pub(7,6);
+        Assert.assertEquals(testRes,true);
+        //0 0 1 1
+        testObj.currentPositions[4][7]= new Field(checker.white);
+        testRes = testObj.kingCanEat_pub(7,4);
+        Assert.assertEquals(testRes,true);
+        //0 1 ..
+        testObj.currentPositions[7][0]= new Field(checker.white);
+        testObj.currentPositions[6][1]= new Field(checker.black);
+        testRes = testObj.kingCanEat_pub(0,7);
+        Assert.assertEquals(testRes,true);
+        //1 ...
+        testObj.currentPositions[5][0]= new Field(checker.white);
+        testRes = testObj.kingCanEat_pub(0,5);
+        Assert.assertEquals(testRes,false);
+
+        testObj.currentPositions[0][0]= new Field(checker.white);
+        testObj.currentPositions[1][1]= new Field(checker.black);
+        testRes = testObj.kingCanEat_pub(0,0);
+        Assert.assertEquals(testRes,true);
+
+        //for pawnCanEat
+        testObj.currentPositions[2][2]= new Field(checker.black);
+        testRes = testObj.pawnEating_pub(0,0,2,2);
+        Assert.assertEquals(testRes,false);
     }
 }
