@@ -78,9 +78,8 @@ public class UserDataImpl implements UserData{
 	}
 
 	public static UserDataSet getLogInUserBySessionId(String sessionId){
-		if(logInUsers.get(sessionId)!=null){
+		/*if(logInUsers.get(sessionId)!=null){
 			logInUsers.get(sessionId).visit();
-<<<<<<< HEAD
 		}*/
         //проверка не нужна, так как ConcurrentHashMap doesnot allow null keys and values
         try {
@@ -89,9 +88,6 @@ public class UserDataImpl implements UserData{
         catch (Exception e) {
 
         }
-=======
-		}
->>>>>>> 08c0fb96479d23c7585bb5b10f98bc3f7aeafebb
 		return logInUsers.get(sessionId);
 	}
 
