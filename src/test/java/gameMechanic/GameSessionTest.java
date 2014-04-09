@@ -32,8 +32,6 @@ public class GameSessionTest {
         game.move_pub(1,1,4,2);
         Assert.assertEquals(false,game.kingCanEatRightUp_pub(4,2));
         Assert.assertEquals(false,game.kingCanEatRightUp_pub(4,4));
-        game = new GameSession(1,1,0,1);
-        Assert.assertEquals(true,game.kingCanEatLeftUp_pub(5,1));
 
     }
     @Test
