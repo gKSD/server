@@ -577,4 +577,90 @@ public class GameSessionTest {
         testRes = testObj.whiteLose();
         Assert.assertEquals(testRes,true);
     }
+
+    @Test
+    public void getWinnerIdTest() {
+        GameSession testObj = new GameSession(1,2,8,3);
+        int i,j;
+        for (i=0;i<8;i++) {
+            for (j=0;j<8;j++) {
+                if (i!=6 & i!=1) {
+                    testObj.currentPositions[i][j]= new Field(checker.nothing);
+                }
+            }
+        }
+        //не blackLose и whiteWin
+        testObj.currentPositions[3][3]= new Field(checker.black);
+        testObj.getBlackQuantity1_pub();
+        testObj.changeLastStroke(1);
+        testObj.changeLastStrokeTime(0);
+        int testRes = testObj.getWinnerId(240000);
+        Assert.assertEquals(testRes,1);
+        //blackLose,whiteWin
+        testObj.getBlackQuantity_pub();
+        testRes = testObj.getWinnerId(240000);
+        Assert.assertEquals(testRes,1);
+        //blackLose, !whiteWin
+        testRes = testObj.getWinnerId(0);
+        Assert.assertEquals(testRes,1);
+        //!blackLose, !whiteWin
+        testObj.getBlackQuantity1_pub();
+        testRes = testObj.getWinnerId(0);
+        Assert.assertEquals(testRes,0);
+        //!whiteLose, blackWin
+        testObj.currentPositions[3][3]= new Field(checker.white);
+        testObj.getkWhiteQuantuty1_pub();
+        testObj.changeLastStroke(2);
+        testRes = testObj.getWinnerId(240000);
+        Assert.assertEquals(testRes,2);
+        //whiteLose, blackWin
+        testObj.getkWhiteQuantuty_pub();
+        testRes = testObj.getWinnerId(240000);
+        Assert.assertEquals(testRes,2);
+        //whiteLose, !blackWin
+        testObj.changeLastStroke(1);
+        testRes = testObj.getWinnerId(0);
+        Assert.assertEquals(testRes,2);
+    }
+
+    @Test
+    public void kingCanEatTestOneMore() {
+        GameSession testObj = new GameSession(1,2,8,3);
+        int i,j;
+        for (i=0;i<8;i++) {
+            for (j=0;j<8;j++) {
+                if (i!=6 & i!=1) {
+                    testObj.currentPositions[i][j]= new Field(checker.nothing);
+                }
+            }
+        }
+        //0 0 0 1
+        testObj.currentPositions[6][7]= new Field(checker.white);
+        testObj.currentPositions[5][6]= new Field(checker.black);
+        boolean testRes = testObj.kingCanEat_pub(7,6);
+        Assert.assertEquals(testRes,true);
+        //0 0 1 1
+        testObj.currentPositions[4][7]= new Field(checker.white);
+        testRes = testObj.kingCanEat_pub(7,4);
+        Assert.assertEquals(testRes,true);
+        //0 1 ..
+        testObj.currentPositions[7][0]= new Field(checker.white);
+        testObj.currentPositions[6][1]= new Field(checker.black);
+        testRes = testObj.kingCanEat_pub(0,7);
+        Assert.assertEquals(testRes,true);
+        //1 ...
+        testObj.currentPositions[5][0]= new Field(checker.white);
+        testRes = testObj.kingCanEat_pub(0,5);
+        Assert.assertEquals(testRes,false);
+
+        testObj.currentPositions[0][0]= new Field(checker.white);
+        testObj.currentPositions[1][1]= new Field(checker.black);
+        testRes = testObj.kingCanEat_pub(0,0);
+        Assert.assertEquals(testRes,true);
+
+        //for pawnCanEat
+        testObj.currentPositions[2][2]= new Field(checker.black);
+        testRes = testObj.pawnEating_pub(0,0,2,2);
+        Assert.assertEquals(testRes,false);
+    }
 }

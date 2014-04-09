@@ -42,6 +42,12 @@ public class GameSession{
     public void getkWhiteQuantuty1_pub() {
         whiteQuantity=1;
     }
+    public void changeLastStroke(int id) {  //моё
+        lastStroke = id;
+    }
+    public void changeLastStrokeTime(long i) {
+        lastStrokeTime = i;
+    }
 
 	public GameSession(int id1, int id2){
 		settings = (GameSettings) ResourceFactory.instanse().getResource("settings/gameSettings.xml");
@@ -103,10 +109,6 @@ public class GameSession{
 
     public checker getAnotherColor_pub(checker myColor) {
         return getAnotherColor(myColor);
-    }
-
-    public void changeLastStroke(int id) {  //моё
-        lastStroke = id;
     }
 
 	public boolean checkStroke(int id, int from_x, int from_y, int to_x, int to_y){
@@ -401,6 +403,9 @@ public class GameSession{
 	private boolean kingCanEat(int x, int y){
 		return kingCanEatRightUp(x, y)||kingCanEatRightDown(x,y)||kingCanEatLeftUp(x,y)||kingCanEatLeftDown(x,y);
 	}
+    public boolean kingCanEat_pub(int x,int y) {
+        return kingCanEat(x,y);
+    }
 
     public boolean kingCanEat_pub(int x, int y) {
         return kingCanEat(x,y);
@@ -590,7 +595,7 @@ public class GameSession{
 		return getWinnerId(TimeHelper.getCurrentTime());
 	}
 
-	private int getWinnerId(long currentTime){
+	public int getWinnerId(long currentTime){
 		if(blackLose()||whiteWin(currentTime))
 			return whiteId;
 		else if (whiteLose()||blackWin(currentTime))
