@@ -407,10 +407,6 @@ public class GameSession{
         return kingCanEat(x,y);
     }
 
-    public boolean kingCanEat_pub(int x, int y) {
-        return kingCanEat(x,y);
-    }
-
 	private boolean canEat(checker myColor){
 		for(int x=0;x<settings.getFieldSize();x++)
 			for(int y=0;y<settings.getFieldSize();y++){
