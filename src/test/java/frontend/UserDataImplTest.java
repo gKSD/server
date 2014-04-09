@@ -182,12 +182,12 @@ public class UserDataImplTest {
 
         //test2
         int id1 = 1;
-        String sessionId1 = "113123";
+        String sessionId1 = "qwedfgd";
         UserDataSet userDataSet1 = mock(UserDataSet.class);
         when(userDataSet1.getId()).thenReturn(id1);
 
         int id2 = 2;
-        String sessionId2 = "45634563";
+        String sessionId2 = "tyudfvsd";
         UserDataSet userDataSet2 = mock(UserDataSet.class);
         when(userDataSet2.getId()).thenReturn(id2);
 
@@ -200,9 +200,12 @@ public class UserDataImplTest {
         userDataImpl.putLogInUser(sessionId2, userDataSet2);
         userDataImpl.putLogInUser(sessionId3, userDataSet3);
 
-        Assert.assertEquals(userDataImpl.getOldUserSessionId_ForTest(id1), sessionId1);
-        Assert.assertEquals(userDataImpl.getOldUserSessionId_ForTest(id2), sessionId2);
-        Assert.assertEquals(userDataImpl.getOldUserSessionId_ForTest(id3), sessionId3);
+        String res = userDataImpl.getOldUserSessionId_ForTest(id1);
+        Assert.assertEquals(res, sessionId1);
+        res = userDataImpl.getOldUserSessionId_ForTest(id2);
+        Assert.assertEquals(res, sessionId2);
+        res = userDataImpl.getOldUserSessionId_ForTest(id3);
+        Assert.assertEquals(res, sessionId3);
     }
 
     @Test
