@@ -81,7 +81,6 @@ public class UserDataImpl implements UserData{
 		/*if(logInUsers.get(sessionId)!=null){
 			logInUsers.get(sessionId).visit();
 		}*/
-        //проверка не нужна, так как ConcurrentHashMap doesnot allow null keys and values
         try {
             logInUsers.get(sessionId).visit();
         }
@@ -102,7 +101,6 @@ public class UserDataImpl implements UserData{
 	public static String getSessionIdByUserId(int userId){
 		for(String sessionId:logInUsers.keySet()){
 			//if((logInUsers.get(sessionId)!=null)&&(logInUsers.get(sessionId).getId()==userId)){
-                //проверка не нужна, так как ConcurrentHashMap doesnot allow null keys and values
                 if(logInUsers.get(sessionId).getId()==userId){
 				return sessionId;
 			}

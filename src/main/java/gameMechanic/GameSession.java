@@ -46,7 +46,7 @@ public class GameSession{
     public void getkWhiteQuantuty1_pub() {
         whiteQuantity=1;
     }
-    public void changeLastStroke(int id) {  //моё
+    public void changeLastStroke(int id) {
         lastStroke = id;
     }
     public void changeLastStrokeTime(long i) {
@@ -691,4 +691,3 @@ public class GameSession{
 		return blackQuantity;
 	}
 }
-//Черная клетка, если координаты один. четности
