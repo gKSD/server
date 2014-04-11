@@ -311,7 +311,7 @@ public class FrontendImplTest {
         }
         frontend.sendPageTest(name, userDataSet, httpServletResponse);
 
-        Assert.assertTrue(stringWriter.toString().contains("<title>Шашечки</title>"));
+        Assert.assertTrue(stringWriter.toString().contains("<title>Checkers</title>"));
         Assert.assertTrue(stringWriter.toString().contains("Bob"));
         Assert.assertTrue(stringWriter.toString().contains("Rating: 55"));
     }
@@ -333,7 +333,7 @@ public class FrontendImplTest {
         }
         frontend.sendPageTest(name, null, httpServletResponse);
 
-        Assert.assertTrue(stringWriter.toString().contains("<title>Шашечки</title>"));
+        Assert.assertTrue(stringWriter.toString().contains("<title>Checkers</title>"));
         Assert.assertTrue(stringWriter.toString().contains(frontend.SESSION_NULL__NICKNAME_FIELD_DATA));
         Assert.assertTrue(stringWriter.toString().contains(frontend.SESSION_NULL__RATING_FIELD_DATA));
     }
@@ -413,7 +413,7 @@ public class FrontendImplTest {
         verify(httpServletResponse, times(2)).addCookie(cookieArgumentCaptor.capture());
         Assert.assertEquals(startServerTime,cookieArgumentCaptor.getValue().getValue());
 
-        Assert.assertTrue(stringWriter.toString().contains("<title>Шашечки</title>"));
+        Assert.assertTrue(stringWriter.toString().contains("<title>Checkers</title>"));
         Assert.assertTrue(stringWriter.toString().contains(nick));
     }
 
@@ -444,7 +444,7 @@ public class FrontendImplTest {
         }
 
         frontend.onHaveCookieStatusTest(target, userDataSet, httpServletResponse);
-        Assert.assertTrue(stringWriter.toString().contains("<title>Шашечки</title>"));
+        Assert.assertTrue(stringWriter.toString().contains("<title>Checkers</title>"));
         Assert.assertTrue(stringWriter.toString().contains(nick));
 
         Assert.assertTrue(stringWriter.toString().contains("id=\"carousel\""));
@@ -476,7 +476,7 @@ public class FrontendImplTest {
         }
 
         frontend.onHaveCookieStatusTest(target, userDataSet, httpServletResponse);
-        Assert.assertTrue(stringWriter.toString().contains("<title>Шашечки</title>"));
+        Assert.assertTrue(stringWriter.toString().contains("<title>Checkers</title>"));
         Assert.assertTrue(stringWriter.toString().contains(frontend.REG_NICKNAME_FIELD_HTML));
         Assert.assertTrue(stringWriter.toString().contains(frontend.REG_PASSWORD_FIELD_HTML));
     }
@@ -619,7 +619,7 @@ public class FrontendImplTest {
         frontend.onHaveCookieAndPostStatusTest(target, sessionId, userDataSet, httpServletRequest, httpServletResponse);
         //Assert.assertEquals(stringWriter.toString(), "Apple");
         result = stringWriter.toString();
-        Assert.assertTrue(result.contains("<title>Шашечки</title>"));
+        Assert.assertTrue(result.contains("<title>Checkers</title>"));
         Assert.assertTrue(result.contains("<a href='/profile' >null</a>") || result.contains("<a href='/profile' >__Test__Bob</a>"));
 
         //test2
@@ -627,7 +627,7 @@ public class FrontendImplTest {
         when(httpServletRequest.getParameter(frontend.REG_PASSWORD_FIELD_HTML)).thenReturn(null);
         frontend.onHaveCookieAndPostStatusTest(target, sessionId, userDataSet, httpServletRequest, httpServletResponse);
         result = stringWriter.toString();
-        Assert.assertTrue(result.contains("<title>Шашечки</title>"));
+        Assert.assertTrue(result.contains("<title>Checkers</title>"));
         Assert.assertTrue(result.contains("<a href='/profile' >null</a>") || result.contains("<a href='/profile' >__Test__Bob</a>"));
 
         //test3
@@ -635,7 +635,7 @@ public class FrontendImplTest {
         when(httpServletRequest.getParameter(frontend.REG_PASSWORD_FIELD_HTML)).thenReturn("123456");
         frontend.onHaveCookieAndPostStatusTest(target, sessionId, userDataSet, httpServletRequest, httpServletResponse);
         result = stringWriter.toString();
-        Assert.assertTrue(result.contains("<title>Шашечки</title>"));
+        Assert.assertTrue(result.contains("<title>Checkers</title>"));
         Assert.assertTrue(result.contains("<a href='/profile' >null</a>") || result.contains("<a href='/profile' >__Test__Bob</a>"));
 
         //test4
@@ -643,7 +643,7 @@ public class FrontendImplTest {
         when(httpServletRequest.getParameter(frontend.REG_PASSWORD_FIELD_HTML)).thenReturn("");
         frontend.onHaveCookieAndPostStatusTest(target, sessionId, userDataSet, httpServletRequest, httpServletResponse);
         result = stringWriter.toString();
-        Assert.assertTrue(result.contains("<title>Шашечки</title>"));
+        Assert.assertTrue(result.contains("<title>Checkers</title>"));
         Assert.assertTrue(result.contains("<a href='/profile' >null</a>") || result.contains("<a href='/profile' >__Test__Bob</a>"));
 
 
@@ -652,7 +652,7 @@ public class FrontendImplTest {
         when(httpServletRequest.getParameter(frontend.REG_PASSWORD_FIELD_HTML)).thenReturn("123456");
         frontend.onHaveCookieAndPostStatusTest(target, sessionId, userDataSet, httpServletRequest, httpServletResponse);
         result = stringWriter.toString();
-        Assert.assertTrue(result.contains("<title>Шашечки</title>"));
+        Assert.assertTrue(result.contains("<title>Checkers</title>"));
         Assert.assertTrue(result.contains("<a href='/profile' >null</a>") || result.contains("<a href='/profile' >__Test__Bob</a>"));
 
 
@@ -701,7 +701,7 @@ public class FrontendImplTest {
         target = frontend.ROOT_URL;
         frontend.onReadyStatusTest(target, sessionId, userDataSet, httpServletResponse);
         result = stringWriter.toString();
-        Assert.assertTrue(result.contains("<title>Шашечки</title>"));
+        Assert.assertTrue(result.contains("<title>Checkers</title>"));
         Assert.assertTrue(result.contains("<a href='/profile' >__Test_Bob_</a>"));
 
         //test2
@@ -709,7 +709,7 @@ public class FrontendImplTest {
         frontend.onReadyStatusTest(target, sessionId, userDataSet, httpServletResponse);
         result = stringWriter.toString();
         Assert.assertTrue(result.contains("<a href='/profile' >__Test_Bob_</a>"));
-        Assert.assertTrue(result.contains("<button id='surrend'>Сдаться</button>"));
+        Assert.assertTrue(result.contains("<button id='surrend'>Give up</button>"));
 
         //test3
         target = frontend.LOGOUT_URL;
@@ -738,7 +738,7 @@ public class FrontendImplTest {
         target = frontend.PROFILE_URL;
         frontend.onReadyStatusTest(target, sessionId, userDataSet, httpServletResponse);
         result = stringWriter.toString();
-        Assert.assertTrue(result.contains("<title>Шашечки</title>"));
+        Assert.assertTrue(result.contains("<title>Checkers</title>"));
         Assert.assertTrue(result.contains("<a href='/profile' >__Test_Bob_</a>"));
 
         //test5
