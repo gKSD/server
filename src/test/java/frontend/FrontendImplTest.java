@@ -880,7 +880,6 @@ public class FrontendImplTest {
         target = "/css/";
         frontend.handle(target, request, httpServletRequest, httpServletResponse);
         counter += 1;
-        //просто ретерн
 
         //test1.3
         //inWeb !haveCookiesAndPost
