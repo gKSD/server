@@ -201,17 +201,14 @@ public class GameSessionTest {
         testObj2.currentPositions[5][7] = new Field(checker.nothing);
         testObj2.currentPositions[3][5] = new Field(checker.white);
         testObj2.currentPositions[2][6] = new Field(checker.nothing);
-        //сделаем королём одну:
         testObj2.currentPositions[3][5].makeKing();
         testRes = testObj2.checkStroke(2,5,4,7,2);
         Assert.assertEquals(testRes,true);
-        //пожирание своего:
         testObj2.currentPositions[3][5] = new Field(checker.white);
         testObj2.currentPositions[4][6] = new Field(checker.white);
         testObj2.currentPositions[5][7] = new Field(checker.nothing);
         testRes = testObj2.checkStroke(2,7,2,5,4);
         Assert.assertEquals(testRes,false);
-        //проверка на возможность съесть ещё кого-то
         testObj2.currentPositions[4][6] = new Field(checker.black);
         testObj2.currentPositions[7][5] = new Field(checker.nothing);
         System.out.println();
@@ -584,7 +581,7 @@ public class GameSessionTest {
                 }
             }
         }
-        //не blackLose и whiteWin
+        // !blackLose whiteWin
         testObj.currentPositions[3][3]= new Field(checker.black);
         testObj.getBlackQuantity1_pub();
         testObj.changeLastStroke(1);

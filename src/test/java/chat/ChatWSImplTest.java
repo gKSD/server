@@ -57,7 +57,6 @@ public class ChatWSImplTest {
         }
         Assert.assertTrue(testResBool);
 
-        //проверка, что нормально компилиться при некорректных вызовах
         JSONObject testJson2 = new JSONObject();
         testJson2.put("sessionId","1234567");
         testJson2.put("startServerTime","14:19:12");
@@ -78,7 +77,6 @@ public class ChatWSImplTest {
         testJson4.put("text","");
         testObj.onWebSocketText(testJson5.toString());
 
-        //для addMessageChat
         JSONObject testJson6 = new JSONObject();
         testJson6.put("sessionId","0");
         testJson6.put("startServerTime","14:09:12");
@@ -86,7 +84,6 @@ public class ChatWSImplTest {
         testObj.onWebSocketText(testJson2.toString());
     }
 
-    //просто для покрытия нулевого ифа
     @Test
     public void sendMessTest() {
         MessageSystem msg;

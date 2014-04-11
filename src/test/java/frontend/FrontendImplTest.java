@@ -85,7 +85,6 @@ public class FrontendImplTest {
 
     @Test
     public void testGetStatistic() throws Exception {
-        //хз пока что
     }
 
     @Test
@@ -835,7 +834,6 @@ public class FrontendImplTest {
         testHandle_Function1("index", request, stringWriter, sessionId, startServerTime, userDataImpl, counter);
 
         //test5
-        //Не проходим условие NewUser() и попадаем в else
         isNewUser = false;
         counter = -1;
         sessionId = "123354asdzc";
@@ -849,7 +847,6 @@ public class FrontendImplTest {
     public void testHandle_Function1(String target,Request request,StringWriter stringWriter,
                                      String sessionId, String startServerTime, UserDataImpl userDataImpl, Integer counter)
     {
-        //aa
 
         //test1.1
         SysInfo testObj = new SysInfo();
@@ -880,7 +877,7 @@ public class FrontendImplTest {
 
         //test2
         //!inWeb && isStatic
-        target = "/css/"; //static url, аналогично функция isStaticUrl() тестировалась ранее, здесь рассмотрен только один вариант
+        target = "/css/";
         frontend.handle(target, request, httpServletRequest, httpServletResponse);
         counter += 1;
         //просто ретерн
@@ -889,7 +886,6 @@ public class FrontendImplTest {
         //inWeb !haveCookiesAndPost
         target = frontend.ROOT_URL;
         /*
-        //Для данных урлов inWeb() == true, функция тестировалась отдельно ранне, здесь рассмотрим тоько одно условие для выполнения фукнции
         target = frontend.WAIT_URL;
         target = frontend.GAME_URL;
         target = frontend.PROFILE_URL;
@@ -915,9 +911,8 @@ public class FrontendImplTest {
 
         //test2
         //!inWeb && isStatic
-        target = "/css/"; //static url, аналогично функция isStaticUrl() тестировалась ранее, здесь рассмотрен только один вариант
+        target = "/css/";
         frontend.handle(target, request, httpServletRequest, httpServletResponse);
-        //просто ретерн
 
         //test3
         when(httpServletRequest.getMethod()).thenReturn("POST");
@@ -925,7 +920,6 @@ public class FrontendImplTest {
         //inWeb !haveCookiesAndPost
         target = frontend.ROOT_URL;
         /*
-        //Для данных урлов inWeb() == true, функция тестировалась отдельно ранне, здесь рассмотрим тоько одно условие для выполнения фукнции
         target = frontend.WAIT_URL;
         target = frontend.GAME_URL;
         target = frontend.PROFILE_URL;
