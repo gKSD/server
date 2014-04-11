@@ -863,9 +863,9 @@ public class FrontendImplTest {
         target = frontend.RULES_URL;
         frontend.handle(target, request, httpServletRequest, httpServletResponse);
         counter += 1;
-        Assert.assertTrue(stringWriter.toString().contains("Если шашки твоего противника оказываются под ударом, ты"));
-        Assert.assertTrue(stringWriter.toString().contains("Выигравшим партию становится тот, кто заберет все шашки противника или лишит их хода,"));
-        Assert.assertTrue(stringWriter.toString().contains("<span class=\"label label-important\">Есть обязательно!</span>"));
+        Assert.assertTrue(stringWriter.toString().contains("If your rival's checkers are under attack, you"));
+        Assert.assertTrue(stringWriter.toString().contains("Winner is a player"));
+        Assert.assertTrue(stringWriter.toString().contains("<span class=\"label label-important\">Must eat!</span>"));
         //return
 
         //test3
